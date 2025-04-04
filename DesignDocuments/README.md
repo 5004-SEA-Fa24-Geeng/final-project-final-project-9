@@ -180,9 +180,9 @@ IController --> AnimalList: uses
 Our team consists of three members, and we have divided responsibilities based on the MVC architecture, ensuring each member contributes to key components of the application while maintaining collaboration across the project.
 
 ## 9. Member Responsibilities
-Responsible for the View layer using Java Swing. Implements the UI components for displaying, filtering, and managing the dog list. Works on user-facing interactions such as form inputs, list displays, and button triggers.
-Responsible for the Model and data layer. Implements file I/O logic (reading and writing JSON/CSV files), manages the internal data structure of dogs and wishlists, and develops supporting logic for filtering, sorting, and saving data. Also in charge of writing JUnit tests.
-Responsible for the Controller logic and integration of additional features. Implements control flow for adding/searching dogs and managing UI logic. Develops the “Nearby Dogs” feature based on simulated location data. Also handles documentation, including UML diagrams, the proposal, and the final user manual.
+- Responsible for the View layer using Java Swing. Implements the UI components for displaying, filtering, and managing the dog list. Works on user-facing interactions such as form inputs, list displays, and button triggers.
+- Responsible for the Model and data layer. Implements file I/O logic (reading and writing JSON/CSV files), manages the internal data structure of dogs and wishlists, and develops supporting logic for filtering, sorting, and saving data. Also in charge of writing JUnit tests.
+- Responsible for the Controller logic and integration of additional features. Implements control flow for adding/searching dogs and managing UI logic. Develops the “Nearby Dogs” feature based on simulated location data. Also handles documentation, including UML diagrams, the proposal, and the final user manual.
 
 ## 10. Timeline
 Now - 4.11: implement backend and GUI
