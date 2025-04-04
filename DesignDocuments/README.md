@@ -6,40 +6,40 @@
 Dog Station is a desktop application built in Java that helps users manage a collection of lost dogs. Users can search or report lost dogs, view nearby cases, maintain a wishlist. This project meets the requirement of managing a “collection” by treating each dog as a data entry, with relevant metadata stored in structured files.
 
 ## 2. What are the initial features for the application?
-   View All Dogs: Display a complete list of dogs in a logical order.
-   Report a Dog: Add a new lost or adoptable dog to the system.
-   Wishlist: Build and manage a list of dogs users are interested in .
-   Save Wishlist to File: Export the wishlist in .json/.csv/.xml format.
-   Java Swing GUI: Graphical user interface for all major features.
+   - View All Dogs: Display a complete list of dogs in a logical order.
+   - Report a Dog: Add a new lost or adoptable dog to the system.
+   - Wishlist: Build and manage a list of dogs users are interested in .
+   - Save Wishlist to File: Export the wishlist in .json/.csv/.xml format.
+   - Java Swing GUI: Graphical user interface for all major features.
 
 ## 3. What are the minimum additional features you plan to implement?
-   Filter/Search/sort Dogs: Filter dogs by location, status,  breed .etc
-   Load Saved Lists: Load previously saved wishlist or dog data from a file.
-   Include Dog Images: Display dog images in the GUI from local storage.
+   - Filter/Search/sort Dogs: Filter dogs by location, status,  breed .etc
+   - Load Saved Lists: Load previously saved wishlist or dog data from a file.
+   - Include Dog Images: Display dog images in the GUI from local storage.
 
 ## 4. What are your stretch goals?
-   Map Simulation: Simulate “nearby dogs” by calculating distance from a user-entered location.
-   Tagging System: Allow tagging dogs with custom labels (e.g., “friendly”, “shy”).
-   Basic Login Simulation: Simulate different user profiles with separate wishlists.
+   - Map Simulation: Simulate “nearby dogs” by calculating distance from a user-entered location.
+   - Tagging System: Allow tagging dogs with custom labels (e.g., “friendly”, “shy”).
+   - Basic Login Simulation: Simulate different user profiles with separate wishlists.
 
 ## 5. Initial Design
    ### Architecture   
-   Backend: Java (OOP, MVC structure)
-   Frontend: Java Swing for UI
-   Storage: JSON or CSV files for data persistence (dog list, wishlist)
-   Design Pattern: MVC (Model-View-Controller)
+   - Backend: Java (OOP, MVC structure)
+   - Frontend: Java Swing for UI
+   - Storage: JSON or CSV files for data persistence (dog list, wishlist)
+   - Design Pattern: MVC (Model-View-Controller)
 
 ### Persistence Format
-JSON for full dog list (with fields: name, breed, location, date, status)
-CSV or JSON for exported user wishlists
+- JSON for full dog list (with fields: name, breed, location, date, status)
+- CSV or JSON for exported user wishlists
 ### Testing and Validation
-JUnit for logic testing (file operations, object creation)
-GUI testing via manual walkthrough (with screenshots for documentation)
+- JUnit for logic testing (file operations, object creation)
+- GUI testing via manual walkthrough (with screenshots for documentation)
 ### Documentation
-Javadoc for all classes/methods
-UML diagrams in DesignDocuments/
-Application manual with screenshots in manual/
-Project README with compile/run instructions and file structure
+- Javadoc for all classes/methods
+- UML diagrams in DesignDocuments/
+- Application manual with screenshots in manual/
+- Project README with compile/run instructions and file structure
 
 
 ## 6. UML Diagram
