@@ -12,7 +12,7 @@ public class PostedAnimal {
     private String loDescription;//离我最近
     private String location;//
     private boolean ifAdded = false;//
-    private user witness;
+    private UserWit witness;
     private final String image;
     private final String description;
     private int gender;
@@ -33,7 +33,7 @@ public class PostedAnimal {
                          String location,//seattle, bellevue, redmond,kirkland,everett,tacoma,renton,kent,lynnwood,bothell*+
                          boolean ifAdded,//比如"Seattle Downtown", Seattle:downtown， bellrown, capitol hill, ud, slu,queen anne, ballard,fremont,west sea*
                          //bellevue: downtown, clyde, hill, medina,lake hills,crossroads,bridle trails...
-                         user witness,//user
+                         UserWit witness,//user
                          String image,
                          String description) {
         this.number = number;
