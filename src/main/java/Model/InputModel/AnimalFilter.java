@@ -9,7 +9,7 @@ public class AnimalFilter {
     /** The original set of board games. */
     private Set<PostedAnimal> animals;
     /** A copy of the games set for internal operations. */
-    private Set<PostedAnimal> copy;
+    //private Set<PostedAnimal> copy;
 
     /**
      * Constructs a new {@code Filter} with the specified set of animals.
@@ -21,7 +21,7 @@ public class AnimalFilter {
      */
     public AnimalFilter(Set<PostedAnimal> animals) {
         this.animals = animals;
-        this.copy = new HashSet<>(animals);
+        //this.copy = new HashSet<>(animals);
     }
 
 
@@ -34,8 +34,8 @@ public class AnimalFilter {
     //}
 
 
-    public Stream<PostedAnimal> filter(String[] filter) {
-
+    public Stream<PostedAnimal> filter(String filters) {
+        String[] filter = filters.split(",");
         Stream<PostedAnimal> stream = animals.stream();
         int i;
 
@@ -60,9 +60,9 @@ public class AnimalFilter {
     }
 
 
-    public void reset() {
-        this.animals = new HashSet<>(copy);
-    }
+    //public void reset() {
+    //    this.animals = new HashSet<>(copy);
+    //}
 
 }
 

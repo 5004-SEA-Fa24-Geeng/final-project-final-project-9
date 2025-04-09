@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Animal Sighting</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4a6eb5;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-section {
+            margin-bottom: 30px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            flex: 1 0 300px;
+            margin-right: 20px;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23555%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+            padding-right: 30px;
+        }
+        .btn-submit {
+            background-color: #4a6eb5;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #3a5b9d;
+        }
+        .image-upload {
+            border: 2px dashed #ddd;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        .image-upload:hover {
+            border-color: #4a6eb5;
+        }
+        .required:after {
+            content: " *";
+            color: #d9534f;
+        }
+        .hidden {
+            display: none;
+        }
+        .datetime-pickers {
+            display: flex;
+            gap: 10px;
+        }
+        .datetime-pickers input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Report Animal Sighting</h1>
+    <form id="animalSightingForm">
+        <!-- Animal Information Section -->
+        <div class="form-section">
+            <h2>Animal Information</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="animalType" class="required">Animal Type</label>
+                    <select id="animalType" required>
+                        <option value="">Select animal type</option>
+                        <option value="dog">Dog</option>
+                        <option value="cat">Cat</option>
+                        <option value="bird">Bird</option>
+                        <option value="rabbit">Rabbit</option>
+                        <option value="hamster">Hamster</option>
+                        <option value="guinea_pig">Guinea Pig</option>
+                        <option value="hedgehog">Hedgehog</option>
+                        <option value="turtle">Turtle</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="species" class="required">Species/Breed</label>
+                    <select id="species" required>
+                        <option value="">Select animal type first</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="animalSize" class="required">Size</label>
+                    <select id="animalSize" required>
+                        <option value="">Select size</option>
+                        <option value="1">Micro</option>
+                        <option value="2">Small</option>
+                        <option value="3">Medium</option>
+                        <option value="4">Large</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gender" class="required">Gender</label>
+                    <select id="gender" required>
+                        <option value="">Select gender</option>
+                        <option value="1">Female</option>
+                        <option value="2">Male</option>
+                        <option value="3">Unclear</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pattern">Pattern</label>
+                    <select id="pattern" required>
+                        <option value="">Select pattern</option>
+                        <option value="1">Solid</option>
+                        <option value="2">Spot</option>
+                        <option value="3">Unclear
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="animalAge" class="required">Age</label>
+                    <select id="animalAge" required>
+                        <option value="">Select age</option>
+                        <option value="1">Baby</option>
+                        <option value="2">Young</option>
+                        <option value="3">Adult</option>
+                        <option value="4">Senior</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="animalColor" class="required">Color</label>
+                    <select id="animalColor" required>
+                        <option value="">Select color</option>
+                        <option value="1">Black</option>
+                        <option value="2">Yellow</option>
+                        <option value="3">White</option>
+                        <option value="4">Grey</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sighting Information Section -->
+        <div class="form-section">
+            <h2>Sighting Information</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="witnessedDate" class="required">Date & Time Seen</label>
+                    <div class="datetime-pickers">
+                        <input type="date" id="witnessedDate" required>
+                        <input type="time" id="witnessedTime" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location" class="required">City</label>
+                    <select id="location" required>
+                        <option value="">Select city</option>
+                        <option value="seattle">Seattle</option>
+                        <option value="bellevue">Bellevue</option>
+                        <option value="redmond">Redmond</option>
+                        <option value="kirkland">Kirkland</option>
+                        <option value="everett">Everett</option>
+                        <option value="tacoma">Tacoma</option>
+                        <option value="renton">Renton</option>
+                        <option value="kent">Kent</option>
+                        <option value="lynnwood">Lynnwood</option>
+                        <option value="bothell">Bothell</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="neighborhood">Neighborhood</label>
+                    <select id="neighborhood">
+                        <option value="">Select city first</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="loDescription" class="required">Location Description</label>
+                    <input type="text" id="loDescription" placeholder="E.g., near the entrance of ABC Building" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Information Section -->
+        <div class="form-section">
+            <h2>Additional Information</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Please provide any additional details about the animal: behavior, distinctive features, whether it had a collar, etc."></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="image">Upload Image</label>
+                    <div class="image-upload" id="imageUploadArea">
+                        <input type="file" id="image" accept="image/*" style="display: none;">
+                        <p>Click to upload an image of the animal</p>
+                        <div id="imagePreview" class="hidden">
+                            <img id="previewImg" src="" alt="Preview" style="max-width: 100%; max-height: 200px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Report</button>
+    </form>
+</div>
+
+<script>
+    // Dynamic species/breed options based on animal type
+    const animalType = document.getElementById('animalType');
+    const species = document.getElementById('species');
+
+    animalType.addEventListener('change', function() {
+        species.innerHTML = '<option value="">Select species/breed</option>';
+
+        if (this.value === 'dog') {
+            const dogBreeds = ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle', 'Poodle', 'Husky', 'Chihuahua', 'Shih Tzu', 'Mixed/Other'];
+            dogBreeds.forEach(breed => {
+                const option = document.createElement('option');
+                option.value = breed.toLowerCase().replace(' ', '_');
+                option.textContent = breed;
+                species.appendChild(option);
+            });
+        } else if (this.value === 'cat') {
+            const catBreeds = ['Domestic Shorthair', 'Domestic Longhair', 'Siamese', 'Persian', 'Maine Coon', 'Bengal', 'Ragdoll', 'Sphynx', 'Russian Blue', 'Mixed/Other'];
+            catBreeds.forEach(breed => {
+                const option = document.createElement('option');
+                option.value = breed.toLowerCase().replace(' ', '_');
+                option.textContent = breed;
+                species.appendChild(option);
+            });
+        } else if (this.value === 'bird') {
+            const birdTypes = ['Parakeet/Budgie', 'Cockatiel', 'Parrot', 'Canary', 'Finch', 'Lovebird', 'Conure', 'Cockatoo', 'Wild Bird', 'Other'];
+            birdTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type.toLowerCase().replace(' ', '_');
+                option.textContent = type;
+                species.appendChild(option);
+            });
+        } else if (this.value) {
+            const option = document.createElement('option');
+            option.value = 'common';
+            option.textContent = 'Common ' + this.value.charAt(0).toUpperCase() + this.value.slice(1);
+            species.appendChild(option);
+
+            const otherOption = document.createElement('option');
+            otherOption.value = 'other';
+            otherOption.textContent = 'Other';
+            species.appendChild(otherOption);
+        }
+    });
+
+    // Dynamic neighborhood options based on city
+    const location = document.getElementById('location');
+    const neighborhood = document.getElementById('neighborhood');
+
+    location.addEventListener('change', function() {
+        neighborhood.innerHTML = '<option value="">Select neighborhood</option>';
+
+        if (this.value === 'seattle') {
+            const seattleAreas = ['Downtown', 'Capitol Hill', 'University District', 'South Lake Union', 'Queen Anne', 'Ballard', 'Fremont', 'West Seattle', 'Belltown', 'Other'];
+            seattleAreas.forEach(area => {
+                const option = document.createElement('option');
+                option.value = area.toLowerCase().replace(' ', '_');
+                option.textContent = area;
+                neighborhood.appendChild(option);
+            });
+        } else if (this.value === 'bellevue') {
+            const bellevueAreas = ['Downtown', 'Clyde Hill', 'Medina', 'Lake Hills', 'Crossroads', 'Bridle Trails', 'Factoria', 'Newport', 'Other'];
+            bellevueAreas.forEach(area => {
+                const option = document.createElement('option');
+                option.value = area.toLowerCase().replace(' ', '_');
+                option.textContent = area;
+                neighborhood.appendChild(option);
+            });
+        } else if (this.value) {
+            const option = document.createElement('option');
+            option.value = 'general';
+            option.textContent = 'General ' + this.value.charAt(0).toUpperCase() + this.value.slice(1) + ' Area';
+            neighborhood.appendChild(option);
+
+            const otherOption = document.createElement('option');
+            otherOption.value = 'other';
+            otherOption.textContent = 'Other';
+            neighborhood.appendChild(otherOption);
+        }
+    });
+
+    // Image upload preview
+    const imageUploadArea = document.getElementById('imageUploadArea');
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+
+    imageUploadArea.addEventListener('click', function() {
+        imageInput.click();
+    });
+
+    imageInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                imagePreview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // Form submission
+    document.getElementById('animalSightingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Get form values
+        const formData = {
+            animalType: document.getElementById('animalType').value,
+            species: document.getElementById('species').value,
+            animalSize: parseInt(document.getElementById('animalSize').value),
+            gender: parseInt(document.getElementById('gender').value),
+            pattern: document.getElementById('pattern').value,
+            animalColor: document.getElementById('animalColor').value,
+            animalAge: parseInt(document.getElementById('animalAge').value),
+            witnessedDate: document.getElementById('witnessedDate').value,
+            witnessedTime: document.getElementById('witnessedTime').value,
+            location: document.getElementById('location').value,
+            neighborhood: document.getElementById('neighborhood').value,
+            loDescription: document.getElementById('loDescription').value,
+            description: document.getElementById('description').value
+        };
+
+        // Process dates to match the expected format in the constructor
+        const dateObj = new Date(formData.witnessedDate + 'T' + formData.witnessedTime);
+        const witnessedTimeArray = [
+            dateObj.getFullYear().toString().substr(-2), // YY
+            (dateObj.getMonth() + 1).toString().padStart(2, '0'), // MM
+            dateObj.getDate().toString().padStart(2, '0'), // DD
+            dateObj.getHours().toString().padStart(2, '0'), // HH
+            dateObj.getMinutes().toString().padStart(2, '0')  // MM
+        ];
+
+        console.log('Form data to be submitted:', formData);
+        console.log('Formatted witnessed time:', witnessedTimeArray);
+
+        // Here you would normally send the data to the server
+        alert('Report submitted successfully! Thank you for helping reunite lost pets with their owners.');
+        this.reset();
+        imagePreview.classList.add('hidden');
+    });
+</script>
+</body>
+</html>

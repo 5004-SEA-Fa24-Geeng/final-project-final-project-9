@@ -70,25 +70,27 @@
             background-color: #2196F3;
             color: white;
         }
-        .location-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .location-chip {
-            background-color: #e0e0e0;
-            padding: 5px 10px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-        }
         .location-chip span {
             margin-left: 5px;
             cursor: pointer;
         }
         h1, h2 {
             color: #333;
+        }
+        .distance-option {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .distance-option:hover {
+            background-color: #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .distance-option.active {
+            background-color: #2196F3;
+            color: white;
         }
     </style>
 </head>
@@ -178,7 +180,7 @@
             <h2>Sighting Information</h2>
 
             <div class="form-group">
-                <label>Time Filter:</label>
+                <h3>Time Filter:</h3>
                 <div class="time-filter">
                     <div class="time-option active">Within 1 week</div>
                     <div class="time-option">Within 2 weeks</div>
@@ -188,16 +190,11 @@
             </div>
 
 
-
             <div class="form-group">
-                <label for="locationState">Location Description:</label>
-                <input type="text" id="locationState" placeholder="e.g., In front of the library">
-            </div>
-
-            <div class="form-group">
-                <label for="locationArea1">Primary Area:</label>
+                <h3>Location Filter:</h3>
+                <label for="locationArea1">Your Primary Area:</label>
                 <select id="locationArea1">
-                    <option value="">Select Area</option>
+                    <option value="">Select Primary Area</option>
                     <option value="seattle">Seattle</option>
                     <option value="bellevue">Bellevue</option>
                     <option value="redmond">Redmond</option>
@@ -212,20 +209,23 @@
             </div>
 
             <div class="form-group">
-                <label for="locationArea2">Secondary Area:</label>
+                <label for="locationArea2">Your Secondary Area:</label>
                 <select id="locationArea2">
                     <option value="">Select Secondary Area</option>
                     <!-- Options will be populated based on primary area -->
                 </select>
             </div>
 
+
             <div class="form-group">
-                <label>Selected Locations:</label>
-                <div class="location-chips">
-                    <div class="location-chip">Seattle - Downtown <span>×</span></div>
-                    <div class="location-chip">Bellevue <span>×</span></div>
+                <div id="distance-options">
+                    <div class="distance-option active" data-distance="200">Within 200 meters</div>
+                    <div class="distance-option" data-distance="500">Within 500 meters</div>
+                    <div class="distance-option" data-distance="1000">Within 1 kilometer</div>
+                    <div class="distance-option" data-distance="2000">Within 2 kilometers</div>
                 </div>
             </div>
+
         </div>
     </div>
 
