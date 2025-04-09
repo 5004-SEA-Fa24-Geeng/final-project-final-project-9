@@ -1,8 +1,9 @@
 package Controller;
 
-import Model.PostedAnimal;
-
 import java.util.List;
+
+import Model.FilterCriteria;
+import Model.PostedAnimal;
 
 public interface IController {
 
@@ -14,29 +15,30 @@ public interface IController {
 
 
     /**
-     * default sort on time
-     * @param operation
-     * @return
+     * Filter animals based on given criteria
+     * @param criteria List of filter criteria
+     * @return Filtered list of animals
      */
-    List<PostedAnimal> filter(List<Operation> operation);
+    List<PostedAnimal> filter(List<FilterCriteria> criteria);
 
     /**
-     * search box, like black big husky, default sort on time
-     * @param operation
-     * @return
+     * Search animals based on given criteria (e.g., "black big husky")
+     * Default sort by time
+     * @param criteria List of search criteria
+     * @return Search results
      */
-    List<PostedAnimal> search(List<Operation> operation);
+    List<PostedAnimal> search(List<FilterCriteria> criteria);
 
     /**
-     * //ascending, descending
-     * @param operation
-     * @return
+     * Sort animals based on given criteria
+     * @param criteria List of sort criteria
+     * @return Sorted list of animals
      */
-    List<PostedAnimal> sort(List<Operation> operation);
+    List<PostedAnimal> sort(List<FilterCriteria> criteria);
 
     /**
-     *
-     * @param listAnimal
+     * Generate output for the given list of animals
+     * @param listAnimal List of animals to generate output for
      */
     void outputGen(List<PostedAnimal> listAnimal);
 

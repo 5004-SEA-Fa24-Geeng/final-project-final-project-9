@@ -12,13 +12,15 @@ public class PostedAnimal {
     private String loDescription;//离我最近
     private String location;//
     private boolean ifAdded = false;//
-    private user witness;
+    private String witness;
     private final String image;
     private final String description;
     private int gender;
     private int animalSize;
     private String animalType;
     private double number;
+    private double latitude;  // 新增：纬度
+    private double longitude; // 新增：经度
 
     public PostedAnimal(double number,
                          String animalType,//dog, cat, bird,rabbit,hamster,Guinea pig,hedgedog,turtle *
@@ -33,9 +35,11 @@ public class PostedAnimal {
                          String location,//seattle, bellevue, redmond,kirkland,everett,tacoma,renton,kent,lynnwood,bothell*+
                          boolean ifAdded,//比如"Seattle Downtown", Seattle:downtown， bellrown, capitol hill, ud, slu,queen anne, ballard,fremont,west sea*
                          //bellevue: downtown, clyde, hill, medina,lake hills,crossroads,bridle trails...
-                         user witness,//user
+                         String witness,
                          String image,
-                         String description) {
+                         String description,
+                         double latitude,   // 新增：纬度参数
+                         double longitude) { // 新增：经度参数
         this.number = number;
         this.animalType = animalType;
         this.species = species;
@@ -51,6 +55,16 @@ public class PostedAnimal {
         this.description = description;
         this.gender = gender;
         this.animalSize = animalSize;
+        this.latitude = latitude;    // 新增：设置纬度
+        this.longitude = longitude;  // 新增：设置经度
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     public double getNumber() {
