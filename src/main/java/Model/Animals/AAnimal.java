@@ -40,8 +40,6 @@ public abstract class AAnimal implements IAnimal {
         this.description = description;
         this.image = image;
         this.number = number;
-//        this.witness = witness;
-//        this.ifAdded = ifAdded;
     }
 
     public AnimalType getAnimalType() {
