@@ -12,4 +12,8 @@ public class UserWit {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+
+    public int getNumber() {
+        return number;
+    }
 }

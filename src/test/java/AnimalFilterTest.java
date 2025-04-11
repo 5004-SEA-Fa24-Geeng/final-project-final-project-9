@@ -1,35 +1,36 @@
 import Model.InputModel.AnimalFilter;
 import Model.PostedAnimal;
+import Model.UserWit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AnimalFilterTest {
 
-    private Set<PostedAnimal> animals;
+    private List<PostedAnimal> animals;
 
     @BeforeEach
     void setUp() {
-        animals = new HashSet<>();
-        animals.add(new PostedAnimal(1,"cat","American Shorthair",1,1,"Tabby","Black",1,new Integer[]{25, 3, 30, 15, 30},"near Standard","Seattle","UD","1","1","1"));
-        animals.add(new PostedAnimal(2,"dog","Poodle",3,1,"Solid","White",1,new Integer[]{25, 3, 30, 10, 30},"","Bellevue","Clyde","1","1","1"));
-        animals.add(new PostedAnimal(3,"cat","Ragdoll",2,1,"Solid","White",1,new Integer[]{25, 3, 30, 10, 30},"","Bellevue","Downtown","1","1","1"));
+        animals = new ArrayList<>();
+        UserWit user1 = new UserWit(1,"1","1","1");
+        UserWit user2 = new UserWit(2,"2","2","2");
+        animals.add(new PostedAnimal(1,"cat","American Shorthair","1","1","Tabby","Black","1","25-3-30","near Standard","Seattle, UD",false, user1.getNumber(),"2","1"));
+        animals.add(new PostedAnimal(2,"dog","Poodle","2","1","","Grey","1","25-3-30","","Kent,Lake Fenwick",false, user2.getNumber(),"1","1"));
+        animals.add(new PostedAnimal(3,"cat","Ragdoll","2","0","Solid","White","1","25-04-05","","Bellevue,",false, user1.getNumber(),"1","1"));
+        animals.add(new PostedAnimal(4,"dog","Golden Retriever","3","1","","yellow","1","25-02-09","","Seattle, Capital Hill",false, user1.getNumber(),"1","1"));
+        animals.add(new PostedAnimal(5,"rabbit","Netherland Dwarf Rabbit","1","1","","White","1","25-01-25","","Bellevue",false, user1.getNumber(),"1","1"));
     }
 
     @Test
     void filterTest() {
         Stream<PostedAnimal> s;
-        String[] filter = {"cat","Not Sure","Not Sure","Not Sure","Not Sure","Not Sure","Not Sure","Not Sure","Downtown,UD","within one month"};
+        String filter = "Not Sure,Not Sure,Not Sure,Not Sure,Not Sure,Not Sure,Not Sure,Not Sure,Not Sure,Not Sure,Not Sure";
         AnimalFilter af = new AnimalFilter(animals);
         s=af.filter(filter);
-        List<PostedAnimal> filteredList = s.collect(Collectors.toList());
-        assertEquals(2, filteredList.size());
+        assertEquals(2, s.toList().size());
     }
 }

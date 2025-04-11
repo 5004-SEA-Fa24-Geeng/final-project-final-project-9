@@ -1,13 +1,13 @@
 package Model.InputModel;
 
 import Model.PostedAnimal;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 public class AnimalFilter {
     /** The original set of board games. */
-    private Set<PostedAnimal> animals;
+    private List<PostedAnimal> animals;
     /** A copy of the games set for internal operations. */
     //private Set<PostedAnimal> copy;
 
@@ -19,7 +19,7 @@ public class AnimalFilter {
      * @param animals games The set of {@link PostedAnimal} objects that this planner will manage.
      *              A copy of this set is also created to support filtering operations.
      */
-    public AnimalFilter(Set<PostedAnimal> animals) {
+    public AnimalFilter(List<PostedAnimal> animals) {
         this.animals = animals;
         //this.copy = new HashSet<>(animals);
     }
@@ -41,15 +41,16 @@ public class AnimalFilter {
 
         for (i = 0; i < filter.length; i++) {
             int finalI = i;
+
             if (!filter[i].equals("Not Sure")) {
                 if (i==9) {
                     stream = stream.filter(postedAnimal -> Filters.filterDate(postedAnimal, filter[finalI]));
                 }
-                else if(i==7|i==8){
+                else if(i==7){
                     //seattle bellevue
-                    stream = stream.filter(postedAnimal -> Filters.filterLocation(postedAnimal, finalI, filter[finalI]));
+                    stream = stream.filter(postedAnimal -> Filters.filterLocation(postedAnimal, filter[finalI], filter[finalI+1]));
                 }
-                else {
+                else if(i!=9 && i!=7 && i!=8) {
                     stream = stream.filter(postedAnimal -> Filters.filter(postedAnimal, finalI, filter[finalI]));
                 }
             }

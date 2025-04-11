@@ -6,44 +6,53 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Set;
+
+
 
 public class AnimalList {
 
-    private static List<PostedAnimal> animalList = new ArrayList<>();
-    private static String filePath = "resources/animals.json";
+    private static String filePathJson = "src/main/resources/output.json";
+    private static String filePathXml = "src/main/resources/output.xml";
+    private static String filePathCsv = "src/main/resources/output.csv";
+    private static String filePathTxt = "src/main/resources/output.txt";
 
-    public AnimalList() {}
 
-    public static void addToList(Stream<PostedAnimal> filtered){
+    public AnimalList() {
+    }
 
-        List<PostedAnimal> filteredList = filtered.collect(Collectors.toList());
+
+
+    public static void addToList(List<PostedAnimal> filteredList, Set<PostedAnimal> ownerList) {
+
 
         for (PostedAnimal pa : filteredList) {
             if (pa.getIfAdded()){
-                animalList.add(pa);
+                ownerList.add(pa);
             }
         }
 
     }
 
 
-    public static void writeAnimalsToJson() {
+
+    public static void writeAnimalsToJson(Set<PostedAnimal> ownerList) {
         ObjectMapper mapper = new ObjectMapper();//使用库
+        List<PostedAnimal> al = ownerList.stream().toList();
         try {
-            mapper.writeValue(new File(filePath), animalList);
+            mapper.writeValue(new File(filePathJson), al);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void writeAnimalsToCSV() {
-        try (FileWriter writer = new FileWriter(filePath)) {//仍需修改
+
+    public static void writeAnimalsToCSV(Set<PostedAnimal> ownerList) {
+        try (FileWriter writer = new FileWriter(filePathCsv)) {//仍需修改
             writer.append("Number,Type,Species,Size,Gender,Pattern,Color,Age,Location\n"); // CSV 头部
-            for (PostedAnimal animal : animalList) {
+            for (PostedAnimal animal : ownerList) {
                 writer.append(animal.getNumber() + ",")
                         .append(animal.getAnimalType() + ",")
                         .append(animal.getSpecies() + ",")
@@ -60,35 +69,65 @@ public class AnimalList {
     }
 
 
-    public static void writeAnimalsToXml() {
+    public static void writeAnimalsToTxt(Set<PostedAnimal> ownerList) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePathTxt))) {
+            for (PostedAnimal animal : ownerList) {
+                writer.println("Posted Animal Information:");
+                writer.println("=====================================");
+                writer.println("Animal Type: " + animal.getAnimalType());
+                writer.println("Species: " + animal.getSpecies());
+                writer.println("Animal Size: " + animal.getAnimalSize());
+                writer.println("Gender: " + animal.getGender());
+                writer.println("Pattern: " + animal.getPattern());
+                writer.println("Animal Color: " + animal.getAnimalColor());
+                writer.println("Animal Age: " + animal.getAnimalAge());
+                writer.println("Witnessed Time: " + animal.getWitnessedTime());
+                writer.println("Location Description: " + animal.getloDescription());
+                writer.println("Location: " + animal.getLocation());
+                writer.println("Description: " + animal.getDescription());
+                writer.println();
+            }
+        } catch (IOException e) {
+            System.err.println("An error occurred while writing the file: " + e.getMessage());
+        }
+    }
+
+        // Test example in main
+
+
+
+
+    public static void writeAnimalsToXml(Set<PostedAnimal> ownerList) {
         XmlMapper xmlMapper = new XmlMapper();
         try {
-            AnimalListWrapper wrapper = new AnimalListWrapper(animalList);
-            xmlMapper.writeValue(new File(filePath), wrapper);
+            xmlMapper.writeValue(new File(filePathXml), ownerList);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void write(String format) {
+
+    public static void write(String format, Set<PostedAnimal> ownerList) {
 
         switch (format) {
             case "XML":
-                writeAnimalsToXml();
+                writeAnimalsToXml(ownerList);
                 break;
             case "JSON":
-                writeAnimalsToJson();
+                writeAnimalsToJson(ownerList);
                 break;
             case "CSV":
-                writeAnimalsToCSV();
+                writeAnimalsToCSV(ownerList);
                 break;
+            case "TXT":
+                writeAnimalsToTxt(ownerList);
             default:
-                //prettyPrint(records, out);
                 break;
         }
 
     }
 
-
-
+    //public static Set<PostedAnimal> getAnimalList() {
+    //    return animalList;
+    //}
 }
