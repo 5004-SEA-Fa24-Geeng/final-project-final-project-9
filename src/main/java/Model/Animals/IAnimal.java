@@ -1,77 +1,98 @@
 package Model.Animals;
 
 import Model.AnimalInfo.*;
+import Model.AnimalInfo.Species.*;
+
 
 public interface IAnimal {
-    /** Number for next animal. Increment by 1 when new animal is added. */
-    int animalNumber = 51; // Already have 50 animals in database, so next is 51
-
     /** The source of animal images. */
-    String imgSrc = "./data/animalImage/"; // e.g.   .../animalImage/dog/50.img
+    String imgSrc = "data/animalImage/"; // e.g.   .../animalImage/dog/50.img
 
 
 
-    default IAnimal newAnimal(String type, String species, String size, String gender, String pattern, String color,
-                              String age, String seenDate, String seenTime, String address, String area, String locDesc,
-                              String description) {
+    static IAnimal newAnimal(String type, String species, String size, String gender, String pattern, String color,
+                             String age, String seenDate, String seenTime, String address, String area, String locDesc,
+                             String description, int number) {
 
         AnimalType animal = AnimalType.fromString(type);
-        switch (animal) {
-            case DOG:
-                return new Dog(type, species, size, gender, pattern, color, age, seenDate, seenTime,
-                        address, area, locDesc, description, animalNumber);
-            case CAT:
-                return new Cat(type, species, size, gender, pattern, color, age, seenDate, seenTime,
-                        address, area, locDesc, description, animalNumber);
-            case RABBIT:
-                return new Rabbit(type, species, size, gender, pattern, color, age, seenDate, seenTime,
-                        address, area, locDesc, description, animalNumber);
-            case BIRD:
-                return new Bird(type, species, size, gender, pattern, color, age, seenDate, seenTime,
-                        address, area, locDesc, description, animalNumber);
-            case HAMSTER:
-                return new Hamster(type, species, size, gender, pattern, color, age, seenDate, seenTime,
-                        address, area, locDesc, description, animalNumber);
-            case DUCK:
-                return new Duck(type, species, size, gender, pattern, color, age, seenDate, seenTime,
-                        address, area, locDesc, description, animalNumber);
-            case HEDGEHOG:
-                return new Hedgehog(type, species, size, gender, pattern, color, age, seenDate, seenTime,
-                        address, area, locDesc, description, animalNumber);
-            default:
-                return null;
+        if (animal == null) {
+            throw new IllegalArgumentException("Wrong animal type.");
         }
+        return switch (animal) {
+            case DOG -> new Dog(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+                    address, area, locDesc, description, number);
+            case CAT -> new Cat(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+                    address, area, locDesc, description, number);
+            case RABBIT -> new Rabbit(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+                    address, area, locDesc, description, number);
+            case BIRD -> new Bird(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+                    address, area, locDesc, description, number);
+            case HAMSTER -> new Hamster(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+                    address, area, locDesc, description, number);
+            case DUCK -> new Duck(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+                    address, area, locDesc, description, number);
+            case HEDGEHOG -> new Hedgehog(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+                    address, area, locDesc, description, number);
+            default -> null;
+        };
+    }
+
+    static Species getSpeciesByType(AnimalType type, String species) {
+        return switch (type) {
+            case DOG -> Dogs.fromString(species);
+            case CAT -> Cats.fromString(species);
+            case BIRD -> Birds.fromString(species);
+            case DUCK -> Ducks.fromString(species);
+            case GOOSE -> Geese.fromString(species);
+            case RABBIT -> Rabbits.fromString(species);
+            case HAMSTER -> Hamsters.fromString(species);
+            case HEDGEHOG -> Hedgehogs.fromString(species);
+        };
     }
 
     AnimalType getAnimalType();
+    void setAnimalType(String type);
 
-    String getSpecies();
+    Species getSpecies();
+    void setSpecies(String species);
 
     Size getAnimalSize();
+    void setAnimalSize(String size);
 
     Gender getGender();
+    void setGender(String gender);
+
 
     Pattern getPattern();
+    void setPattern(String pattern);
 
     Color getAnimalColor();
+    void setAnimalColor(String color);
 
     Age getAnimalAge();
+    void setAnimalAge(String age);
 
     String getSeenDate();
+    void setSeenDate(String seenDate);
 
     String getSeenTime();
+    void setSeenTime(String seenTime);
 
     String getAddress();
+    void setAddress(String address);
 
     Area getArea();
+    void setArea(String Area);
 
-    String getloDescription();
+    String getLocDesc();
+    void setLocDesc(String LocDesc);
 
     String getDescription();
+    void setDescription(String desc);
 
-    public String getImage();
+    int getNumber();
 
-    public int getNumber();
+    String getImage();
 
 
 

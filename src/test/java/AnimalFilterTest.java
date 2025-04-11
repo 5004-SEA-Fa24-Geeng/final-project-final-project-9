@@ -1,5 +1,4 @@
 import Model.InputModel.AnimalFilter;
-import Model.PostedAnimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

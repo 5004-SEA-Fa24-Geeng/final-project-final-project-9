@@ -1,8 +1,8 @@
 package Controller;
 
+import Model.Animals.IAnimal;
 import Model.InputModel.AnimalFilter;
-import Model.PostedAnimal;
-import Model.output.AnimalList;
+import Model.AnimalList;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileReader;
@@ -15,8 +15,8 @@ import java.util.stream.Stream;
 public class Controller {
 
     static String filePath = "data/animals.csv";
-    Set<PostedAnimal> loadedAnimals = new HashSet<>();
-    Stream<PostedAnimal> stream = Stream.empty();;
+    Set<IAnimal> loadedAnimals = new HashSet<>();
+    Stream<IAnimal> stream = Stream.empty();;
     AnimalFilter af = new AnimalFilter(loadedAnimals);
 
 
@@ -26,7 +26,7 @@ public class Controller {
 
 
     public void clickGenReport(String type, String species, int size, int gender, String pattern, String color, int age, Integer[] time, String lodes, String location, boolean ifAdded, UserWit witness, String image, String descroption){
-        PostedAnimal pa = new PostedAnimal(loadedAnimals.size(),type,species,size,gender,pattern,color,age,time,lodes,location,ifAdded,witness,image,descroption);
+        IAnimal pa = new IAnimal(loadedAnimals.size(),type,species,size,gender,pattern,color,age,time,lodes,location,ifAdded,witness,image,descroption);
         loadedAnimals.add(pa);
         //写进数据库
     }
@@ -52,11 +52,11 @@ public class Controller {
 
     }//感觉reset可以删掉
 
-    public static Set<PostedAnimal> loadFromDatabase(){
+    public static Set<IAnimal> loadFromDatabase(){
 
             try (FileReader reader = new FileReader(filePath)) {
-                CsvToBean<PostedAnimal> csvToBean = new CsvToBeanBuilder<PostedAnimal>(reader)
-                        .withType(PostedAnimal.class)
+                CsvToBean<IAnimal> csvToBean = new CsvToBeanBuilder<IAnimal>(reader)
+                        .withType(IAnimal.class)
                         .withIgnoreLeadingWhiteSpace(true)
                         .build();
 

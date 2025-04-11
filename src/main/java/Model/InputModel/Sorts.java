@@ -1,4 +1,4 @@
 package Model.InputModel;
 
-public class Sort {
+public class Sorts {
 }

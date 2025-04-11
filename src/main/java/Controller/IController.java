@@ -2,8 +2,6 @@ package Controller;
 
 import java.util.List;
 
-import Model.PostedAnimal;
-
 public interface IController {
 
     /**
@@ -28,7 +26,7 @@ public interface IController {
     List<PostedAnimal> search(List<Operation> operation);
 
     /**
-     * Sort animals based on given operations
+     * Sorts animals based on given operations
      * @param operation List of sorting operations
      * @return Sorted list of animals
      */
