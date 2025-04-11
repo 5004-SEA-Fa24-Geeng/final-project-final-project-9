@@ -1,14 +1,18 @@
 package Model.InputModel;
 
+import Model.PostedAnimal;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-
-import Model.PostedAnimal;
-import Model.TestDataGenerator;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class Filters {
 
+
     public static boolean filter(PostedAnimal animal, int i, String value) {
+
         switch (i+1) {
             case 1:
                 return animal.getAnimalType().equals(value);
@@ -44,26 +48,14 @@ public final class Filters {
             default:
                 return false;
         }
+
     }
 
-    public static boolean filterLocation(PostedAnimal animal, int index, String value) {
-        // 使用TestDataGenerator中的城市位置数据作为参考点
-        double[] cityCoords = getCityCoordinates(value);
-        if (cityCoords == null) {
-            return false;
-        }
-        
-        double distance = TestDataGenerator.calculateDistance(
-            cityCoords[0], cityCoords[1],
-            animal.getLatitude(), animal.getLongitude()
-        );
-        
-        // 根据不同的距离范围进行过滤
-        switch (index) {
-            case 7: // 城市范围
-                return distance <= 5.0; // 5公里范围内认为是在城市内
-            case 8: // 区域范围
-                return distance <= 2.0; // 2公里范围内认为是在区域内
+    public static boolean filterLocation(PostedAnimal animal, String location, String scope) {
+        Set<String> loc = new HashSet<>(Arrays.asList(location.split(",")));
+        switch (scope) {
+            case "within 500m":
+                return loc-animal.getLocation()<500;
             default:
                 return false;
         }
@@ -97,6 +89,8 @@ public final class Filters {
     }
 
     private static LocalDate convertToLocalDate(Integer[] date) {
-        return LocalDate.of(date[0], date[1], date[2]);
+        return LocalDate.of(date[0] + 2000, date[1], date[2]); // 假设年份是 20XX
     }
+
+
 }

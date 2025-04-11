@@ -1,9 +1,8 @@
 package Controller;
 
-import java.util.List;
-
-import Model.FilterCriteria;
 import Model.PostedAnimal;
+
+import java.util.List;
 
 public interface IController {
 
@@ -15,32 +14,39 @@ public interface IController {
 
 
     /**
-     * Filter animals based on given criteria
-     * @param criteria List of filter criteria
-     * @return Filtered list of animals
+     * default sort on time
+     * @param operation
+     * @return
      */
-    List<PostedAnimal> filter(List<FilterCriteria> criteria);
+    List<PostedAnimal> filter(List<Operation> operation);
 
     /**
-     * Search animals based on given criteria (e.g., "black big husky")
-     * Default sort by time
-     * @param criteria List of search criteria
-     * @return Search results
+     * search box, like black big husky, default sort on time
+     * @param operation
+     * @return
      */
-    List<PostedAnimal> search(List<FilterCriteria> criteria);
+    List<PostedAnimal> search(List<Operation> operation);
 
     /**
-     * Sort animals based on given criteria
-     * @param criteria List of sort criteria
-     * @return Sorted list of animals
+     * //ascending, descending
+     * @param operation
+     * @return
      */
-    List<PostedAnimal> sort(List<FilterCriteria> criteria);
+    List<PostedAnimal> sort(List<Operation> operation);
 
     /**
-     * Generate output for the given list of animals
-     * @param listAnimal List of animals to generate output for
+     *
+     * @param listAnimal
      */
     void outputGen(List<PostedAnimal> listAnimal);
 
+    /**
+     * Get animals within a specific area
+     * @param lat Center latitude
+     * @param lon Center longitude
+     * @param radius Search radius in kilometers
+     * @return List of animals within the specified area
+     */
+    List<PostedAnimal> getAnimalsInArea(double lat, double lon, double radius);
 
 }
