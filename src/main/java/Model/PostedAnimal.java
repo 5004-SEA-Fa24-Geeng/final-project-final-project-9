@@ -1,120 +1,131 @@
 package Model;
 
-
 public class PostedAnimal {
+    static String imgSrc = "./data/animalImage/"; //  .../animalImage/ dog|cat|...
 
-
+    private String type;
     private String species;
+    private String size;
+    private String gender;
     private String pattern;
-    private String animalColor;
-    private int animalAge;
+    private String color;
+    private String age;
     private Integer[] witnessedTime;//几月几号之前
-    private String loDescription;//离我最近
-    private String location;//
-    private boolean ifAdded = false;//
-    private UserWit witness;
-    private final String image;
-    private final String description;
-    private int gender;
-    private int animalSize;
-    private String animalType;
-    private double number;
+    private String location; //
+    private String locDesc; //离我最近
+    private String description;
+    private String image;
+    private String number;  // used for image indexing
+    private double latitude;  // 添加经纬度信息
+    private double longitude;
+//    private boolean ifAdded ??= false;
+//    private UserWit witness;
 
-    public PostedAnimal(double number,
-                         String animalType,//dog, cat, bird,rabbit,hamster,Guinea pig,hedgedog,turtle *
-                         String species,//* 在选择type之后，切换成属于type的species选项
-                         int animalSize,//microsize,small,medium,big*+
-                         int gender,//female,male,unclear*
-                         String pattern,//*
-                         String animalColor,//*
-                         int animalAge,// baby, youny, adult, old*+
-                         Integer[] witnessedTime,//25-03-29-15-30*+
-                         String loDescription, //location description 比如xx建筑门口
-                         String location,//seattle, bellevue, redmond,kirkland,everett,tacoma,renton,kent,lynnwood,bothell*+
-                         boolean ifAdded,//比如"Seattle Downtown", Seattle:downtown， bellrown, capitol hill, ud, slu,queen anne, ballard,fremont,west sea*
-                         //bellevue: downtown, clyde, hill, medina,lake hills,crossroads,bridle trails...
-                         UserWit witness,//user
-                         String image,
-                         String description) {
-        this.number = number;
-        this.animalType = animalType;
+    public PostedAnimal(String type, String species, String size, String gender, String pattern, String color, String age,
+                        Integer[] witnessedTime,//25-03-29-15-30*+
+                        String location,//seattle, bellevue, redmond,kirkland,everett,tacoma,renton,kent,lynnwood,bothell*+
+                        String locDesc, //location description 比如xx建筑门口
+                        String description,
+                        String image,
+                        String number,
+                        double latitude,
+                        double longitude) {
+//                      UserWit witness,
+//                      boolean ifAdded,
+        this.type = type;
         this.species = species;
-        this.pattern = pattern;
-        this.animalColor = animalColor;
-        this.animalAge = animalAge;
-        this.witnessedTime = witnessedTime;
-        this.loDescription = loDescription;
-        this.location = location;
-        this.ifAdded = ifAdded;
-        this.witness = witness;
-        this.image = image;
-        this.description = description;
+        this.size = size;
         this.gender = gender;
-        this.animalSize = animalSize;
+        this.pattern = pattern;
+        this.color = color;
+        this.age = age;
+        this.witnessedTime = witnessedTime;
+        this.location = location;
+        this.locDesc = locDesc;
+        this.description = description;
+        this.image = image;
+        this.number = number;
+        this.latitude = latitude;
+        this.longitude = longitude;
+//        this.witness = witness;
+//        this.ifAdded = ifAdded;
     }
 
-    public double getNumber() {
-        return number;
-    }
 
     public String getAnimalType() {
-        return animalType;
+        return type;
     }
 
     public String getSpecies() {
         return species;
     }
 
+    public String getAnimalSize() {
+        return size;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
     public String getPattern() {
         return pattern;
     }
 
-    public String getAnimalColor() {
-        return animalColor;
-    }
+    public String getAnimalColor() { return color;}
 
-    public int getAnimalAge() {
-        return animalAge;
+    public String getAnimalAge() {
+        return age;
     }
 
     public Integer[] getWitnessedTime() {
         return witnessedTime;
     }
 
-    public String getloDescription() {
-        return loDescription;
-    }
-
     public String getLocation() {
         return location;
     }
 
-    public boolean getIfAdded() {
-        return ifAdded;
-    }
-
-    public void setIfAdded(boolean tf) {
-        ifAdded = tf;
-    }
-
-    public String getWitness() {
-        return witness;
-    }
-
-    public String getImage() {
-        return image;
+    public String getloDescription() {
+        return locDesc;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public int getGender() {
-        return gender;
+    public String getImage() {
+        return image;
     }
 
-    public int getAnimalSize() {
-        return animalSize;
+    public String getNumber() {
+        return number;
     }
 
+    public void setCoordinates(double lat, double lon) {
+        this.latitude = lat;
+        this.longitude = lon;
+    }
+    
+    public double[] getCoordinates() {
+        return new double[]{latitude, longitude};
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+//    public String getWitness() {
+//        return witness;
+//    }
+//    public void setIfAdded(boolean tf) {
+//        ifAdded = tf;
+//    }
+//    public boolean getIfAdded() {
+//        return ifAdded;
+//    }
 }
