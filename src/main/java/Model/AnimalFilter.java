@@ -2,36 +2,29 @@ package Model;
 
 import Model.Animals.IAnimal;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class AnimalFilter {
-    /** The original set of animals */
-    private Set<IAnimal> filtered;
-    /** A copy of the games set for internal operations. */
-    //private Set<IAnimal> copy;
+public class AnimalFilter implements IAnimalFilter {
+    /** The filtered list of animals for GUI display on list and map. */
+    private List<IAnimal> filtered;
+
+    /** The AnimalList Object used for initialize filtered list and reset. */
+    private final AnimalList originalList;
 
     /**
      * Constructs a new {@code Filter} with the specified set of animals.
      * It also creates a copy of the original set to allow filtering and modifications without
      * affecting the original data.
      *
-     * @param animals games The set of {@link IAnimal} objects that this planner will manage.
-     *              A copy of this set is also created to support filtering operations.
+     * @param animalList original AnimalList Object.
+     *
      */
-    public AnimalFilter(Set<IAnimal> animals) {
-        this.animals = animals;
-        //this.copy = new HashSet<>(animals);
+    public AnimalFilter(AnimalList animalList) {
+        this.originalList = animalList;
+        filtered = originalList.getAnimals();
     }
-
-
-    //public Stream<IAnimal> filter(String[] filter) {
-    //    return filter(filter, "number", true);
-    //}
-
-    //public Stream<IAnimal> filter(String[] filter, String sortOn) {
-    //    return filter(filter, sortOn, true);
-    //}
 
 
     public Stream<IAnimal> filter(String filters) {
@@ -55,13 +48,13 @@ public class AnimalFilter {
             }
         }
 
-
         return stream; //sorted(Comparators.comparator(sortOn, ascending));
     }
 
 
+    @Override
     public void reset() {
-        this.animals = new HashSet<>(copy);
+        filtered = originalList.getAnimals();
     }
 }
 

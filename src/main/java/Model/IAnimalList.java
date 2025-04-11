@@ -13,13 +13,6 @@ public interface IAnimalList {
      */
     List<IAnimal> getAnimals();
 
-
-    /**
-     * Get the filtered list of animals for display.
-     * @return the filtered list.
-     */
-    List<IAnimal> getFiltered();
-
     /**
      * Count the number of posted animals.
      * @return the number of animals
@@ -27,24 +20,18 @@ public interface IAnimalList {
     int count();
 
     /**
-     * Get the max number of existing animals and use it for creat new animals.
+     * Get the max number of existing animals and use it to add new animals.
      * @return the max animal number
      */
     int getMaxNumber();
 
     /**
-     * Add a new posted animal to list,
+     * Add/Report a new posted animal to list,
      */
     void addNewAnimal(String type, String species, String size, String gender, String pattern, String color,
                       String age, String seenDate, String seenTime, String address, String area, String locDesc,
                       String description);
 
-
-
-    /**
-     * Reset the filtered list.
-     */
-    void resetFiltered();
 
     /**
      * Write all data to csv database.

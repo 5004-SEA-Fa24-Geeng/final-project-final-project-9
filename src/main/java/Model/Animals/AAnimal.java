@@ -11,13 +11,13 @@ public abstract class AAnimal implements IAnimal {
     private Pattern pattern;
     private Color color;
     private Age age;
-    private String seenDate;
-    private String seenTime;//几月几号之前
+    private String seenDate;  // mm/dd/yyyy
+    private String seenTime;  // hh:mm
+    private String address;
     private Area area;
-    private String address; //
-    private String locDesc; //离我最近
+    private String locDesc;
     private String description;
-    private final String image;
+    private final String image;  // data/animalImage/dog/1.img
     private final int number;
 
     public AAnimal(AnimalType type, String species, String size, String gender, String pattern, String color, String age,
