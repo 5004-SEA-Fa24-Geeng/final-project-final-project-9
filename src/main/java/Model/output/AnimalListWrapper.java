@@ -7,7 +7,7 @@ public class AnimalListWrapper {
     private List<IAnimal> animals;
 
     public AnimalListWrapper() {
-        // 默认构造函数，用于XML反序列化
+  
     }
 
     public AnimalListWrapper(List<IAnimal> animals) {

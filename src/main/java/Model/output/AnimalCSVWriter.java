@@ -1,11 +1,12 @@
-package Model.Animals;
+package Model.output;
 
+import Model.Animals.IAnimal;
 import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.util.List;
 
 public class AnimalCSVWriter {
-    private String filePath;
+    private final String filePath;
 
     public AnimalCSVWriter(String filePath) {
         this.filePath = filePath;
@@ -32,9 +33,9 @@ public class AnimalCSVWriter {
                     animal.getColor(),           // Color
                     animal.getAge(),             // Age
                     animal.getAddress(),         // Address
-                    animal.getCity(),            // City
+                    animal.getArea(),            // City
                     animal.getTime(),            // Time
-                    animal.getDate(),            // Date
+                    animal.getSeenDate(),            // Date
                     animal.getDescription(),     // AnimalDescription
                     animal.getLocDesc(),         // LocationDescription
                     animal.getNumber()           // Number

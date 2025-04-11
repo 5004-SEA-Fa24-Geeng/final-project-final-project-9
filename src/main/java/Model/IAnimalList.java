@@ -1,7 +1,8 @@
 package Model;
 
 import Model.Animals.IAnimal;
-import Model.Animals.AnimalCSVReader;
+import Model.output.AnimalCSVReader;
+import Model.output.AnimalCSVWriter;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public interface IAnimalList {
                       String age, String seenDate, String seenTime, String address, String area, String locDesc,
                       String description);
 
+
     /**
      * Write all data to csv database.
      */
@@ -46,4 +48,6 @@ public interface IAnimalList {
         AnimalCSVReader reader = new AnimalCSVReader(DATABASE);
         return reader.readAnimals();
     }
+
+
 }

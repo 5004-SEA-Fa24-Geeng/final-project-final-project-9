@@ -1,5 +1,6 @@
 package Model.Animals;
 
+import Model.output.AnimalCSVReader;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
@@ -25,9 +26,9 @@ public class AnimalCSVReaderTest {
         assertNotNull(firstAnimal.getColor());
         assertNotNull(firstAnimal.getAge());
         assertNotNull(firstAnimal.getAddress());
-        assertNotNull(firstAnimal.getCity());
+        assertNotNull(firstAnimal.getArea());
         assertNotNull(firstAnimal.getTime());
-        assertNotNull(firstAnimal.getDate());
+        assertNotNull(firstAnimal.getSeenDate());
         assertNotNull(firstAnimal.getDescription());
         assertNotNull(firstAnimal.getLocDesc());
         assertNotNull(firstAnimal.getNumber());

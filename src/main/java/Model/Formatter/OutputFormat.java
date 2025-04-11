@@ -1,4 +1,4 @@
-package Model;
+package Model.Formatter;
 
 public enum OutputFormat {
     JSON,   // Output in JSON format

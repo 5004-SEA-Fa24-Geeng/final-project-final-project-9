@@ -5,7 +5,7 @@ package Model.AnimalInfo;
  */
 public enum AnimalType {
     /** Animal types. */
-    DOG, CAT, RABBIT, BIRD, HAMSTER, DUCK, HEDGEHOG;
+    DOG, CAT, RABBIT, BIRD, HAMSTER, DUCK, HEDGEHOG, GOOSE;
 
     public static AnimalType fromString(String type) {
         try {

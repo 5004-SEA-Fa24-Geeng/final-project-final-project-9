@@ -1,12 +1,13 @@
-package Model.Animals;
+package Model.output;
 
+import Model.Animals.IAnimal;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileReader;
 import java.util.List;
 import java.util.ArrayList;
 
 public class AnimalCSVReader {
-    private String filePath;
+    private final String filePath;
 
     public AnimalCSVReader(String filePath) {
         this.filePath = filePath;

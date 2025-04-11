@@ -1,10 +1,12 @@
 package Model;
 
-import Model.Animals.IAnimal;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
+
+import Model.Animals.IAnimal;
 
 public class AnimalFilter implements IAnimalFilter {
     /** The filtered list of animals for GUI display on list and map. */
@@ -19,38 +21,118 @@ public class AnimalFilter implements IAnimalFilter {
      * affecting the original data.
      *
      * @param animalList original AnimalList Object.
-     *
      */
     public AnimalFilter(AnimalList animalList) {
         this.originalList = animalList;
         filtered = originalList.getAnimals();
     }
 
-
-    public Stream<IAnimal> filter(String filters) {
-        String[] filter = filters.split(",");
-        Stream<IAnimal> stream = animals.stream();
-        int i;
-
-        for (i = 0; i < filter.length; i++) {
-            int finalI = i;
-            if (!filter[i].equals("Not Sure")) {
-                if (i==9) {
-                    stream = stream.filter(IAnimal -> Filters.filterDate(IAnimal, filter[finalI]));
-                }
-                else if(i==7|i==8){
-                    //seattle bellevue
-                    stream = stream.filter(IAnimal -> Filters.filterLocation(IAnimal, finalI, filter[finalI]));
-                }
-                else {
-                    stream = stream.filter(IAnimal -> Filters.filter(IAnimal, finalI, filter[finalI]));
-                }
-            }
+    @Override
+    public void filter(String filterOn, String filterStr) {
+        AnimalData data = AnimalData.fromString(filterOn);
+        if (data == null) return;
+        
+        switch (data) {
+            case TYPE -> filterOnType(filterStr);
+            case SPECIES -> filterOnSpecies(filterStr);
+            case SIZE -> filterOnSize(filterStr);
+            case GENDER -> filterOnGender(filterStr);
+            case PATTERN -> filterOnPattern(filterStr);
+            case COLOR -> filterOnColor(filterStr);
+            case AGE -> filterOnAge(filterStr);
+            case SEENDATE -> filterOnSeenDate(filterStr);
+            case AREA -> filterOnArea(filterStr);
+            default -> { }
         }
-
-        return stream; //sorted(Comparators.comparator(sortOn, ascending));
     }
 
+    @Override
+    public void filterOnType(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getAnimalType().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnSpecies(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getSpecies().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnSize(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getAnimalSize().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnGender(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getGender().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnPattern(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getPattern().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnColor(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getColor().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnAge(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getAge().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnSeenDate(String filterStr) {
+        long currentTime = System.currentTimeMillis();
+        long timeRange = switch (filterStr.toLowerCase()) {
+            case "within 1 week" -> 7 * 24 * 60 * 60 * 1000L;  // 7 days in milliseconds
+            case "within 2 weeks" -> 14 * 24 * 60 * 60 * 1000L;  // 14 days in milliseconds
+            case "within 1 month" -> 30 * 24 * 60 * 60 * 1000L;  // 30 days in milliseconds
+            case "within 3 months" -> 90 * 24 * 60 * 60 * 1000L;  // 90 days in milliseconds
+            default -> Long.MAX_VALUE;  // Invalid Input
+        };
+
+        filtered = filtered.stream()
+                .filter(animal -> {
+                    try {
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                        Date seenDate = sdf.parse(animal.getSeenDate());
+                        long timeDiff = currentTime - seenDate.getTime();
+                        return timeDiff <= timeRange;
+                    } catch (ParseException e) {
+                        return false;  // invalid date format
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void filterOnArea(String filterStr) {
+        filtered = filtered.stream()
+                .filter(animal -> animal.getArea().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void sortOnDate(boolean asc) {
+        filtered = filtered.stream()
+                .sorted(Sorts.sort(asc))
+                .collect(Collectors.toList());
+    }
 
     @Override
     public void reset() {

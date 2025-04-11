@@ -8,26 +8,26 @@ public interface IAnimal {
 
     static IAnimal newAnimal(String type, String species, String size, String gender, String pattern, String color,
                              String age, String seenDate, String seenTime, String address, String area, String locDesc,
-                             String description, int number) {
+                             String description, String number) {
 
         AnimalType animal = AnimalType.fromString(type);
         if (animal == null) {
             throw new IllegalArgumentException("Wrong animal type.");
         }
         return switch (animal) {
-            case DOG -> new Dog(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+            case DOG -> new Dog(type, species, size, gender, pattern, color, age, seenDate, seenTime,
                     address, area, locDesc, description, number);
-            case CAT -> new Cat(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+            case CAT -> new Cat(type, species, size, gender, pattern, color, age, seenDate, seenTime,
                     address, area, locDesc, description, number);
-            case RABBIT -> new Rabbit(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+            case RABBIT -> new Rabbit(type, species, size, gender, pattern, color, age, seenDate, seenTime,
                     address, area, locDesc, description, number);
-            case BIRD -> new Bird(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+            case BIRD -> new Bird(type, species, size, gender, pattern, color, age, seenDate, seenTime,
                     address, area, locDesc, description, number);
-            case HAMSTER -> new Hamster(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+            case HAMSTER -> new Hamster(type, species, size, gender, pattern, color, age, seenDate, seenTime,
                     address, area, locDesc, description, number);
-            case DUCK -> new Duck(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+            case DUCK -> new Duck(type, species, size, gender, pattern, color, age, seenDate, seenTime,
                     address, area, locDesc, description, number);
-            case HEDGEHOG -> new Hedgehog(animal, species, size, gender, pattern, color, age, seenDate, seenTime,
+            case HEDGEHOG -> new Hedgehog(type, species, size, gender, pattern, color, age, seenDate, seenTime,
                     address, area, locDesc, description, number);
             default -> null;
         };
@@ -54,7 +54,7 @@ public interface IAnimal {
     String getAge();
     void setAnimalAge(String age);
 
-    String getDate();
+    String getSeenDate();
     void setSeenDate(String seenDate);
 
     String getTime();
@@ -63,7 +63,7 @@ public interface IAnimal {
     String getAddress();
     void setAddress(String address);
 
-    String getCity();
+    String getArea();
     void setArea(String Area);
 
     String getLocDesc();

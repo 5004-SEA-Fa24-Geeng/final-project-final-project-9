@@ -1,7 +1,8 @@
-package Model.Animals;
+package Model.output;
 
+import Model.Animals.AAnimal;
+import Model.Animals.IAnimal;
 import com.opencsv.bean.CsvBindByName;
-import Model.AnimalInfo.*;
 
 public class AnimalCSV {
     @CsvBindByName(column = "AnimalType")
@@ -47,7 +48,7 @@ public class AnimalCSV {
     private String number;
 
     public IAnimal toAnimal() {
-        return new Animal(
+        return new AAnimal(
             animalType,
             species,
             animalSize,

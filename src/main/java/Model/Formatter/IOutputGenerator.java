@@ -1,4 +1,7 @@
-package Model;
+package Model.Formatter;
+
+import Model.Animals.IAnimal;
+
 
 import java.io.OutputStream;
 import java.util.List;
@@ -10,5 +13,5 @@ public interface IOutputGenerator {
      * @param format Desired output format
      * @param outputStream Stream to write the output to
      */
-    void generateOutput(List<PostedAnimal> animals, OutputFormat format, OutputStream outputStream);
+    void generateOutput(List<IAnimal> animals, OutputFormat format, OutputStream outputStream);
 } 

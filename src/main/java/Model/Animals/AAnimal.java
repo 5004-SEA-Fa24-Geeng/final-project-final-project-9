@@ -1,132 +1,132 @@
 package Model.Animals;
 
 import Model.AnimalInfo.*;
-import Model.AnimalInfo.Species.Species;
 
-public abstract class AAnimal implements IAnimal {
-    private AnimalType type;
-    private Species species;
-    private Size size;
-    private Gender gender;
-    private Pattern pattern;
-    private Color color;
-    private Age age;
-    private String seenDate;  // mm/dd/yyyy
-    private String seenTime;  // hh:mm
+public class AAnimal implements IAnimal {
+    private String animalType;
+    private String species;
+    private String animalSize;
+    private String gender;
+    private String pattern;
+    private String color;
+    private String age;
     private String address;
-    private Area area;
-    private String locDesc;
+    private String city;
+    private String time;
+    private String date;
     private String description;
-    private final String image;  // data/animalImage/dog/1.img
-    private final int number;
+    private String locDesc;
+    private final String number;
+    private final String image;
 
-    public AAnimal(AnimalType type, String species, String size, String gender, String pattern, String color, String age,
-                   String seenDate, String seenTime, String address, String area, String locDesc, String description,
-                   int number) {
-        this.type = type;
-        this.species = Species.getSpeciesByType(this.type, species);
-        this.size = Size.fromString(size);
-        this.gender = Gender.fromString(gender);
-        this.pattern = Pattern.fromString(pattern);
-        this.color = Color.fromString(color);
-        this.age = Age.fromString(age);
-        this.seenDate = seenDate;
-        this.seenTime = seenTime;
+    public AAnimal(String animalType, String species, String animalSize, String gender,
+                 String pattern, String color, String age, String address, String city,
+                 String time, String date, String description, String locDesc, String number) {
+        this.animalType = animalType;
+        this.species = species;
+        this.animalSize = animalSize;
+        this.gender = gender;
+        this.pattern = pattern;
+        this.color = color;
+        this.age = age;
         this.address = address;
-        this.area = Area.fromString(area);
-        this.locDesc = locDesc;
+        this.city = city;
+        this.time = time;
+        this.date = date;
         this.description = description;
+        this.locDesc = locDesc;
         this.number = number;
-        this.image = IAnimal.imgSrc + type.name().toLowerCase() + number + ".img";
-
+        this.image = imgSrc + animalType.toLowerCase() + "/" + number + ".img";
     }
 
     @Override
-    public AnimalType getAnimalType() {
-        return type;
+    public String getAnimalType() {
+        return animalType;
     }
 
     @Override
     public void setAnimalType(String type) {
-        this.type = AnimalType.fromString(type);
+        this.animalType = type;
     }
 
     @Override
-    public Species getSpecies() {
+    public String getSpecies() {
         return species;
     }
 
     @Override
     public void setSpecies(String species) {
-        this.species = Species.getSpeciesByType(this.type, species);
+        this.species = species;
     }
 
     @Override
-    public Size getAnimalSize() {
-        return size;
+    public String getAnimalSize() {
+        return animalSize;
     }
 
     @Override
     public void setAnimalSize(String size) {
-        this.size = Size.fromString(size);
+        this.animalSize = size;
     }
 
     @Override
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
     @Override
     public void setGender(String gender) {
-        this.gender = Gender.fromString(gender);
+        this.gender = gender;
     }
 
     @Override
-    public Pattern getPattern() {
+    public String getPattern() {
         return pattern;
     }
 
     @Override
     public void setPattern(String pattern) {
-        this.pattern = Pattern.fromString(pattern);
+        this.pattern = pattern;
     }
 
     @Override
-    public Color getAnimalColor() {
+    public String getColor() {
         return color;
     }
 
     @Override
     public void setAnimalColor(String color) {
-        this.color = Color.fromString(color);
+        this.color = color;
     }
 
     @Override
-    public Age getAnimalAge() {
+    public String getAge() {
         return age;
     }
 
     @Override
     public void setAnimalAge(String age) {
-        this.age = Age.fromString(age);
+        this.age = age;
     }
 
     @Override
-    public String getSeenDate() { return seenDate;};
+    public String getSeenDate() {
+        return date;
+    }
 
     @Override
     public void setSeenDate(String seenDate) {
-        this.seenDate = seenDate;
+        this.date = seenDate;
     }
 
     @Override
-    public String getSeenTime() {
-        return seenTime;
+    public String getTime() {
+        return time;
     }
 
     @Override
     public void setSeenTime(String seenTime) {
-        this.seenTime = seenTime;
+        this.time = seenTime;
     }
 
     @Override
@@ -140,11 +140,13 @@ public abstract class AAnimal implements IAnimal {
     }
 
     @Override
-    public Area getArea() { return area; }
+    public String getArea() {
+        return city;
+    }
 
     @Override
     public void setArea(String area) {
-        this.area = Area.fromString(area);
+        this.city = area;
     }
 
     @Override
@@ -157,7 +159,6 @@ public abstract class AAnimal implements IAnimal {
         this.locDesc = locDesc;
     }
 
-
     @Override
     public String getDescription() {
         return description;
@@ -169,12 +170,12 @@ public abstract class AAnimal implements IAnimal {
     }
 
     @Override
-    public String getImage() {
-        return image;
+    public String getNumber() {
+        return number;
     }
 
     @Override
-    public int getNumber() {
-        return number;
+    public String getImage() {
+        return image;
     }
-}
+} 

@@ -1,7 +1,7 @@
 package Model;
 
 import Model.Animals.IAnimal;
-import Model.Animals.AnimalCSVWriter;
+import Model.output.AnimalCSVWriter;
 
 import java.util.List;
 
@@ -40,10 +40,10 @@ public class AnimalList implements IAnimalList {
                              String age, String seenDate, String seenTime, String address, String area, String locDesc,
                              String description) {
         try {
-            int newNumber = getMaxNumber() + 1;
+            String newNumber = String.valueOf(getMaxNumber() + 1);
             animalList.add(IAnimal.newAnimal(type, species, size, gender, pattern, color, age, seenDate,
                     seenTime, address, area, locDesc, description, newNumber));
-            write(); // 添加新动物后立即写入CSV文件
+            write();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

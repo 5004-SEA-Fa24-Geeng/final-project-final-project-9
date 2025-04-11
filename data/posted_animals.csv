@@ -49,4 +49,3 @@ Goose,Snow,Big,Unclear,Solid,Dark,Baby,534 Meadow Ln, Seattle,11:38,02/18/2025,"
 Goose,Greylag,Small,Unclear,Solid,Dark,Baby,425 Park Ave, Redmond,20:18,03/03/2025,"A curious, compact Greylag was spotted watching vigilantly. It had dark feathers and seemed to be a baby unclear.",Spotted in the alley behind restaurants,48
 Goose,Egyptian,Big,Male,Solid,Dark,Unclear,8781 River Rd, Lynnwood,15:43,02/17/2025,"A mysterious, hefty Egyptian was spotted honking loudly. He had dark feathers and seemed to be a unclear male.",Spotted near the train tracks,49
 Goose,Egyptian,Small,Male,Solid,Light,Old,9709 Lake Blvd, Everett,15:26,04/02/2025,"A gentle, tiny Egyptian was spotted stretching its wings. He had light feathers and seemed to be a old male.",Spotted under a large oak tree,50
-AnimalType,Species,AnimalSize,Gender,Pattern,Color,Age,Address,City,Time,Date,AnimalDescription,LocationDescription,Number
