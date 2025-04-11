@@ -24,7 +24,7 @@ public abstract class AAnimal implements IAnimal {
                    String seenDate, String seenTime, String address, String area, String locDesc, String description,
                    int number) {
         this.type = type;
-        this.species = IAnimal.getSpeciesByType(this.type, species);
+        this.species = Species.getSpeciesByType(this.type, species);
         this.size = Size.fromString(size);
         this.gender = Gender.fromString(gender);
         this.pattern = Pattern.fromString(pattern);
@@ -58,7 +58,7 @@ public abstract class AAnimal implements IAnimal {
 
     @Override
     public void setSpecies(String species) {
-        this.species = IAnimal.getSpeciesByType(this.type, species);
+        this.species = Species.getSpeciesByType(this.type, species);
     }
 
     @Override

@@ -1,4 +1,4 @@
-import Model.InputModel.AnimalFilter;
+import Model.AnimalFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

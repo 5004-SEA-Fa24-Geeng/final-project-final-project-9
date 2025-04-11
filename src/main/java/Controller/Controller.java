@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.Animals.IAnimal;
-import Model.InputModel.AnimalFilter;
+import Model.AnimalFilter;
 import Model.AnimalList;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;

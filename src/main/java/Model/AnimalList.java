@@ -5,8 +5,11 @@ import Model.Animals.IAnimal;
 import java.util.List;
 
 public class AnimalList implements IAnimalList {
-
+    /** Original list of animals. */
     private List<IAnimal> animalList;
+
+    /** Filtered list for display in GUI. */
+    private List<IAnimal> filtered;
 
     /**
      * Constructor for animal list.
@@ -14,12 +17,17 @@ public class AnimalList implements IAnimalList {
      */
     public AnimalList() {
         animalList = IAnimalList.readFromCsv();
+        filtered = List.copyOf(animalList);
     }
-
 
     @Override
     public List<IAnimal> getAnimals() {
         return animalList;
+    }
+
+    @Override
+    public List<IAnimal> getFiltered() {
+        return filtered;
     }
 
     @Override
@@ -42,6 +50,11 @@ public class AnimalList implements IAnimalList {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void resetFiltered() {
+        filtered = List.copyOf(animalList);
     }
 
     @Override

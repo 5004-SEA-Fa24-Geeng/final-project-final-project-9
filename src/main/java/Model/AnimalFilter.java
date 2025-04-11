@@ -1,4 +1,4 @@
-package Model.InputModel;
+package Model;
 
 import Model.Animals.IAnimal;
 
@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public class AnimalFilter {
     /** The original set of animals */
-    private Set<IAnimal> animals;
+    private Set<IAnimal> filtered;
     /** A copy of the games set for internal operations. */
     //private Set<IAnimal> copy;
 
@@ -60,9 +60,8 @@ public class AnimalFilter {
     }
 
 
-    //public void reset() {
-    //    this.animals = new HashSet<>(copy);
-    //}
-
+    public void reset() {
+        this.animals = new HashSet<>(copy);
+    }
 }
 

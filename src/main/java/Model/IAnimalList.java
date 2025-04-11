@@ -13,6 +13,13 @@ public interface IAnimalList {
      */
     List<IAnimal> getAnimals();
 
+
+    /**
+     * Get the filtered list of animals for display.
+     * @return the filtered list.
+     */
+    List<IAnimal> getFiltered();
+
     /**
      * Count the number of posted animals.
      * @return the number of animals
@@ -32,11 +39,17 @@ public interface IAnimalList {
                       String age, String seenDate, String seenTime, String address, String area, String locDesc,
                       String description);
 
+
+
+    /**
+     * Reset the filtered list.
+     */
+    void resetFiltered();
+
     /**
      * Write all data to csv database.
      */
     void write();
-
 
     /**
      * read csv animal data into list of IAnimals
@@ -45,4 +58,6 @@ public interface IAnimalList {
     static List<IAnimal> readFromCsv() {
         return List.of();
     }
+
+
 }
