@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.Animals.IAnimal;
+
 import java.util.List;
 
 public interface IController {
@@ -16,27 +18,27 @@ public interface IController {
      * @param operation List of filtering operations
      * @return Filtered list of animals
      */
-    List<PostedAnimal> filter(List<Operation> operation);
+    List<IAnimal> filter(List<Operation> operation);
 
     /**
      * Search for animals based on given operations
      * @param operation List of search operations
      * @return List of matching animals
      */
-    List<PostedAnimal> search(List<Operation> operation);
+    List<IAnimal> search(List<Operation> operation);
 
     /**
      * Sorts animals based on given operations
      * @param operation List of sorting operations
      * @return Sorted list of animals
      */
-    List<PostedAnimal> sort(List<Operation> operation);
+    List<IAnimal> sort(List<Operation> operation);
 
     /**
      * Generate output for the given list of animals
      * @param listAnimal List of animals to generate output for
      */
-    void outputGen(List<PostedAnimal> listAnimal);
+    void outputGen(List<IAnimal> listAnimal);
 
     /**
      * Get animals within a specific area
@@ -45,7 +47,7 @@ public interface IController {
      * @param radius Search radius in kilometers
      * @return List of animals within the specified area
      */
-    List<PostedAnimal> getAnimalsInArea(double lat, double lon, double radius);
+    List<IAnimal> getAnimalsInArea(double lat, double lon, double radius);
 
     /**
      * Update an animal's location
@@ -59,5 +61,5 @@ public interface IController {
      * Display animals on the map
      * @param animals List of animals to display
      */
-    void displayOnMap(List<PostedAnimal> animals);
+    void displayOnMap(List<IAnimal> animals);
 }

@@ -11,7 +11,7 @@ public abstract class AAnimal implements IAnimal {
     private Pattern pattern;
     private Color color;
     private Age age;
-    private String seenDate;  // mm/dd/yyyy
+    private String seenDate;  // MM/dd/yyyy
     private String seenTime;  // hh:mm
     private String address;
     private Area area;
@@ -38,7 +38,6 @@ public abstract class AAnimal implements IAnimal {
         this.description = description;
         this.number = number;
         this.image = IAnimal.imgSrc + type.name().toLowerCase() + number + ".img";
-
     }
 
     @Override

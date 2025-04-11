@@ -14,7 +14,9 @@ import java.util.stream.Stream;
 
 public class Controller {
 
-    static String filePath = "data/animals.csv";
+
+
+    static String filePath = "data/posted_animals.csv";
     Set<IAnimal> loadedAnimals = new HashSet<>();
     Stream<IAnimal> stream = Stream.empty();;
     AnimalFilter af = new AnimalFilter(loadedAnimals);

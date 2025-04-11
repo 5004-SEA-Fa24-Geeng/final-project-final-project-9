@@ -1,8 +1,8 @@
 package Model;
 
-import Model.Animals.IAnimal;
-
 import java.util.List;
+
+import Model.Animals.IAnimal;
 
 public interface IAnimalList {
     String DATABASE = "data/posted_animals.csv";
