@@ -1,9 +1,9 @@
 package Model.InputModel;
 
-import Model.PostedAnimal;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import Model.PostedAnimal;
 
 public class AnimalFilter {
     /** The original set of board games. */
@@ -35,26 +35,27 @@ public class AnimalFilter {
 
 
     public Stream<PostedAnimal> filter(String filters) {
+        if (filters == null || filters.isEmpty()) {
+            return animals.stream();
+        }
+
         String[] filter = filters.split(",");
         Stream<PostedAnimal> stream = animals.stream();
-        int i;
 
-        for (i = 0; i < filter.length; i++) {
-            int finalI = i;
-            if (!filter[i].equals("Not Sure")) {
-                if (i==9) {
-                    stream = stream.filter(postedAnimal -> Filters.filterDate(postedAnimal, filter[finalI]));
+        for (int i = 0; i < filter.length; i++) {
+            if (!filter[i].equals("Not Sure") && !filter[i].isEmpty()) {
+                final int finalI = i;
+                if (i == 9) { // Date filter
+                    stream = stream.filter(animal -> Filters.filterDate(animal, filter[finalI]));
                 }
-                else if(i==7|i==8){
-                    //seattle bellevue
-                    stream = stream.filter(postedAnimal -> Filters.filterLocation(postedAnimal, finalI, filter[finalI]));
+                else if (i == 7 || i == 8) { // Location filters
+                    stream = stream.filter(animal -> Filters.filterLocation(animal, finalI, filter[finalI]));
                 }
-                else {
-                    stream = stream.filter(postedAnimal -> Filters.filter(postedAnimal, finalI, filter[finalI]));
+                else { // Basic filters
+                    stream = stream.filter(animal -> Filters.filter(animal, finalI, filter[finalI]));
                 }
             }
         }
-
 
         return stream; //sorted(Comparators.comparator(sortOn, ascending));
     }

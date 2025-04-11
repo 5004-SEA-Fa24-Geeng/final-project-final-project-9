@@ -1,17 +1,18 @@
 package Controller;
 
-import Model.InputModel.AnimalFilter;
-import Model.PostedAnimal;
-import Model.UserWit;
-import Model.output.AnimalList;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+
+import Model.InputModel.AnimalFilter;
+import Model.PostedAnimal;
+import Model.output.AnimalList;
 
 public class Controller {
 
@@ -26,8 +27,8 @@ public class Controller {
     }
 
 
-    public void clickGenReport(String type, String species, int size, int gender, String pattern, String color, int age, Integer[] time, String lodes, String location, boolean ifAdded, UserWit witness, String image, String descroption){
-        PostedAnimal pa = new PostedAnimal(loadedAnimals.size(),type,species,size,gender,pattern,color,age,time,lodes,location,ifAdded,witness,image,descroption);
+    public void clickGenReport(String type, String species, int size, int gender, String pattern, String color, int age, Integer[] time, String lodes, String location, boolean ifAdded, String witness, String image, String description, double latitude, double longitude){
+        PostedAnimal pa = new PostedAnimal(loadedAnimals.size(),type,species,size,gender,pattern,color,age,time,lodes,location,ifAdded,witness,image,description,latitude,longitude);
         loadedAnimals.add(pa);
         //写进数据库
     }
