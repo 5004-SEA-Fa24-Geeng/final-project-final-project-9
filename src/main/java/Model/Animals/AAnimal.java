@@ -10,7 +10,8 @@ public abstract class AAnimal implements IAnimal {
     private Pattern pattern;
     private Color color;
     private Age age;
-    private Integer[] witnessedTime;//几月几号之前
+    private String seenDate;
+    private String seenTime;//几月几号之前
     private Area area;
     private String address; //
     private String locDesc; //离我最近
@@ -19,12 +20,7 @@ public abstract class AAnimal implements IAnimal {
     private int number;
 
     public AAnimal(String type, String species, String size, String gender, String pattern, String color, String age,
-                   Integer[] witnessedTime,//25-03-29-15-30*+
-                   String address,//seattle, bellevue, redmond,kirkland,everett,tacoma,renton,kent,lynnwood,bothell*+
-                   String area,
-                   String locDesc, //location description 比如xx建筑门口
-                   String description,
-                   String image,
+                   String seenDate, String seenTime, String address, String area, String locDesc, String description,
                    int number) {
         this.type = AnimalType.fromString(type);
         this.species = species;
@@ -33,13 +29,15 @@ public abstract class AAnimal implements IAnimal {
         this.pattern = Pattern.fromString(pattern);
         this.color = Color.fromString(color);
         this.age = Age.fromString(age);
-        this.witnessedTime = witnessedTime;
+        this.seenDate = seenDate;
+        this.seenTime = seenTime;
         this.address = address;
         this.area = Area.fromString(area);
         this.locDesc = locDesc;
         this.description = description;
-        this.image = image;
         this.number = number;
+        this.image = IAnimal.imgSrc + type.toLowerCase() + number + ".img";
+
     }
 
     public AnimalType getAnimalType() {
@@ -77,8 +75,11 @@ public abstract class AAnimal implements IAnimal {
     }
 
     @Override
-    public Integer[] getWitnessedTime() {
-        return witnessedTime;
+    public String getSeenDate() { return seenDate;};
+
+    @Override
+    public String getSeenTime() {
+        return seenTime;
     }
 
     @Override
