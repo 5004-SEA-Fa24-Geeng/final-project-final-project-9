@@ -1,52 +1,50 @@
 package Model.Animals;
 
-import Model.AnimalInfo.*;
-
 public class AAnimal implements IAnimal {
-    private String animalType;
+    private String type;
     private String species;
-    private String animalSize;
+    private String size;
     private String gender;
     private String pattern;
     private String color;
     private String age;
-    private String address;
-    private String city;
+    private String seenDate;
     private String time;
-    private String date;
-    private String description;
+    private String address;
+    private String area;
     private String locDesc;
-    private final String number;
-    private final String image;
+    private String description;
+    private String image;
+    private String number;
 
-    public AAnimal(String animalType, String species, String animalSize, String gender,
-                 String pattern, String color, String age, String address, String city,
-                 String time, String date, String description, String locDesc, String number) {
-        this.animalType = animalType;
+    public AAnimal(String type, String species, String size, String gender, String pattern, String color,
+                  String age, String address, String area, String time, String seenDate, String description,
+                  String locDesc, String image) {
+        this.type = type;
         this.species = species;
-        this.animalSize = animalSize;
+        this.size = size;
         this.gender = gender;
         this.pattern = pattern;
         this.color = color;
         this.age = age;
         this.address = address;
-        this.city = city;
+        this.area = area;
         this.time = time;
-        this.date = date;
+        this.seenDate = seenDate;
         this.description = description;
         this.locDesc = locDesc;
-        this.number = number;
-        this.image = imgSrc + animalType.toLowerCase() + "/" + number + ".img";
+        this.image = image;
+        this.number = "0"; // 默认编号
     }
 
     @Override
     public String getAnimalType() {
-        return animalType;
+        return type;
     }
 
     @Override
     public void setAnimalType(String type) {
-        this.animalType = type;
+        this.type = type;
     }
 
     @Override
@@ -61,12 +59,12 @@ public class AAnimal implements IAnimal {
 
     @Override
     public String getAnimalSize() {
-        return animalSize;
+        return size;
     }
 
     @Override
     public void setAnimalSize(String size) {
-        this.animalSize = size;
+        this.size = size;
     }
 
     @Override
@@ -95,7 +93,7 @@ public class AAnimal implements IAnimal {
     }
 
     @Override
-    public void setAnimalColor(String color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
@@ -105,18 +103,18 @@ public class AAnimal implements IAnimal {
     }
 
     @Override
-    public void setAnimalAge(String age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
     @Override
     public String getSeenDate() {
-        return date;
+        return seenDate;
     }
 
     @Override
     public void setSeenDate(String seenDate) {
-        this.date = seenDate;
+        this.seenDate = seenDate;
     }
 
     @Override
@@ -125,8 +123,8 @@ public class AAnimal implements IAnimal {
     }
 
     @Override
-    public void setSeenTime(String seenTime) {
-        this.time = seenTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     @Override
@@ -141,12 +139,12 @@ public class AAnimal implements IAnimal {
 
     @Override
     public String getArea() {
-        return city;
+        return area;
     }
 
     @Override
     public void setArea(String area) {
-        this.city = area;
+        this.area = area;
     }
 
     @Override
@@ -165,17 +163,22 @@ public class AAnimal implements IAnimal {
     }
 
     @Override
-    public void setDescription(String desc) {
-        this.description = desc;
-    }
-
-    @Override
-    public String getNumber() {
-        return number;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String getImage() {
         return image;
+    }
+
+    @Override
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public String getNumber() {
+        return number;
     }
 } 

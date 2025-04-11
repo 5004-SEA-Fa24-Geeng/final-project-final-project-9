@@ -49,30 +49,31 @@ public interface IAnimal {
     void setPattern(String pattern);
 
     String getColor();
-    void setAnimalColor(String color);
+    void setColor(String color);
 
     String getAge();
-    void setAnimalAge(String age);
+    void setAge(String age);
 
     String getSeenDate();
-    void setSeenDate(String seenDate);
+    void setSeenDate(String date);
 
     String getTime();
-    void setSeenTime(String seenTime);
+    void setTime(String time);
+
+    String getArea();
+    void setArea(String area);
 
     String getAddress();
     void setAddress(String address);
 
-    String getArea();
-    void setArea(String Area);
-
     String getLocDesc();
-    void setLocDesc(String LocDesc);
+    void setLocDesc(String locDesc);
 
     String getDescription();
-    void setDescription(String desc);
+    void setDescription(String description);
 
     String getNumber();
 
     String getImage();
+    void setImage(String image);
 }

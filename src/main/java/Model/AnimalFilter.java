@@ -138,5 +138,13 @@ public class AnimalFilter implements IAnimalFilter {
     public void reset() {
         filtered = originalList.getAnimals();
     }
+
+    /**
+     * 获取过滤后的动物列表
+     * @return 过滤后的动物列表
+     */
+    public List<IAnimal> getFilteredAnimals() {
+        return filtered;
+    }
 }
 
