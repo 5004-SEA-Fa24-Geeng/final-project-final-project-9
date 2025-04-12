@@ -34,20 +34,14 @@ public interface IAnimalList {
                       String age, String seenDate, String seenTime, String address, String area, String locDesc,
                       String description);
 
-
     /**
      * Write all data to csv database.
      */
     void write();
 
     /**
-     * read csv animal data into list of IAnimals
-     * @return the list of animals
+     * Load filtered animals from CSV file.
+     * @param filterCriteria the criteria to filter animals
      */
-    static List<IAnimal> readFromCsv() {
-        AnimalCSVReader reader = new AnimalCSVReader(DATABASE);
-        return reader.readAnimals();
-    }
-
-
+    void loadFilteredAnimals(String filterCriteria);
 }

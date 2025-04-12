@@ -36,7 +36,9 @@ public class Animal implements IAnimal {
         this.description = description;
         this.locDesc = locDesc;
         this.number = number;
-        this.image = imgSrc + type.toLowerCase() + "/" + number + ".img";
+        //this.image = imgSrc + type.toLowerCase() + "/" + number + ".img";
+        this.image = "data/image/"+number+".jpg";
+
     }
 
     @Override

@@ -53,4 +53,10 @@ public interface IController {
     );
 
     void addAnimal(IAnimal animal);
+
+    /**
+     * Load filtered animals based on the filter criteria
+     * @param filterCriteria The filter criteria to apply
+     */
+    void loadFilteredAnimals(String filterCriteria);
 }
