@@ -1,44 +1,56 @@
 package Controller;
 
-import Model.PostedAnimal;
-
+import Model.Animals.IAnimal;
+import View.IView;
 import java.util.List;
 
 public interface IController {
+    /**
+     * 设置视图
+     * @param view 视图实例
+     */
+    void setView(IView view);
 
     /**
-     *
-     * @return
+     * 处理过滤请求
+     * @param filterType 过滤类型
+     * @param filterValue 过滤值
      */
-    //List<Operation> inputParse;
-
+    void handleFilter(String filterType, String filterValue);
 
     /**
-     * default sort on time
-     * @param operation
-     * @return
+     * 处理排序请求
+     * @param ascending 是否升序
      */
-    List<PostedAnimal> filter(List<Operation> operation);
+    void handleSort(boolean ascending);
 
     /**
-     * search box, like black big husky, default sort on time
-     * @param operation
-     * @return
+     * 处理重置请求
      */
-    List<PostedAnimal> search(List<Operation> operation);
+    void handleReset();
 
     /**
-     * //ascending, descending
-     * @param operation
-     * @return
+     * 处理地图显示请求
      */
-    List<PostedAnimal> sort(List<Operation> operation);
+    void handleMapDisplay();
 
     /**
-     *
-     * @param listAnimal
+     * 获取当前过滤后的动物列表
+     * @return 动物列表
      */
-    void outputGen(List<PostedAnimal> listAnimal);
+    List<IAnimal> getFilteredAnimals();
 
+    /**
+     * 初始化控制器
+     */
+    void initialize();
 
+    IAnimal createAnimal(
+            String type, String breed, String size, String gender,
+            String pattern, String color, String age, String date,
+            String time, String city, String address, String locDesc,
+            String description, String image
+    );
+
+    void addAnimal(IAnimal animal);
 }
