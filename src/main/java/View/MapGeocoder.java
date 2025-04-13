@@ -8,6 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
+
+import Model.AnimalList;
+import Model.Animals.IAnimal;
+import Model.IAnimalList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,23 +21,23 @@ public class MapGeocoder {
     private static final String NOMINATIM_API = "https://nominatim.openstreetmap.org/search";
     private static final String USER_AGENT = "Stray Pet Spotter";
 
+    /**
+     * Test getCoordinates() method.
+     * @param args input
+     */
     public static void main(String[] args) {
+        IAnimalList animals = new AnimalList();
         try {
-            // Example address
-            String address = "9950 Highland Ave, Seattle";
-
+            GeoLocation location;
+            String address;
             // Get coordinates
-            GeoLocation location = getCoordinates(address);
-
-            if (location != null) {
-                System.out.println("Address: " + address);
-                System.out.println("Latitude: " + location.getLatitude());
-                System.out.println("Longitude: " + location.getLongitude());
-                System.out.println("Display Name: " + location.getDisplayName());
-            } else {
-                System.out.println("Location not found for address: " + address);
+            for (IAnimal animal : animals.getAnimals()) {
+                address = animal.getAddress() + "," + animal.getArea();
+                location = getCoordinates(address);
+                if (location == null) {
+                    System.out.println("Animal Number: " + animal.getNumber() + " need to change address.");
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
