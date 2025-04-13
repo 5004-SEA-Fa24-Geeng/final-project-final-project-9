@@ -1,5 +1,8 @@
 package Controller;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import Model.AnimalFilter;
@@ -22,6 +25,7 @@ public class Controller implements IController {
 
     /** The filter used to filter and sort animals. */
     private AnimalFilter filter;
+
 
     /**
      * Constructs a new Controller with the specified model and filter.
@@ -187,5 +191,145 @@ public class Controller implements IController {
     public void loadFilteredAnimals(String filterCriteria) {
         model.loadFilteredAnimals(filterCriteria);
         updateView();
+    }
+
+    @Override
+    public void exportData(String format) {
+        try {
+            String fileName = "animal_data." + format;
+            List<IAnimal> animals = model.getAnimals();
+            
+            switch (format) {
+                case "xml":
+                    exportToXML(animals, fileName);
+                    break;
+                case "json":
+                    exportToJSON(animals, fileName);
+                    break;
+                case "txt":
+                    exportToTXT(animals, fileName);
+                    break;
+                case "csv":
+                    exportToCSV(animals, fileName);
+                    break;
+                default:
+                    view.showError("Unsupported export format: " + format);
+                    return;
+            }
+            view.showSuccess("Data exported successfully to " + fileName);
+        } catch (Exception e) {
+            view.showError("Failed to export data: " + e.getMessage());
+        }
+    }
+
+    private void exportToXML(List<IAnimal> animals, String fileName) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            writer.println("<animals>");
+            for (IAnimal animal : animals) {
+                writer.println("  <animal>");
+                writer.println("    <type>" + animal.getAnimalType() + "</type>");
+                writer.println("    <breed>" + animal.getSpecies() + "</breed>");
+                writer.println("    <size>" + animal.getAnimalSize() + "</size>");
+                writer.println("    <gender>" + animal.getGender() + "</gender>");
+                writer.println("    <pattern>" + animal.getPattern() + "</pattern>");
+                writer.println("    <color>" + animal.getColor() + "</color>");
+                writer.println("    <age>" + animal.getAge() + "</age>");
+                writer.println("    <date>" + animal.getSeenDate() + "</date>");
+                writer.println("    <time>" + animal.getTime() + "</time>");
+                writer.println("    <area>" + animal.getArea() + "</area>");
+                writer.println("    <address>" + animal.getAddress() + "</address>");
+                writer.println("    <locationDesc>" + animal.getLocDesc() + "</locationDesc>");
+                writer.println("    <description>" + animal.getDescription() + "</description>");
+                writer.println("  </animal>");
+            }
+            writer.println("</animals>");
+        }
+    }
+
+    private void exportToJSON(List<IAnimal> animals, String fileName) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            writer.println("{");
+            writer.println("  \"animals\": [");
+            for (int i = 0; i < animals.size(); i++) {
+                IAnimal animal = animals.get(i);
+                writer.println("    {");
+                writer.println("      \"type\": \"" + animal.getAnimalType() + "\",");
+                writer.println("      \"breed\": \"" + animal.getSpecies() + "\",");
+                writer.println("      \"size\": \"" + animal.getAnimalSize() + "\",");
+                writer.println("      \"gender\": \"" + animal.getGender() + "\",");
+                writer.println("      \"pattern\": \"" + animal.getPattern() + "\",");
+                writer.println("      \"color\": \"" + animal.getColor() + "\",");
+                writer.println("      \"age\": \"" + animal.getAge() + "\",");
+                writer.println("      \"date\": \"" + animal.getSeenDate() + "\",");
+                writer.println("      \"time\": \"" + animal.getTime() + "\",");
+                writer.println("      \"area\": \"" + animal.getArea() + "\",");
+                writer.println("      \"address\": \"" + animal.getAddress() + "\",");
+                writer.println("      \"locationDesc\": \"" + animal.getLocDesc() + "\",");
+                writer.println("      \"description\": \"" + animal.getDescription() + "\"");
+                writer.println("    }" + (i < animals.size() - 1 ? "," : ""));
+            }
+            writer.println("  ]");
+            writer.println("}");
+        }
+    }
+
+    private void exportToTXT(List<IAnimal> animals, String fileName) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            for (IAnimal animal : animals) {
+                writer.println("Animal Information:");
+                writer.println("Type: " + animal.getAnimalType());
+                writer.println("Breed: " + animal.getSpecies());
+                writer.println("Size: " + animal.getAnimalSize());
+                writer.println("Gender: " + animal.getGender());
+                writer.println("Pattern: " + animal.getPattern());
+                writer.println("Color: " + animal.getColor());
+                writer.println("Age: " + animal.getAge());
+                writer.println("Date Seen: " + animal.getSeenDate());
+                writer.println("Time Seen: " + animal.getTime());
+                writer.println("Area: " + animal.getArea());
+                writer.println("Address: " + animal.getAddress());
+                writer.println("Location Description: " + animal.getLocDesc());
+                writer.println("Description: " + animal.getDescription());
+                writer.println("----------------------------------------");
+            }
+        }
+    }
+
+    private void exportToCSV(List<IAnimal> animals, String fileName) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+            // Write header
+            writer.println("Type,Breed,Size,Gender,Pattern,Color,Age,Date,Time,Area,Address,LocationDesc,Description");
+            
+            // Write data
+            for (IAnimal animal : animals) {
+                writer.println(String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                    escapeCSV(animal.getAnimalType()),
+                    escapeCSV(animal.getSpecies()),
+                    escapeCSV(animal.getAnimalSize()),
+                    escapeCSV(animal.getGender()),
+                    escapeCSV(animal.getPattern()),
+                    escapeCSV(animal.getColor()),
+                    escapeCSV(animal.getAge()),
+                    escapeCSV(animal.getSeenDate()),
+                    escapeCSV(animal.getTime()),
+                    escapeCSV(animal.getArea()),
+                    escapeCSV(animal.getAddress()),
+                    escapeCSV(animal.getLocDesc()),
+                    escapeCSV(animal.getDescription())
+                ));
+            }
+        }
+    }
+
+    private String escapeCSV(String value) {
+        if (value == null) {
+            return "";
+        }
+        value = value.replace("\"", "\"\"");
+        if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+            value = "\"" + value + "\"";
+        }
+        return value;
     }
 } 

@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -89,7 +91,7 @@ public class View extends JFrame implements IView {
     private final JXMapViewer mapViewer;
     private final JComboBox<String> sortComboBox;
     private final JButton sortButton;
-    private final JButton addSelectedButton;
+    //private final JButton addSelectedButton;
     private final Set<IAnimal> selectedAnimals;
 
     public View(IController controller) {
@@ -120,7 +122,7 @@ public class View extends JFrame implements IView {
         mapViewer = new JXMapViewer();
         sortComboBox = new JComboBox<>(new String[]{"", "Ascending", "Descending"});
         sortButton = new JButton("Sort by Date");
-        addSelectedButton = new JButton("Add Selected to List");
+        //addSelectedButton = new JButton("Add Selected to List");
         selectedAnimals = new HashSet<>();
 
         // Set up window
@@ -155,23 +157,108 @@ public class View extends JFrame implements IView {
                 displayAnimals(sortedAnimals);
             }
         });
-        addSelectedButton.addActionListener(e -> {
-            if (!selectedAnimals.isEmpty()) {
-                for (IAnimal animal : selectedAnimals) {
-                    if (!selectedListModel.contains(animal)) {
-                        selectedListModel.addElement(animal);
-                    }
-                }
-                JOptionPane.showMessageDialog(this, "Added " + selectedAnimals.size() + " animals to the list");
-                selectedAnimals.clear();
-                animalList.clearSelection();
-            } else {
-                JOptionPane.showMessageDialog(this, "Please select animals first");
-            }
-        });
+
+        //addSelectedButton.addActionListener(e -> {
+        //    if (!selectedAnimals.isEmpty()) {
+        //        for (IAnimal animal : selectedAnimals) {
+        //            if (!selectedListModel.contains(animal)) {
+        //                selectedListModel.addElement(animal);
+        //            }
+        //        }
+        //        JOptionPane.showMessageDialog(this, "Added " + selectedAnimals.size() + " animals to the list");
+        //        selectedAnimals.clear();
+        //        animalList.clearSelection();
+        //    } else {
+        //        JOptionPane.showMessageDialog(this, "Please select animals first");
+        //    }
+       // });
 
         // Initialize view
         controller.initialize();
+
+        // 在构造函数中初始化 selectedAnimalList
+        selectedAnimalList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                        boolean isSelected, boolean cellHasFocus) {
+                JPanel panel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
+                panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除外边距
+                
+                JPanel infoPanel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
+                infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除内边距
+                JLabel label = new JLabel();
+
+                if (value instanceof IAnimal animal) {
+                    StringBuilder text = new StringBuilder();
+                    text.append("Type: ").append(animal.getAnimalType()).append(" | ");
+                    text.append("Breed: ").append(animal.getSpecies()).append(" | ");
+                    text.append("Date: ").append(animal.getSeenDate()).append(" | ");
+                    text.append("Time: ").append(animal.getTime()).append(" | ");
+                    text.append("Area: ").append(animal.getArea()).append(" | ");
+                    text.append("Address: ").append(animal.getAddress());
+                    label.setText(text.toString());
+                    
+                    // 创建按钮面板，使用最小间距
+                    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
+                    
+                    // 创建删除按钮
+                    JButton deleteButton = new JButton("Delete");
+                    deleteButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
+                    deleteButton.addActionListener(e -> {
+                        selectedListModel.removeElement(animal);  // 只从选中列表中删除
+                    });
+                    
+                    // 将按钮添加到按钮面板
+                    buttonPanel.add(deleteButton);
+                    
+                    // 将标签和按钮面板添加到信息面板
+                    infoPanel.add(label, BorderLayout.CENTER);
+                    infoPanel.add(buttonPanel, BorderLayout.EAST);
+                }
+
+                panel.add(infoPanel, BorderLayout.CENTER);
+
+                if (isSelected) {
+                    panel.setBackground(list.getSelectionBackground());
+                    panel.setForeground(list.getSelectionForeground());
+                } else {
+                    panel.setBackground(list.getBackground());
+                    panel.setForeground(list.getForeground());
+                }
+                
+                return panel;
+            }
+        });
+        
+        // 设置选择模式和其他属性
+        selectedAnimalList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
+        
+        // 添加鼠标点击事件监听器
+        selectedAnimalList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    int index = selectedAnimalList.locationToIndex(e.getPoint());
+                    if (index >= 0) {
+                        Rectangle cellBounds = selectedAnimalList.getCellBounds(index, index);
+                        if (cellBounds != null) {
+                            // 获取点击位置相对于列表项的坐标
+                            int relativeX = e.getX() - cellBounds.x;
+                            
+                            if (relativeX < cellBounds.width * 0.95) {
+                                // 如果点击位置在左侧区域（小于90%的宽度），则显示详情
+                                IAnimal animal = selectedListModel.getElementAt(index);
+                                showAnimalDetails(animal);
+                            } else if (relativeX > cellBounds.width * 0.95) {
+                                // 如果点击位置在右侧区域（大于90%的宽度），则删除该项
+                                selectedListModel.remove(index);
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void initializeListPanel() {
@@ -184,7 +271,45 @@ public class View extends JFrame implements IView {
                 if (e.getClickCount() == 1) {
                     int index = animalList.locationToIndex(e.getPoint());
                     if (index >= 0) {
-                        showAnimalDetails(listModel.getElementAt(index));
+                        Rectangle cellBounds = animalList.getCellBounds(index, index);
+                        if (cellBounds != null) {
+                            // 获取点击位置相对于列表项的坐标
+                            int relativeX = e.getX() - cellBounds.x;
+                            
+                            // 如果点击位置在左侧区域（小于70%的宽度），则显示详情
+                            if (relativeX < cellBounds.width * 0.7) {
+                                showAnimalDetails(listModel.getElementAt(index));
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        animalList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    int index = animalList.locationToIndex(e.getPoint());
+                    if (index >= 0) {
+                        Rectangle cellBounds = animalList.getCellBounds(index, index);
+                        if (cellBounds != null) {
+                            // 获取点击位置相对于列表项的坐标
+                            int relativeX = e.getX() - cellBounds.x;
+
+                            // 如果点击位置在右侧区域（大于90%的宽度），则添加到列表
+                            if (relativeX > cellBounds.width * 0.9 && relativeX < cellBounds.width) {
+                                if (!selectedAnimals.isEmpty()) {
+                                    for (IAnimal animal : selectedAnimals) {
+                                        if (!selectedListModel.contains(animal)) {
+                                            selectedListModel.addElement(animal);
+                                        }
+                                    }
+                                    selectedAnimals.clear();
+                                    animalList.clearSelection();
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -195,12 +320,18 @@ public class View extends JFrame implements IView {
         // Add selected animal list to list panel
         JPanel selectedPanel = new JPanel(new BorderLayout());
         selectedPanel.add(new JLabel("Selected Animals:"), BorderLayout.NORTH);
-        selectedPanel.add(new JScrollPane(selectedAnimalList), BorderLayout.CENTER);
+        
+        // 设置 selectedAnimalList 的显示行数和首选大小
+        selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
+        JScrollPane selectedScrollPane = new JScrollPane(selectedAnimalList);
+        selectedScrollPane.setPreferredSize(new Dimension(0, 100));  // 减小高度从300像素到100像素
+        
+        selectedPanel.add(selectedScrollPane, BorderLayout.CENTER);
         listPanel.add(selectedPanel, BorderLayout.SOUTH);
 
         // Add button to list panel
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(addSelectedButton);
+        //buttonPanel.add(addSelectedButton);
         listPanel.add(buttonPanel, BorderLayout.NORTH);
 
         // Set list selection mode
@@ -213,25 +344,7 @@ public class View extends JFrame implements IView {
         });
     }
 
-    private void initializeMapPanel() {
-        // Set up map
-        TileFactoryInfo info = new OSMTileFactoryInfo();
-        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
-        mapViewer.setTileFactory(tileFactory);
 
-        // Set initial map position
-        GeoPosition seattle = new GeoPosition(47.6062, -122.3321);
-        mapViewer.setZoom(7);
-        mapViewer.setAddressLocation(seattle);
-
-        // Add mouse controls
-        MouseInputListener mia = new PanMouseInputListener(mapViewer);
-        mapViewer.addMouseListener(mia);
-        mapViewer.addMouseMotionListener(mia);
-        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
-
-        mapPanel.add(mapViewer, BorderLayout.CENTER);
-    }
 
     private void initializeFilterPanel() {
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
@@ -262,34 +375,96 @@ public class View extends JFrame implements IView {
         // Add type selection listener
         typeComboBox.addActionListener(e -> updateBreedOptions());
 
-        // Add filter options to panel
-        filterPanel.add(new JLabel("Animal Type:"));
-        filterPanel.add(typeComboBox);
-        filterPanel.add(new JLabel("Breed:"));
-        filterPanel.add(breedComboBox);
-        filterPanel.add(new JLabel("Size:"));
-        filterPanel.add(sizeComboBox);
-        filterPanel.add(new JLabel("Gender:"));
-        filterPanel.add(genderComboBox);
-        filterPanel.add(new JLabel("Pattern:"));
-        filterPanel.add(patternComboBox);
-        filterPanel.add(new JLabel("Color:"));
-        filterPanel.add(colorComboBox);
-        filterPanel.add(new JLabel("Age:"));
-        filterPanel.add(ageComboBox);
-        filterPanel.add(new JLabel("City:"));
-        filterPanel.add(cityComboBox);
-        filterPanel.add(new JLabel("Date Range:"));
-        filterPanel.add(dateRangeComboBox);
+        // 创建标签和下拉框的容器
+        JPanel[] filterRows = new JPanel[9];  // 9个筛选条件
+        for (int i = 0; i < filterRows.length; i++) {
+            filterRows[i] = new JPanel();
+            filterRows[i].setLayout(new BoxLayout(filterRows[i], BoxLayout.Y_AXIS));
+            filterRows[i].setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+
+        // 创建左对齐的标签
+        JLabel[] labels = new JLabel[]{
+            new JLabel("Animal Type:"),
+            new JLabel("Breed:"),
+            new JLabel("Size:"),
+            new JLabel("Gender:"),
+            new JLabel("Pattern:"),
+            new JLabel("Color:"),
+            new JLabel("Age:"),
+            new JLabel("City:"),
+            new JLabel("Date Range:")
+        };
+
+        // 设置标签左对齐
+        for (JLabel label : labels) {
+            label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+
+        // 设置下拉框左对齐并设置最大宽度
+        JComboBox<?>[] comboBoxes = {
+            typeComboBox, breedComboBox, sizeComboBox, genderComboBox,
+            patternComboBox, colorComboBox, ageComboBox, cityComboBox, dateRangeComboBox
+        };
+        for (JComboBox<?> comboBox : comboBoxes) {
+            comboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+            comboBox.setMaximumSize(new Dimension(200, comboBox.getPreferredSize().height));
+        }
+
+        // 将标签和下拉框添加到各自的容器中
+        for (int i = 0; i < filterRows.length; i++) {
+            filterRows[i].add(labels[i]);
+            filterRows[i].add(comboBoxes[i]);
+            filterPanel.add(filterRows[i]);
+        }
 
         // Add sort components to filter panel
-        filterPanel.add(new JLabel("Sort by Date:"));
-        filterPanel.add(sortComboBox);
-        filterPanel.add(sortButton);
+        JPanel sortPanel = new JPanel();
+        sortPanel.setLayout(new BoxLayout(sortPanel, BoxLayout.Y_AXIS));
+        sortPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel sortLabel = new JLabel("Sort by Date:");
+        sortLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        sortComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        sortComboBox.setMaximumSize(new Dimension(200, sortComboBox.getPreferredSize().height));
+        
+        sortPanel.add(sortLabel);
+        sortPanel.add(sortComboBox);
+        sortPanel.add(sortButton);
+        filterPanel.add(sortPanel);
 
-        // Add buttons
+        // Add buttons with left alignment
+        filterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        resetButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         filterPanel.add(filterButton);
         filterPanel.add(resetButton);
+
+        // Add export functionality
+        JPanel exportPanel = new JPanel();
+        exportPanel.setLayout(new BoxLayout(exportPanel, BoxLayout.Y_AXIS));
+        exportPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JLabel exportLabel = new JLabel("Export as:");
+        exportLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        JComboBox<String> exportFormatComboBox = new JComboBox<>(new String[]{"XML", "JSON", "TXT", "CSV"});
+        exportFormatComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        exportFormatComboBox.setMaximumSize(new Dimension(200, exportFormatComboBox.getPreferredSize().height));
+        
+        JButton exportButton = new JButton("Export");
+        exportButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+        exportButton.addActionListener(e -> {
+            String format = (String) exportFormatComboBox.getSelectedItem();
+            if (format != null) {
+                controller.exportData(format.toLowerCase());
+            }
+        });
+        
+        exportPanel.add(exportLabel);
+        exportPanel.add(exportFormatComboBox);
+        exportPanel.add(exportButton);
+        filterPanel.add(exportPanel);
     }
 
     private String[] combineArrays(String[] first, String[] second) {
@@ -331,6 +506,8 @@ public class View extends JFrame implements IView {
         return result;
     }
 
+
+
     private void showAnimalDetails(IAnimal animal) {
         JDialog dialog = new JDialog(this, "Animal Details", true);
         dialog.setLayout(new BorderLayout());
@@ -364,8 +541,8 @@ public class View extends JFrame implements IView {
         }
 
         // 创建信息面板
-        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 2, 2)); // 减小水平和垂直间距
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // 减小边距
+        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 0, 0)); // 减小水平和垂直间距
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2)); // 减小边距
 
         // 添加动物信息
         addInfoField(infoPanel, "Type:", animal.getAnimalType());
@@ -529,38 +706,7 @@ public class View extends JFrame implements IView {
         }
     }
 
-    @Override
-    public void displayMap(List<IAnimal> animals) {
-        Set<Waypoint> waypoints = new HashSet<>();
-        for (IAnimal animal : animals) {
-            try {
-                GeoPosition position = getGeoPosition(animal.getArea());
-                waypoints.add(new DefaultWaypoint(position));
-            } catch (Exception e) {
-                System.err.println("Error getting position for " + animal.getArea() + ": " + e.getMessage());
-            }
-        }
 
-        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
-        waypointPainter.setWaypoints(waypoints);
-        mapViewer.setOverlayPainter(waypointPainter);
-    }
-
-    private GeoPosition getGeoPosition(String area) {
-        return switch (area) {
-            case "SEATTLE" -> new GeoPosition(47.6062, -122.3321);
-            case "BELLEVUE" -> new GeoPosition(47.6101, -122.2015);
-            case "REDMOND" -> new GeoPosition(47.6740, -122.1215);
-            case "KIRKLAND" -> new GeoPosition(47.6769, -122.2060);
-            case "EVERETT" -> new GeoPosition(47.9789, -122.2021);
-            case "TACOMA" -> new GeoPosition(47.2529, -122.4443);
-            case "RENTON" -> new GeoPosition(47.4829, -122.2171);
-            case "KENT" -> new GeoPosition(47.3809, -122.2348);
-            case "LYNNWOOD" -> new GeoPosition(47.8279, -122.3053);
-            case "BOTHELL" -> new GeoPosition(47.7601, -122.2054);
-            default -> new GeoPosition(47.6062, -122.3321); // Default to Seattle
-        };
-    }
 
     @Override
     public void showFilterOptions() {
@@ -652,10 +798,13 @@ public class View extends JFrame implements IView {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
-            JPanel panel = new JPanel(new BorderLayout());
-            JPanel infoPanel = new JPanel(new BorderLayout());
-            JLabel label = new JLabel();
+            JPanel panel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
+            panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除外边距
             
+            JPanel infoPanel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
+            infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除内边距
+            JLabel label = new JLabel();
+
             if (value instanceof IAnimal animal) {
                 StringBuilder text = new StringBuilder();
                 text.append("Type: ").append(animal.getAnimalType()).append(" | ");
@@ -666,32 +815,14 @@ public class View extends JFrame implements IView {
                 text.append("Address: ").append(animal.getAddress());
                 label.setText(text.toString());
                 
-                // 创建按钮面板
-                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-                
-                // 创建 View Details 按钮
-                JButton viewDetailsButton = new JButton("View Details");
-                viewDetailsButton.addActionListener(e -> showAnimalDetails(animal));
+                // 创建按钮面板，使用最小间距
+                JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
                 
                 // 创建 Add to List 按钮
                 JButton addToListButton = new JButton("Add to List");
-                addToListButton.addActionListener(e -> {
-                    if (!selectedListModel.contains(animal)) {
-                        selectedListModel.addElement(animal);
-                        JOptionPane.showMessageDialog(View.this, 
-                            "Added " + animal.getAnimalType() + " to the list", 
-                            "Success", 
-                            JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(View.this, 
-                            "This animal is already in the list", 
-                            "Info", 
-                            JOptionPane.INFORMATION_MESSAGE);
-                    }
-                });
+                addToListButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
                 
                 // 将按钮添加到按钮面板
-                buttonPanel.add(viewDetailsButton);
                 buttonPanel.add(addToListButton);
                 
                 // 将标签和按钮面板添加到信息面板
@@ -746,9 +877,10 @@ public class View extends JFrame implements IView {
             imagePanel.add(noImageLabel, BorderLayout.CENTER);
         }
 
-        // 创建右侧信息面板
-        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        // 创建右侧信息面板，减小水平和垂直间距
+        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 2, 2)); // 将间距从 5,5 改为 2,2
         infoPanel.setBackground(Color.WHITE);
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2)); // 减小边距
 
         // 只添加指定的字段
         addInfoField(infoPanel, "Type:", animal.getAnimalType());
@@ -771,13 +903,67 @@ public class View extends JFrame implements IView {
     }
 
     private void addInfoField(JPanel panel, String labelText, String value) {
-        JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0)); // 减小水平间距为2，垂直间距为0
+        JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 0)); // 减小水平间距为1，垂直间距为0
         JLabel label = new JLabel(labelText);
         JTextField valueField = new JTextField(value);
         valueField.setEditable(false);
-        valueField.setColumns(15); // 设置文本框的列数，控制宽度
+        valueField.setColumns(12); // 减小文本框的列数，使整体更紧凑
         fieldPanel.add(label);
         fieldPanel.add(valueField);
         panel.add(fieldPanel);
+    }
+
+
+    private void initializeMapPanel() {
+        // Set up map
+        TileFactoryInfo info = new OSMTileFactoryInfo();
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+        mapViewer.setTileFactory(tileFactory);
+
+        // Set initial map position
+        GeoPosition seattle = new GeoPosition(47.6062, -122.3321);
+        mapViewer.setZoom(7);
+        mapViewer.setAddressLocation(seattle);
+
+        // Add mouse controls
+        MouseInputListener mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
+
+        mapPanel.add(mapViewer, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void displayMap(List<IAnimal> animals) {
+        Set<Waypoint> waypoints = new HashSet<>();
+        for (IAnimal animal : animals) {
+            try {
+                GeoPosition position = getGeoPosition(animal.getArea());
+                waypoints.add(new DefaultWaypoint(position));
+            } catch (Exception e) {
+                System.err.println("Error getting position for " + animal.getArea() + ": " + e.getMessage());
+            }
+        }
+
+        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+        waypointPainter.setWaypoints(waypoints);
+        mapViewer.setOverlayPainter(waypointPainter);
+    }
+
+    private GeoPosition getGeoPosition(String area) {
+        return switch (area) {
+            case "SEATTLE" -> new GeoPosition(47.6062, -122.3321);
+            case "BELLEVUE" -> new GeoPosition(47.6101, -122.2015);
+            case "REDMOND" -> new GeoPosition(47.6740, -122.1215);
+            case "KIRKLAND" -> new GeoPosition(47.6769, -122.2060);
+            case "EVERETT" -> new GeoPosition(47.9789, -122.2021);
+            case "TACOMA" -> new GeoPosition(47.2529, -122.4443);
+            case "RENTON" -> new GeoPosition(47.4829, -122.2171);
+            case "KENT" -> new GeoPosition(47.3809, -122.2348);
+            case "LYNNWOOD" -> new GeoPosition(47.8279, -122.3053);
+            case "BOTHELL" -> new GeoPosition(47.7601, -122.2054);
+            default -> new GeoPosition(47.6062, -122.3321); // Default to Seattle
+        };
     }
 }

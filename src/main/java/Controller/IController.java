@@ -59,4 +59,10 @@ public interface IController {
      * @param filterCriteria The filter criteria to apply
      */
     void loadFilteredAnimals(String filterCriteria);
+
+    /**
+     * Export animal data to a file in the specified format
+     * @param format the format to export (xml, json, txt, csv)
+     */
+    void exportData(String format);
 }
