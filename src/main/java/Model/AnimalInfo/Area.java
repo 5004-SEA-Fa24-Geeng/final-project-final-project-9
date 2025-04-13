@@ -4,7 +4,7 @@ package Model.AnimalInfo;
  * Areas of the reported animals.
  */
 public enum Area {
-    DOWNTOWN, CLYDE, HILL, MEDINA, LAKE_HILLS, CROSSROADS, BRIDLE_TRAILS;
+    SEATTLE, TACOMA, BELLEVUE, KENT, KIRKLAND, EVERETT, RENTON, REDMOND, LYNNWOOD, BOTHELL;
 
     public static Area fromString(String area) {
         try {

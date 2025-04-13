@@ -42,6 +42,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import Model.AnimalInfo.Species.*;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -305,15 +306,15 @@ public class View extends JFrame implements IView {
 
         if (type != null && !type.isEmpty()) {
             String[] breeds = switch (type) {
-                case "DOG" -> new String[]{"Labrador", "German Shepherd", "Golden Retriever", "Bulldog", "Poodle"};
-                case "CAT" -> new String[]{"Siamese", "Persian", "Maine Coon", "Ragdoll", "Bengal"};
-                case "BIRD" -> new String[]{"Parrot", "Canary", "Finch", "Cockatiel", "Budgie"};
-                case "RABBIT" -> new String[]{"Holland Lop", "Mini Rex", "Netherland Dwarf", "Lionhead", "Flemish Giant"};
-                case "HAMSTER" -> new String[]{"Syrian", "Dwarf", "Roborovski", "Chinese", "Campbell's"};
-                case "GUINEA_PIG" -> new String[]{"American", "Abyssinian", "Peruvian", "Silkie", "Teddy"};
-                case "HEDGEHOG" -> new String[]{"African Pygmy", "European", "Long-eared", "Desert", "Indian"};
-                case "TURTLE" -> new String[]{"Red-eared Slider", "Box Turtle", "Painted Turtle", "Map Turtle", "Musk Turtle"};
-                default -> new String[]{};
+                case "DOG" -> getEnumValues(Dogs.class);
+                case "CAT" -> getEnumValues(Cats.class);
+                case "BIRD" -> getEnumValues(Birds.class);
+                case "RABBIT" -> getEnumValues(Rabbits.class);
+                case "HAMSTER" -> getEnumValues(Hamsters.class);
+                case "HEDGEHOG" -> getEnumValues(Hedgehogs.class);
+                case "GOOSE" -> getEnumValues(Geese.class);
+                case "DUCK" -> getEnumValues(Ducks.class);
+                default -> null;
             };
             for (String breed : breeds) {
                 breedComboBox.addItem(breed);
@@ -434,19 +435,21 @@ public class View extends JFrame implements IView {
 
             if (type != null && !type.isEmpty()) {
                 String[] breeds = switch (type) {
-                    case "DOG" -> new String[]{"Labrador", "German Shepherd", "Golden Retriever", "Bulldog", "Poodle"};
-                    case "CAT" -> new String[]{"Siamese", "Persian", "Maine Coon", "Ragdoll", "Bengal"};
-                    case "BIRD" -> new String[]{"Parrot", "Canary", "Finch", "Cockatiel", "Budgie"};
-                    case "RABBIT" -> new String[]{"Holland Lop", "Mini Rex", "Netherland Dwarf", "Lionhead", "Flemish Giant"};
-                    case "HAMSTER" -> new String[]{"Syrian", "Dwarf", "Roborovski", "Chinese", "Campbell's"};
-                    case "GUINEA_PIG" -> new String[]{"American", "Abyssinian", "Peruvian", "Silkie", "Teddy"};
-                    case "HEDGEHOG" -> new String[]{"African Pygmy", "European", "Long-eared", "Desert", "Indian"};
-                    case "TURTLE" -> new String[]{"Red-eared Slider", "Box Turtle", "Painted Turtle", "Map Turtle", "Musk Turtle"};
-                    default -> new String[]{};
+                    case "DOG" -> getEnumValues(Dogs.class);
+                    case "CAT" -> getEnumValues(Cats.class);
+                    case "BIRD" -> getEnumValues(Birds.class);
+                    case "RABBIT" -> getEnumValues(Rabbits.class);
+                    case "HAMSTER" -> getEnumValues(Hamsters.class);
+                    case "HEDGEHOG" -> getEnumValues(Hedgehogs.class);
+                    case "GOOSE" -> getEnumValues(Geese.class);
+                    case "DUCK" -> getEnumValues(Ducks.class);
+                    default -> null;
                 };
                 for (String breed : breeds) {
                     breedComboBox.addItem(breed);
                 }
+
+
             }
         });
 
@@ -498,12 +501,12 @@ public class View extends JFrame implements IView {
                     (String) patternComboBox.getSelectedItem(),
                     (String) colorComboBox.getSelectedItem(),
                     (String) ageComboBox.getSelectedItem(),
-                    dateField.getText(),
-                    timeField.getText(),
-                    (String) cityComboBox.getSelectedItem(),
                     addressField.getText(),
-                    locDescArea.getText(),
+                    (String) cityComboBox.getSelectedItem(),
+                    timeField.getText(),
+                    dateField.getText(),
                     descriptionArea.getText(),
+                    locDescArea.getText(),
                     imageLabel.getText()
             );
             controller.addAnimal(animal);
