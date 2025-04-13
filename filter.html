@@ -92,6 +92,36 @@
             background-color: #2196F3;
             color: white;
         }
+        /* Add styles for scrollable select */
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Style for options */
+        select option {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        select option:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Make the species dropdown taller */
+        #species {
+            height: 200px;
+        }
+
+        /* Style for the selected option */
+        select option:checked {
+            background-color: #2196F3;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -104,14 +134,14 @@
                 <label for="animalType">Animal Type:</label>
                 <select id="animalType">
                     <option value="">Select Type</option>
-                    <option value="dog">Dog</option>
-                    <option value="cat">Cat</option>
-                    <option value="bird">Bird</option>
-                    <option value="rabbit">Rabbit</option>
-                    <option value="hamster">Hamster</option>
-                    <option value="guineaPig">Guinea Pig</option>
-                    <option value="hedgehog">Hedgehog</option>
-                    <option value="turtle">Turtle</option>
+                    <option value="DOG">Dog</option>
+                    <option value="CAT">Cat</option>
+                    <option value="RABBIT">Rabbit</option>
+                    <option value="BIRD">Bird</option>
+                    <option value="HAMSTER">Hamster</option>
+                    <option value="DUCK">Duck</option>
+                    <option value="HEDGEHOG">Hedgehog</option>
+                    <option value="GOOSE">Goose</option>
                 </select>
             </div>
 
@@ -127,10 +157,10 @@
                 <label for="animalSize">Size:</label>
                 <select id="animalSize">
                     <option value="">Select Size</option>
-                    <option value="microsize">Microsize</option>
-                    <option value="small">Small</option>
-                    <option value="medium">Medium</option>
-                    <option value="big">Big</option>
+                    <option value="MICRO">Micro</option>
+                    <option value="SMALL">Small</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="LARGE">Large</option>
                 </select>
             </div>
 
@@ -138,29 +168,36 @@
                 <label for="gender">Gender:</label>
                 <select id="gender">
                     <option value="">Select Gender</option>
-                    <option value="female">Female</option>
-                    <option value="male">Male</option>
-                    <option value="unclear">Unclear</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="MALE">Male</option>
+                    <option value="UNKNOWN">Unknown</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="pattern">Pattern:</label>
                 <select id="pattern">
-                    <option value="Not Sure">Select Pattern</option>
-                    <option value="Solid">Solid</option>
-                    <option value="Tabby">Tabby</option>
-                    <option value="Not Sure">Unclear</option>
+                    <option value="">Select Pattern</option>
+                    <option value="SOLID">Solid</option>
+                    <option value="SPOTTED">Spotted</option>
+                    <option value="STRIPED">Striped</option>
+                    <option value="BRINDLE">Brindle</option>
+                    <option value="MERLE">Merle</option>
+                    <option value="TUXEDO">Tuxedo</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="animalColor">Color:</label>
                 <select id="animalColor">
-                    <option value="Not Sure">Select Color</option>
-                    <option value="Black">Black</option>
-                    <option value="White">White</option>
-                    <option value="Not Sure">Unclear</option>
+                    <option value="">Select Color</option>
+                    <option value="BLACK">Black</option>
+                    <option value="WHITE">White</option>
+                    <option value="BROWN">Brown</option>
+                    <option value="GOLDEN">Golden</option>
+                    <option value="GRAY">Gray</option>
+                    <option value="ORANGE">Orange</option>
+                    <option value="MIXED">Mixed</option>
                 </select>
             </div>
 
@@ -168,10 +205,10 @@
                 <label for="animalAge">Age:</label>
                 <select id="animalAge">
                     <option value="">Select Age</option>
-                    <option value="baby">Baby</option>
-                    <option value="young">Young</option>
-                    <option value="adult">Adult</option>
-                    <option value="old">Old</option>
+                    <option value="BABY">Baby</option>
+                    <option value="YOUNG">Young</option>
+                    <option value="ADULT">Adult</option>
+                    <option value="OLD">Old</option>
                 </select>
             </div>
         </div>
@@ -235,22 +272,54 @@
     </div>
 
     <script>
-        // Sample code to demonstrate dynamic dropdown population
+        // Updated dropdown population code
         document.getElementById('animalType').addEventListener('change', function() {
             const speciesDropdown = document.getElementById('species');
             speciesDropdown.innerHTML = '<option value="">Select Species</option>';
 
-            // Example for dog breeds
-            if (this.value === 'dog') {
-                const dogBreeds = ['Labrador', 'Golden Retriever', 'German Shepherd', 'Beagle', 'Poodle'];
-                dogBreeds.forEach(breed => {
-                    const option = document.createElement('option');
-                    option.value = breed.toLowerCase().replace(' ', '_');
-                    option.textContent = breed;
-                    speciesDropdown.appendChild(option);
-                });
+            const breeds = {
+                'DOG': [
+                    'HUSKY', 'LABRADOR', 'GOLDEN_RETRIEVER', 'GERMAN_SHEPHERD', 
+                    'POODLE', 'BULLDOG', 'BEAGLE', 'CHIHUAHUA', 'PUG', 
+                    'ALASKAN_MALAMUTE', 'DACHSHUND', 'SHIBA_INU'
+                ],
+                'CAT': [
+                    'PERSIAN', 'SIAMESE', 'MAINE_COON', 'RAGDOLL', 
+                    'BRITISH_SHORTHAIR', 'SPHYNX', 'BENGAL', 'RUSSIAN_BLUE',
+                    'ABYSSINIAN', 'BURMESE', 'SCOTTISH_FOLD', 'SPHINX'
+                ],
+                'BIRD': [
+                    'LOVEBIRD', 'COCKATIEL', 'PARAKEET'
+                ],
+                'RABBIT': [
+                    'MINI_REX', 'LIONHEAD'
+                ],
+                'HAMSTER': [
+                    'DWARF_CAMPBELL', 'SYRIAN', 'ROBOROVSKI'
+                ],
+                'HEDGEHOG': [
+                    'AFRICAN_PYGMY'
+                ]
+            };
+
+            const selectedBreeds = breeds[this.value] || [];
+            selectedBreeds.forEach(breed => {
+                const option = document.createElement('option');
+                option.value = breed;
+                // Replace underscores with spaces and make it more readable
+                option.textContent = breed.split('_').map(word => 
+                    word.charAt(0) + word.slice(1).toLowerCase()
+                ).join(' ');
+                speciesDropdown.appendChild(option);
+            });
+
+            // Make the dropdown visible if there are breeds
+            if (selectedBreeds.length > 0) {
+                speciesDropdown.size = Math.min(selectedBreeds.length + 1, 10); // Show up to 10 items at once
+                speciesDropdown.style.height = 'auto';
+            } else {
+                speciesDropdown.size = 1;
             }
-            // Similar logic would be added for other animal types
         });
 
         document.getElementById('locationArea1').addEventListener('change', function() {

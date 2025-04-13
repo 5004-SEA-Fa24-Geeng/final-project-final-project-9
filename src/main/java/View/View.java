@@ -70,6 +70,7 @@ public class View extends JFrame implements IView {
     private final JComboBox<String> dateRangeComboBox;
     private final JButton sortButton;
     private final JButton resetButton;
+    private final JButton filterButton;
     private final JButton reportButton;
     private final JXMapViewer mapViewer;
 
@@ -92,6 +93,7 @@ public class View extends JFrame implements IView {
         dateRangeComboBox = new JComboBox<>();
         sortButton = new JButton("Sort");
         resetButton = new JButton("Reset");
+        filterButton = new JButton("Filter");
         reportButton = new JButton("Report Animal");
         mapViewer = new JXMapViewer();
     }
@@ -121,6 +123,17 @@ public class View extends JFrame implements IView {
         initializeListPanel();
         initializeMapPanel();
         initializeFilterPanel();
+
+        // 确保所有下拉框默认选择空白选项
+        typeComboBox.setSelectedIndex(0);
+        breedComboBox.setSelectedIndex(0);
+        sizeComboBox.setSelectedIndex(0);
+        genderComboBox.setSelectedIndex(0);
+        patternComboBox.setSelectedIndex(0);
+        colorComboBox.setSelectedIndex(0);
+        ageComboBox.setSelectedIndex(0);
+        cityComboBox.setSelectedIndex(0);
+        dateRangeComboBox.setSelectedIndex(0);
 
         // Initialize view
         controller.initialize();
@@ -174,15 +187,15 @@ public class View extends JFrame implements IView {
         // Set up filter options
         JComboBox<String> typeComboBox = new JComboBox<>(getEnumValues(AnimalType.class));
         JComboBox<String> breedComboBox = new JComboBox<>();
+        breedComboBox.addItem(""); // 添加空白选项
         JComboBox<String> sizeComboBox = new JComboBox<>(getEnumValues(Size.class));
         JComboBox<String> genderComboBox = new JComboBox<>(getEnumValues(Gender.class));
         JComboBox<String> patternComboBox = new JComboBox<>(getEnumValues(Pattern.class));
         JComboBox<String> colorComboBox = new JComboBox<>(getEnumValues(Model.AnimalInfo.Color.class));
         JComboBox<String> ageComboBox = new JComboBox<>(getEnumValues(Age.class));
         JComboBox<String> cityComboBox = new JComboBox<>(getEnumValues(Area.class));
-        JComboBox<String> dateRangeComboBox = new JComboBox<>(new String[]{
-            "within 1 week", "within 2 weeks", "within 1 month", "within 3 months"
-        });
+        String[] dateRanges = new String[]{"", "within 1 week", "within 2 weeks", "within 1 month", "within 3 months"};
+        JComboBox<String> dateRangeComboBox = new JComboBox<>(dateRanges);
         
         // Add type selection listener
         typeComboBox.addActionListener(e -> updateBreedOptions(breedComboBox, (String) typeComboBox.getSelectedItem()));
@@ -230,9 +243,13 @@ public class View extends JFrame implements IView {
         colorComboBox.setModel(new DefaultComboBoxModel<>(getEnumValues(Model.AnimalInfo.Color.class)));
         ageComboBox.setModel(new DefaultComboBoxModel<>(getEnumValues(Age.class)));
         cityComboBox.setModel(new DefaultComboBoxModel<>(getEnumValues(Area.class)));
-        dateRangeComboBox.setModel(new DefaultComboBoxModel<>(new String[]{
-            "within 1 week", "within 2 weeks", "within 1 month", "within 3 months"
-        }));
+        
+        // 日期范围添加空白选项
+        String[] dateRanges = new String[]{"", "within 1 week", "within 2 weeks", "within 1 month", "within 3 months"};
+        dateRangeComboBox.setModel(new DefaultComboBoxModel<>(dateRanges));
+        
+        // 添加空白选项到品种下拉框
+        breedComboBox.addItem("");
         
         // Add type selection listener
         typeComboBox.addActionListener(e -> updateBreedOptions());
@@ -257,10 +274,16 @@ public class View extends JFrame implements IView {
         filterPanel.add(new JLabel("Date Range:"));
         filterPanel.add(dateRangeComboBox);
         
-        // Add sort and reset buttons
+        // Add filter, sort and reset buttons
+        filterButton.addActionListener(e -> {
+            String filterType = getSelectedFilter();
+            String filterValue = getFilterValue();
+            controller.handleFilter(filterType, filterValue);
+        });
         sortButton.addActionListener(e -> controller.handleSort(true));
         resetButton.addActionListener(e -> controller.handleReset());
         
+        filterPanel.add(filterButton);
         filterPanel.add(sortButton);
         filterPanel.add(resetButton);
     }
@@ -275,42 +298,73 @@ public class View extends JFrame implements IView {
 
     private void updateBreedOptions(JComboBox<String> breedComboBox, String type) {
         breedComboBox.removeAllItems();
-        if (type != null) {
+        breedComboBox.addItem(""); // 添加空白选项
+        if (type != null && !type.isEmpty()) {
+            String[] breeds = null;
             switch (type) {
                 case "DOG":
-                    breedComboBox.setModel(new DefaultComboBoxModel<>(new String[]{
-                        "LABRADOR", "GERMAN_SHEPHERD", "GOLDEN_RETRIEVER", "BULLDOG", "BEAGLE"
-                    }));
+                    breeds = new String[]{
+                        "LABRADOR", "GOLDEN_RETRIEVER", "GERMAN_SHEPHERD", "BEAGLE", "BULLDOG", 
+                        "FRENCH_BULLDOG", "POODLE", "YORKSHIRE_TERRIER", "BOXER", "DACHSHUND", 
+                        "SHIH_TZU", "SIBERIAN_HUSKY", "CHIHUAHUA", "GREAT_DANE", 
+                        "AUSTRALIAN_SHEPHERD", "CAVALIER_KING_CHARLES_SPANIEL", 
+                        "PEMBROKE_WELSH_CORGI", "BORDER_COLLIE", "PUG", "ALASKAN_MALAMUTE", 
+                        "SHIBA_INU", "OTHER"
+                    };
                     break;
                 case "CAT":
-                    breedComboBox.setModel(new DefaultComboBoxModel<>(new String[]{
-                        "SIAMESE", "PERSIAN", "MAINE_COON", "RAGDOLL", "BENGAL"
-                    }));
+                    breeds = new String[]{
+                        "PERSIAN", "SIAMESE", "MAINE_COON", "RAGDOLL", "BRITISH_SHORTHAIR",
+                        "SPHYNX", "BENGAL", "RUSSIAN_BLUE", "ABYSSINIAN", "BURMESE",
+                        "SCOTTISH_FOLD", "AMERICAN_SHORTHAIR", "NORWEGIAN_FOREST_CAT",
+                        "ORIENTAL_SHORTHAIR", "DEVON_REX", "HIMALAYAN", "OTHER"
+                    };
                     break;
                 case "BIRD":
-                    breedComboBox.setModel(new DefaultComboBoxModel<>(new String[]{
-                        "PARROT", "CANARY", "COCKATIEL", "BUDGIE", "FINCH"
-                    }));
+                    breeds = new String[]{
+                        "BUDGERIGAR", "COCKATIEL", "CANARY", "LOVEBIRD", "PARROTLET",
+                        "CONURE", "AFRICAN_GREY_PARROT", "COCKATOO", "FINCH", "AMAZON_PARROT",
+                        "MACAW", "QUAKER_PARROT", "SENEGAL_PARROT", "CAIQUE", "PARAKEET",
+                        "DOVE", "DIAMOND_DOVE", "PIONUS", "BOURKES_PARAKEET", "ECLECTUS", "OTHER"
+                    };
                     break;
                 case "RABBIT":
-                    breedComboBox.setModel(new DefaultComboBoxModel<>(new String[]{
-                        "DUTCH", "LIONHEAD", "MINI_REX", "HOLLAND_LOP", "DWARF"
-                    }));
+                    breeds = new String[]{
+                        "MINI_REX", "LIONHEAD", "HOLLAND_LOP", "NETHERLAND_DWARF",
+                        "DUTCH", "FLEMISH_GIANT", "ENGLISH_LOP", "FRENCH_LOP",
+                        "ANGORA", "POLISH", "OTHER"
+                    };
                     break;
-                case "OTHER":
-                    breedComboBox.setModel(new DefaultComboBoxModel<>(new String[]{
-                        "HAMSTER", "GUINEA_PIG", "FERRET", "TURTLE", "SNAKE"
-                    }));
+                case "HAMSTER":
+                    breeds = new String[]{
+                        "DWARF_CAMPBELL", "SYRIAN", "ROBOROVSKI", "WINTER_WHITE",
+                        "CHINESE", "OTHER"
+                    };
                     break;
+                case "HEDGEHOG":
+                    breeds = new String[]{
+                        "AFRICAN_PYGMY", "EUROPEAN", "OTHER"
+                    };
+                    break;
+            }
+            
+            if (breeds != null) {
+                for (String breed : breeds) {
+                    breedComboBox.addItem(breed);
+                }
+                
+                // 设置下拉列表的最大行数
+                breedComboBox.setMaximumRowCount(10);
             }
         }
     }
 
     private <T extends Enum<T>> String[] getEnumValues(Class<T> enumClass) {
         T[] values = enumClass.getEnumConstants();
-        String[] result = new String[values.length];
+        String[] result = new String[values.length + 1];
+        result[0] = ""; // 添加空白选项
         for (int i = 0; i < values.length; i++) {
-            result[i] = values[i].name();
+            result[i + 1] = values[i].name();
         }
         return result;
     }
@@ -380,6 +434,7 @@ public class View extends JFrame implements IView {
         // Create form fields
         JComboBox<String> typeField = new JComboBox<>(getEnumValues(AnimalType.class));
         JComboBox<String> breedField = new JComboBox<>();
+        breedField.addItem(""); // 添加空白选项
         JComboBox<String> sizeField = new JComboBox<>(getEnumValues(Size.class));
         JComboBox<String> genderField = new JComboBox<>(getEnumValues(Gender.class));
         JComboBox<String> patternField = new JComboBox<>(getEnumValues(Pattern.class));
@@ -476,15 +531,32 @@ public class View extends JFrame implements IView {
         
         // Create form fields
         JComboBox<String> typeField = new JComboBox<>(getEnumValues(AnimalType.class));
+        typeField.setSelectedIndex(0); // 选择空白选项
+        
         JComboBox<String> breedField = new JComboBox<>();
+        breedField.addItem(""); // 添加空白选项
+        
         JComboBox<String> sizeField = new JComboBox<>(getEnumValues(Size.class));
+        sizeField.setSelectedIndex(0); // 选择空白选项
+        
         JComboBox<String> genderField = new JComboBox<>(getEnumValues(Gender.class));
+        genderField.setSelectedIndex(0); // 选择空白选项
+        
         JComboBox<String> patternField = new JComboBox<>(getEnumValues(Pattern.class));
+        patternField.setSelectedIndex(0); // 选择空白选项
+        
         JComboBox<String> colorField = new JComboBox<>(getEnumValues(Model.AnimalInfo.Color.class));
+        colorField.setSelectedIndex(0); // 选择空白选项
+        
         JComboBox<String> ageField = new JComboBox<>(getEnumValues(Age.class));
+        ageField.setSelectedIndex(0); // 选择空白选项
+        
         JTextField dateField = new JTextField();
         JTextField timeField = new JTextField();
+        
         JComboBox<String> cityField = new JComboBox<>(getEnumValues(Area.class));
+        cityField.setSelectedIndex(0); // 选择空白选项
+        
         JTextField addressField = new JTextField();
         JTextField locDescField = new JTextField();
         JTextArea descriptionField = new JTextArea();
@@ -652,11 +724,19 @@ public class View extends JFrame implements IView {
         JOptionPane.showMessageDialog(this, message, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Get the selected filter type from the filter combo box
+     * @return selected filter type
+     */
     @Override
     public String getSelectedFilter() {
         return (String) typeComboBox.getSelectedItem();
     }
 
+    /**
+     * Get the filter value from the filter text field
+     * @return filter value
+     */
     @Override
     public String getFilterValue() {
         return (String) breedComboBox.getSelectedItem();
@@ -722,9 +802,8 @@ public class View extends JFrame implements IView {
                 cityComboBox.setModel(new DefaultComboBoxModel<>(getEnumValues(Area.class)));
                 break;
             case "date":
-                dateRangeComboBox.setModel(new DefaultComboBoxModel<>(new String[]{
-                    "within 1 week", "within 2 weeks", "within 1 month", "within 3 months"
-                }));
+                String[] dateRanges = new String[]{"", "within 1 week", "within 2 weeks", "within 1 month", "within 3 months"};
+                dateRangeComboBox.setModel(new DefaultComboBoxModel<>(dateRanges));
                 break;
             default:
                 // If filter type unknown, clear all filter value options
