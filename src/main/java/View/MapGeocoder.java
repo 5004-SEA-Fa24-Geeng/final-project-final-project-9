@@ -63,7 +63,7 @@ public class MapGeocoder {
                 "&limit=1" +
                 "&countrycodes=us"; // Restrict to US results
 
-//        System.out.println("Request URL: " + requestUrl);
+        System.out.println("Request URL: " + requestUrl);
 
         // Create the HTTP connection
         URL url = new URL(requestUrl);
@@ -77,7 +77,7 @@ public class MapGeocoder {
 
         // Get the response
         int responseCode = connection.getResponseCode();
-//        System.out.println("Response code: " + responseCode);
+        System.out.println("Response code: " + responseCode);
 
         if (responseCode == 200) {
             BufferedReader reader = new BufferedReader(
@@ -90,7 +90,7 @@ public class MapGeocoder {
             }
             reader.close();
 
-//            System.out.println("Response: " + response.toString());
+            System.out.println("Response: " + response.toString());
 
             // Parse the JSON response
             JSONArray jsonArray = new JSONArray(response.toString());
@@ -104,14 +104,14 @@ public class MapGeocoder {
 
                 // Verify the result is in Washington state
                 if (displayName.toLowerCase().contains("washington")) {
-//                    System.out.println("Successfully geocoded to: " + latitude + ", " + longitude);
+                    System.out.println("Successfully geocoded to: " + latitude + ", " + longitude);
                     return new GeoLocation(latitude, longitude, displayName);
                 } else {
-//                    System.out.println("Result not in Washington state: " + displayName);
+                    System.out.println("Result not in Washington state: " + displayName);
                     return null;
                 }
             } else {
-//                System.out.println("No results found for address");
+                System.out.println("No results found for address");
             }
         } else {
             System.out.println("HTTP request failed with response code: " + responseCode);
