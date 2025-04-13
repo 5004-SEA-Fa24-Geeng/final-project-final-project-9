@@ -99,6 +99,13 @@ public class AnimalFilter implements IAnimalFilter {
     }
 
     @Override
+    public List<IAnimal> filterOnArea(String filterStr) {
+        return filtered.stream()
+                .filter(animal -> animal.getArea().equalsIgnoreCase(filterStr))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<IAnimal> filterOnSeenDate(String filterStr) {
         long currentTime = System.currentTimeMillis();
         long timeRange = switch (filterStr.toLowerCase()) {
@@ -120,13 +127,6 @@ public class AnimalFilter implements IAnimalFilter {
                         return false;  // invalid date format
                     }
                 })
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<IAnimal> filterOnArea(String filterStr) {
-        return filtered.stream()
-                .filter(animal -> animal.getArea().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 

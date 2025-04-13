@@ -1,24 +1,14 @@
 package View;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -64,7 +54,7 @@ import Model.AnimalInfo.Gender;
 import Model.AnimalInfo.Pattern;
 import Model.AnimalInfo.Size;
 import Model.Animals.IAnimal;
-import Model.Sorts;
+
 
 public class View extends JFrame implements IView {
     private final IController controller;
@@ -754,9 +744,10 @@ public class View extends JFrame implements IView {
         String pattern = (String) patternComboBox.getSelectedItem();
         String color = (String) colorComboBox.getSelectedItem();
         String age = (String) ageComboBox.getSelectedItem();
-        String area = (String) cityComboBox.getSelectedItem();
+        String city = (String) cityComboBox.getSelectedItem();
         String dateRange = (String) dateRangeComboBox.getSelectedItem();
 
+        // Unfilter.
         controller.resetFilteredAnimals();
 
         // Apply filters in sequence
@@ -781,8 +772,8 @@ public class View extends JFrame implements IView {
         if (age != null && !age.isEmpty()) {
             controller.handleFilter("AGE", age);
         }
-        if (area != null && !area.isEmpty()) {
-            controller.handleFilter("AREA", area);
+        if (city != null && !city.isEmpty()) {
+            controller.handleFilter("AREA", city);
         }
         if (dateRange != null && !dateRange.isEmpty()) {
             controller.handleFilter("SEENDATE", dateRange);
@@ -806,7 +797,7 @@ public class View extends JFrame implements IView {
                 text.append("Breed: ").append(animal.getSpecies()).append(" | ");
                 text.append("Date: ").append(animal.getSeenDate()).append(" | ");
                 text.append("Time: ").append(animal.getTime()).append(" | ");
-                text.append("Area: ").append(animal.getArea()).append(" | ");
+                text.append("City: ").append(animal.getArea()).append(" | ");
                 text.append("Address: ").append(animal.getAddress());
                 label.setText(text.toString());
                 
@@ -934,31 +925,81 @@ public class View extends JFrame implements IView {
         Set<Waypoint> waypoints = new HashSet<>();
         for (IAnimal animal : animals) {
             try {
-                GeoPosition position = getGeoPosition(animal.getArea());
+                String fullAddress = animal.getAddress() + ", " + animal.getArea();
+                GeoPosition position = getGeoPosition(fullAddress);
                 waypoints.add(new DefaultWaypoint(position));
             } catch (Exception e) {
                 System.err.println("Error getting position for " + animal.getArea() + ": " + e.getMessage());
             }
         }
 
-        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
+        // Create a custom waypoint painter
+        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<Waypoint>() {
+            @Override
+            protected void doPaint(Graphics2D g, JXMapViewer map, int width, int height) {
+                // Set anti-aliasing for smoother drawing
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // For each waypoint, paint a custom marker
+                for (Waypoint wp : getWaypoints()) {
+                    Point2D point = map.getTileFactory().geoToPixel(
+                            wp.getPosition(), map.getZoom());
+
+                    // Set marker size
+                    int markerSize = 20; // Adjust size as needed
+                    int x = (int) (point.getX() - (double) markerSize / 2);
+                    int y = (int) (point.getY() - markerSize);
+
+                    // Draw red circle marker
+                    g.setColor(Color.RED); // Change color as needed
+                    g.fillOval(x, y, markerSize, markerSize);
+
+                    // Add border to the marker
+                    g.setColor(Color.RED);
+                    g.setStroke(new BasicStroke(2.0f));
+                    g.drawOval(x, y, markerSize, markerSize);
+
+                    // Optional: Add a drop shadow for better visibility
+                    g.setColor(new Color(0, 0, 0, 50));
+                    g.fillOval(x + 2, y + 2, markerSize, markerSize);
+                }
+            }
+        };
+
         waypointPainter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(waypointPainter);
     }
 
-    private GeoPosition getGeoPosition(String area) {
-        return switch (area) {
-            case "SEATTLE" -> new GeoPosition(47.6062, -122.3321);
-            case "BELLEVUE" -> new GeoPosition(47.6101, -122.2015);
-            case "REDMOND" -> new GeoPosition(47.6740, -122.1215);
-            case "KIRKLAND" -> new GeoPosition(47.6769, -122.2060);
-            case "EVERETT" -> new GeoPosition(47.9789, -122.2021);
-            case "TACOMA" -> new GeoPosition(47.2529, -122.4443);
-            case "RENTON" -> new GeoPosition(47.4829, -122.2171);
-            case "KENT" -> new GeoPosition(47.3809, -122.2348);
-            case "LYNNWOOD" -> new GeoPosition(47.8279, -122.3053);
-            case "BOTHELL" -> new GeoPosition(47.7601, -122.2054);
-            default -> new GeoPosition(47.6062, -122.3321); // Default to Seattle
-        };
+    /**
+     * Get the latitude and longitude of an animal's address.
+     * @param fullAddress the address of the animal
+     * @return the GeoPosition of the animal
+     */
+    private GeoPosition getGeoPosition(String fullAddress) {
+        try {
+            MapGeocoder.GeoLocation geoLocation = MapGeocoder.getCoordinates(fullAddress);
+            if (geoLocation != null) {
+                return new GeoPosition(geoLocation.getLatitude(), geoLocation.getLongitude());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
+//    private GeoPosition getGeoPosition(String area) {
+//        return switch (area) {
+//            case "SEATTLE" -> new GeoPosition(47.6062, -122.3321);
+//            case "BELLEVUE" -> new GeoPosition(47.6101, -122.2015);
+//            case "REDMOND" -> new GeoPosition(47.6740, -122.1215);
+//            case "KIRKLAND" -> new GeoPosition(47.6769, -122.2060);
+//            case "EVERETT" -> new GeoPosition(47.9789, -122.2021);
+//            case "TACOMA" -> new GeoPosition(47.2529, -122.4443);
+//            case "RENTON" -> new GeoPosition(47.4829, -122.2171);
+//            case "KENT" -> new GeoPosition(47.3809, -122.2348);
+//            case "LYNNWOOD" -> new GeoPosition(47.8279, -122.3053);
+//            case "BOTHELL" -> new GeoPosition(47.7601, -122.2054);
+//            default -> new GeoPosition(47.6062, -122.3321); // Default to Seattle
+//        };
+//    }
 }
