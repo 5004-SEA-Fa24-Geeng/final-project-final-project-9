@@ -94,6 +94,15 @@ public class Controller implements IController {
     }
 
     /**
+     * Resets all filters without updating the view.
+     * Used whenever filters apply to achieve the effect of unfilter.
+     */
+    @Override
+    public void resetFilteredAnimals() {
+        filter.reset();
+    }
+
+    /**
      * Displays the map view with filtered animals.
      */
     @Override

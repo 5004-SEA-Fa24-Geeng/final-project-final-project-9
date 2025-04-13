@@ -29,6 +29,13 @@ public interface IController {
      */
     void handleReset();
 
+
+    /**
+     * Resets all filters without updating the view.
+     * Used whenever filters apply to achieve the effect of unfilter.
+     */
+    void resetFilteredAnimals();
+
     /**
      * 处理地图显示请求
      */

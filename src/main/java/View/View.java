@@ -757,6 +757,8 @@ public class View extends JFrame implements IView {
         String area = (String) cityComboBox.getSelectedItem();
         String dateRange = (String) dateRangeComboBox.getSelectedItem();
 
+        controller.resetFilteredAnimals();
+
         // Apply filters in sequence
         if (type != null && !type.isEmpty()) {
             controller.handleFilter("TYPE", type);
