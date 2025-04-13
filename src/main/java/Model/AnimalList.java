@@ -21,45 +21,6 @@ public class AnimalList implements IAnimalList {
         animalList = reader.readAnimals();
     }
 
-    /**
-     * Load filtered animals from CSV file.
-     * @param filterCriteria the criteria to filter animals
-     */
-    @Override
-    public void loadFilteredAnimals(String filterCriteria) {
-        AnimalCSVReader reader = new AnimalCSVReader(DATABASE);
-        List<IAnimal> allAnimals = reader.readAnimals();
-        
-        // Clear current list
-        animalList.clear();
-        
-        // Add animals that match the filter criteria
-        for (IAnimal animal : allAnimals) {
-            if (matchesFilter(animal, filterCriteria)) {
-                animalList.add(animal);
-            }
-        }
-    }
-
-    /**
-     * Check if an animal matches the filter criteria.
-     * @param animal the animal to check
-     * @param criteria the filter criteria
-     * @return true if the animal matches the criteria
-     */
-    private boolean matchesFilter(IAnimal animal, String criteria) {
-        // Add your filter logic here
-        // For example:
-        return animal.getAnimalType().equalsIgnoreCase(criteria) ||
-               animal.getSpecies().equalsIgnoreCase(criteria) ||
-               animal.getAnimalSize().equalsIgnoreCase(criteria) ||
-               animal.getGender().equalsIgnoreCase(criteria) ||
-               animal.getPattern().equalsIgnoreCase(criteria) ||
-               animal.getColor().equalsIgnoreCase(criteria) ||
-               animal.getAge().equalsIgnoreCase(criteria) ||
-               animal.getArea().equalsIgnoreCase(criteria);
-    }
-
     @Override
     public List<IAnimal> getAnimals() {
         return animalList;

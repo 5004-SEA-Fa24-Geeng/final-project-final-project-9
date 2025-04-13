@@ -150,11 +150,7 @@ public class View extends JFrame implements IView {
             String sortOrder = (String) sortComboBox.getSelectedItem();
             if (sortOrder != null && !sortOrder.isEmpty()) {
                 boolean ascending = "Ascending".equals(sortOrder);
-                List<IAnimal> sortedAnimals = controller.getFilteredAnimals();
-                sortedAnimals = sortedAnimals.stream()
-                    .sorted(Sorts.sortByDate(ascending))
-                    .collect(Collectors.toList());
-                displayAnimals(sortedAnimals);
+                controller.handleSort(ascending);
             }
         });
 
@@ -646,7 +642,7 @@ public class View extends JFrame implements IView {
         dialog.add(ageComboBox);
         dialog.add(new JLabel("Date Seen (MM/DD/YYYY):"));
         dialog.add(dateField);
-        dialog.add(new JLabel("Time Seen:"));
+        dialog.add(new JLabel("Time Seen (HH:MM):"));
         dialog.add(timeField);
         dialog.add(new JLabel("City:"));
         dialog.add(cityComboBox);
@@ -789,9 +785,6 @@ public class View extends JFrame implements IView {
         if (dateRange != null && !dateRange.isEmpty()) {
             controller.handleFilter("SEENDATE", dateRange);
         }
-
-        // Load filtered animals through controller
-        controller.loadFilteredAnimals(type);
     }
 
     private class AnimalListCellRenderer extends DefaultListCellRenderer {

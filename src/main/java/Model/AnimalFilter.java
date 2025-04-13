@@ -132,14 +132,14 @@ public class AnimalFilter implements IAnimalFilter {
 
     @Override
     public void sortOnDate(boolean asc) {
-        filtered = new CopyOnWriteArrayList<>(filtered.stream()
+        filtered = filtered.stream()
                 .sorted(Sorts.sortByDate(asc))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     @Override
     public void reset() {
-        filtered = new CopyOnWriteArrayList<>(originalList.getAnimals());
+        filtered = List.copyOf(originalList.getAnimals());
     }
 
     /**
@@ -147,6 +147,6 @@ public class AnimalFilter implements IAnimalFilter {
      * @return 过滤后的动物列表
      */
     public List<IAnimal> getFilteredAnimals() {
-        return List.copyOf(filtered);
+        return filtered;
     }
 }

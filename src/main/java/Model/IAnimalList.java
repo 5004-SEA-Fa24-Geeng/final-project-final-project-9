@@ -39,9 +39,4 @@ public interface IAnimalList {
      */
     void write();
 
-    /**
-     * Load filtered animals from CSV file.
-     * @param filterCriteria the criteria to filter animals
-     */
-    void loadFilteredAnimals(String filterCriteria);
 }

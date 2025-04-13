@@ -184,15 +184,6 @@ public class Controller implements IController {
         updateView();
     }
 
-    /**
-     * Load filtered animals based on the filter criteria
-     * @param filterCriteria The filter criteria to apply
-     */
-    public void loadFilteredAnimals(String filterCriteria) {
-        model.loadFilteredAnimals(filterCriteria);
-        updateView();
-    }
-
     @Override
     public void exportData(String format) {
         try {
