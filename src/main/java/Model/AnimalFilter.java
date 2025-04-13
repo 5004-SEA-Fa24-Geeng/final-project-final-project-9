@@ -101,7 +101,11 @@ public class AnimalFilter implements IAnimalFilter {
     @Override
     public List<IAnimal> filterOnArea(String filterStr) {
         return filtered.stream()
-                .filter(animal -> animal.getArea().equalsIgnoreCase(filterStr))
+                .filter(animal -> {
+                    String animalArea = animal.getArea().trim().toUpperCase();
+                    String filterArea = filterStr.trim().toUpperCase();
+                    return animalArea.equals(filterArea);
+                })
                 .collect(Collectors.toList());
     }
 

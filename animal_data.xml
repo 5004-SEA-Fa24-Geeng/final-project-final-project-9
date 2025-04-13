@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animals>
+  <animal>
+    <type>Dog</type>
+    <breed>Pug</breed>
+    <size>Big</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Light</color>
+    <age>Old</age>
+    <date>1/22/2025</date>
+    <time>3:18</time>
+    <area> Tacoma</area>
+    <address>2743 Marina Way</address>
+    <locationDesc>Spotted in the alley behind restaurants</locationDesc>
+    <description>A gentle, hefty Pug was spotted sniffing around. It appeared to be a old unclear with light fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Alaskan Malamute</breed>
+    <size>Big</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Black</color>
+    <age>Baby</age>
+    <date>2/21/2025</date>
+    <time>10:51</time>
+    <area> Tacoma</area>
+    <address>6955 Autumn Ct</address>
+    <locationDesc>Spotted near the bus stop</locationDesc>
+    <description>A curious, large Alaskan Malamute was spotted sniffing around. It appeared to be a baby unclear with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Golden Retriever</breed>
+    <size>Medium</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>Brown</color>
+    <age>Baby</age>
+    <date>1/23/2025</date>
+    <time>0:35</time>
+    <area> Bellevue</area>
+    <address>2475 Main St</address>
+    <locationDesc>Spotted by the baseball field</locationDesc>
+    <description>A adorable, moderate Golden Retriever was spotted barking softly. She appeared to be a baby female with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Poodle</breed>
+    <size>Small</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Baby</age>
+    <date>2/25/2025</date>
+    <time>10:56</time>
+    <area> Tacoma</area>
+    <address>3678 Valley Rd</address>
+    <locationDesc>Spotted by the creek</locationDesc>
+    <description>A playful, petite Poodle was spotted looking for attention. She appeared to be a baby female with light fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Labrador</breed>
+    <size>Big</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Light</color>
+    <age>Young</age>
+    <date>3/24/2025</date>
+    <time>23:38</time>
+    <area> Kent</area>
+    <address>5314 Harbor Dr</address>
+    <locationDesc>Spotted by the playground</locationDesc>
+    <description>A energetic, hefty Labrador was spotted looking for attention. It appeared to be a young unclear with light fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Labrador</breed>
+    <size>Big</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Black</color>
+    <age>Baby</age>
+    <date>1/17/2025</date>
+    <time>8:09</time>
+    <area> Kirkland</area>
+    <address>3682 Bay St</address>
+    <locationDesc>Spotted near the pond</locationDesc>
+    <description>A playful, impressive Labrador was spotted barking softly. He appeared to be a baby male with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Dachshund</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Dark</color>
+    <age>Baby</age>
+    <date>1/7/2025</date>
+    <time>2:49</time>
+    <area> Tacoma</area>
+    <address>526 Autumn Ct</address>
+    <locationDesc>Spotted beside the walking trail</locationDesc>
+    <description>A playful, moderate Dachshund was spotted barking softly. It appeared to be a baby unclear with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Shiba Inu</breed>
+    <size>Small</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Black</color>
+    <age>Young</age>
+    <date>1/22/2025</date>
+    <time>15:56</time>
+    <area> Everett</area>
+    <address>5338 Spring St</address>
+    <locationDesc>Spotted behind the local coffee shop</locationDesc>
+    <description>A energetic, tiny Shiba Inu was spotted wagging its tail. He appeared to be a young male with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Golden Retriever</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Brown</color>
+    <age>Young</age>
+    <date>2/19/2025</date>
+    <time>21:17</time>
+    <area> Renton</area>
+    <address>7395 Lake Blvd</address>
+    <locationDesc>Spotted near the entrance of the park</locationDesc>
+    <description>A energetic, standard Golden Retriever was spotted barking softly. It appeared to be a young unclear with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Labrador</breed>
+    <size>Small</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Brown</color>
+    <age>Unclear</age>
+    <date>1/11/2025</date>
+    <time>21:21</time>
+    <area> Redmond</area>
+    <address>9003 Mountain View Dr</address>
+    <locationDesc>Spotted near the bus stop</locationDesc>
+    <description>A peculiar, pocket-sized Labrador was spotted wagging its tail. He appeared to be a unclear male with light fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Chihuahua</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Brown</color>
+    <age>Baby</age>
+    <date>2/20/2025</date>
+    <time>18:38</time>
+    <area> Renton</area>
+    <address>7163 Pine St</address>
+    <locationDesc>Spotted under a park bench</locationDesc>
+    <description>A tiny, standard Chihuahua was spotted barking softly. He appeared to be a baby male with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Alaskan Malamute</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Mix</color>
+    <age>Baby</age>
+    <date>1/17/2025</date>
+    <time>21:37</time>
+    <area> Seattle</area>
+    <address>9950 Highland Ave</address>
+    <locationDesc>Spotted near the entrance of the park</locationDesc>
+    <description>A playful, standard Alaskan Malamute was spotted sniffing around. It appeared to be a baby unclear with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Alaskan Malamute</breed>
+    <size>Big</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Mix</color>
+    <age>Baby</age>
+    <date>3/30/2025</date>
+    <time>2:13</time>
+    <area> Lynnwood</area>
+    <address>2505 Harbor Dr</address>
+    <locationDesc>Spotted under the bridge</locationDesc>
+    <description>A playful, substantial Alaskan Malamute was spotted looking for attention. It appeared to be a baby unclear with light fur.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Abyssinian</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Orange</color>
+    <age>Unclear</age>
+    <date>2/23/2025</date>
+    <time>6:58</time>
+    <area> Kent</area>
+    <address>395 River Rd</address>
+    <locationDesc>Spotted near the community garden</locationDesc>
+    <description>A mysterious, average-sized Abyssinian was spotted purring loudly. He had a solid light coat and appeared to be a unclear male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Burmese</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Tabby</pattern>
+    <color>Mix</color>
+    <age>Young</age>
+    <date>3/13/2025</date>
+    <time>6:09</time>
+    <area> Lynnwood</area>
+    <address>8691 Cedar Rd</address>
+    <locationDesc>Spotted near the community garden</locationDesc>
+    <description>A friendly, moderate Burmese was spotted meowing softly. It had a distinctive dark-colored tabby pattern and seemed to be a young unclear.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>British Shorthair</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Tabby</pattern>
+    <color>Black</color>
+    <age>Baby</age>
+    <date>2/28/2025</date>
+    <time>12:17</time>
+    <area> Kirkland</area>
+    <address>3301 Valley Rd</address>
+    <locationDesc>Spotted near the entrance of the park</locationDesc>
+    <description>A playful, average-sized British Shorthair was spotted meowing softly. He had a distinctive light-colored tabby pattern and seemed to be a baby male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Persian</breed>
+    <size>Small</size>
+    <gender>Male</gender>
+    <pattern>Tabby</pattern>
+    <color>White</color>
+    <age>Young</age>
+    <date>2/1/2025</date>
+    <time>4:00</time>
+    <area> Everett</area>
+    <address>2069 Harbor Dr</address>
+    <locationDesc>Spotted by the community center</locationDesc>
+    <description>A friendly, tiny Persian was spotted purring loudly. He had a distinctive light-colored tabby pattern and seemed to be a young male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Maine Coon</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Tabby</pattern>
+    <color>Gray</color>
+    <age>Old</age>
+    <date>1/21/2025</date>
+    <time>9:18</time>
+    <area> Bothell</area>
+    <address>7248 Valley Rd</address>
+    <locationDesc>Spotted near the community garden</locationDesc>
+    <description>A dignified, average-sized Maine Coon was spotted purring loudly. He had a distinctive multi-colored tabby pattern and seemed to be a old male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>British Shorthair</breed>
+    <size>Small</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>Gray</color>
+    <age>Young</age>
+    <date>4/11/2025</date>
+    <time>16:04</time>
+    <area> Redmond</area>
+    <address>8715 Cedar Rd</address>
+    <locationDesc>Spotted near the dog park</locationDesc>
+    <description>A energetic, petite British Shorthair was spotted purring loudly. She had a solid dark coat and appeared to be a young female.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Sphynx</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Pink</color>
+    <age>Young</age>
+    <date>3/2/2025</date>
+    <time>8:50</time>
+    <area> Everett</area>
+    <address>2355 Summer Rd</address>
+    <locationDesc>Spotted near the school</locationDesc>
+    <description>A active, standard Sphynx was spotted grooming itself. He had a distinctive light-colored tabby pattern and seemed to be a young male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Scottish Fold</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Gray</color>
+    <age>Old</age>
+    <date>3/11/2025</date>
+    <time>3:00</time>
+    <area> Bothell</area>
+    <address>2141 Marina Way</address>
+    <locationDesc>Spotted near the dog park</locationDesc>
+    <description>A wise, standard Scottish Fold was spotted meowing softly. He had a solid light coat and appeared to be a old male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Bengal</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Mix</pattern>
+    <color>Gray</color>
+    <age>Baby</age>
+    <date>1/9/2025</date>
+    <time>11:02</time>
+    <area> Renton</area>
+    <address>5197 Maple Dr</address>
+    <locationDesc>Spotted near the dog park</locationDesc>
+    <description>A tiny, standard Bengal was spotted meowing softly. It had a solid dark coat and appeared to be a baby unclear.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Siamese</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Brown</color>
+    <age>Unclear</age>
+    <date>1/15/2025</date>
+    <time>23:43</time>
+    <area> Lynnwood</area>
+    <address>9331 Summer Rd</address>
+    <locationDesc>Spotted under a picnic table</locationDesc>
+    <description>A peculiar, average-sized Siamese was spotted grooming itself. He had a solid dark coat and appeared to be a unclear male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Russian Blue</breed>
+    <size>Big</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Gray</color>
+    <age>Young</age>
+    <date>3/7/2025</date>
+    <time>2:06</time>
+    <area> Redmond</area>
+    <address>3149 Ocean View</address>
+    <locationDesc>Spotted near the public library</locationDesc>
+    <description>A energetic, impressive Russian Blue was spotted grooming itself. He had a distinctive multi-colored tabby pattern and seemed to be a young male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Russian Blue</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Gray</color>
+    <age>Old</age>
+    <date>1/6/2025</date>
+    <time>15:10</time>
+    <area> Redmond</area>
+    <address>5010 Bay St</address>
+    <locationDesc>Spotted beside the walking trail</locationDesc>
+    <description>A calm, moderate Russian Blue was spotted grooming itself. He had a solid light coat and appeared to be a old male.</description>
+  </animal>
+  <animal>
+    <type>Cat</type>
+    <breed>Maine Coon</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Black</color>
+    <age>Young</age>
+    <date>4/6/2025</date>
+    <time>3:06</time>
+    <area> Kirkland</area>
+    <address>8021 Autumn Ct</address>
+    <locationDesc>Spotted outside the shopping mall</locationDesc>
+    <description>A active, average-sized Maine Coon was spotted watching everything intently. He had a distinctive light-colored tabby pattern and seemed to be a young male.</description>
+  </animal>
+  <animal>
+    <type>Bird</type>
+    <breed>Lovebird</breed>
+    <size>Small</size>
+    <gender>Unclear</gender>
+    <pattern>Tabby</pattern>
+    <color>Mix</color>
+    <age>Baby</age>
+    <date>1/10/2025</date>
+    <time>20:06</time>
+    <area> Lynnwood</area>
+    <address>8280 Cedar Rd</address>
+    <locationDesc>Spotted near the pond</locationDesc>
+    <description>A adorable, petite Lovebird was spotted hopping around. It had light feathers and seemed to be a baby unclear.</description>
+  </animal>
+  <animal>
+    <type>Bird</type>
+    <breed>Cockatiel</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Yellow</color>
+    <age>Young</age>
+    <date>3/19/2025</date>
+    <time>9:27</time>
+    <area> Tacoma</area>
+    <address>6982 Forest Way</address>
+    <locationDesc>Spotted in the parking lot of a grocery store</locationDesc>
+    <description>A energetic, moderate Cockatiel was spotted singing beautifully. It had light feathers and seemed to be a young unclear.</description>
+  </animal>
+  <animal>
+    <type>Bird</type>
+    <breed>Cockatiel</breed>
+    <size>Small</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Yellow</color>
+    <age>Unclear</age>
+    <date>1/8/2025</date>
+    <time>6:36</time>
+    <area> Kirkland</area>
+    <address>8935 Summer Rd</address>
+    <locationDesc>Spotted by the waterfront</locationDesc>
+    <description>A mysterious, pocket-sized Cockatiel was spotted chirping merrily. He had dark feathers and seemed to be a unclear male.</description>
+  </animal>
+  <animal>
+    <type>Bird</type>
+    <breed>Parakeet</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Mix</pattern>
+    <color>Light</color>
+    <age>Young</age>
+    <date>2/16/2025</date>
+    <time>20:54</time>
+    <area> Kent</area>
+    <address>6367 Lighthouse Pt</address>
+    <locationDesc>Spotted by the creek</locationDesc>
+    <description>A spirited, standard Parakeet was spotted hopping around. He had dark feathers and seemed to be a young male.</description>
+  </animal>
+  <animal>
+    <type>Rabbit</type>
+    <breed>Mini Rex</breed>
+    <size>Big</size>
+    <gender>Male</gender>
+    <pattern>Tabby</pattern>
+    <color>Mix</color>
+    <age>Old</age>
+    <date>3/26/2025</date>
+    <time>23:53</time>
+    <area> Renton</area>
+    <address>8803 Winter Way</address>
+    <locationDesc>Spotted near the school</locationDesc>
+    <description>A calm, large Mini Rex was spotted hopping around. He had a solid dark coat and appeared to be a old male.</description>
+  </animal>
+  <animal>
+    <type>Rabbit</type>
+    <breed>Mini Rex</breed>
+    <size>Big</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>Gray</color>
+    <age>Old</age>
+    <date>1/14/2025</date>
+    <time>19:18</time>
+    <area> Lynnwood</area>
+    <address>9223 Oak Ave</address>
+    <locationDesc>Spotted beside the walking trail</locationDesc>
+    <description>A calm, hefty Mini Rex was spotted munching on greens. She had a solid light coat and appeared to be a old female.</description>
+  </animal>
+  <animal>
+    <type>Rabbit</type>
+    <breed>Lionhead</breed>
+    <size>Big</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Brown</color>
+    <age>Old</age>
+    <date>1/16/2025</date>
+    <time>16:31</time>
+    <area> Everett</area>
+    <address>2324 Cedar Rd</address>
+    <locationDesc>Spotted by the fire station</locationDesc>
+    <description>A wise, hefty Lionhead was spotted munching on greens. It had a solid light coat and appeared to be a old unclear.</description>
+  </animal>
+  <animal>
+    <type>Rabbit</type>
+    <breed>Lionhead</breed>
+    <size>Big</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Light</color>
+    <age>Young</age>
+    <date>3/26/2025</date>
+    <time>5:55</time>
+    <area> Everett</area>
+    <address>1554 Park Ave</address>
+    <locationDesc>Spotted behind the local coffee shop</locationDesc>
+    <description>A friendly, large Lionhead was spotted twitching its nose. He had a solid light coat and appeared to be a young male.</description>
+  </animal>
+  <animal>
+    <type>Hamster</type>
+    <breed>Dwarf Campbell</breed>
+    <size>Small</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>Gray</color>
+    <age>Young</age>
+    <date>1/30/2025</date>
+    <time>22:12</time>
+    <area> Kent</area>
+    <address>5566 Bay St</address>
+    <locationDesc>Spotted by the playground</locationDesc>
+    <description>A energetic, tiny Dwarf Campbell was spotted digging. She appeared to be a young female with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Hamster</type>
+    <breed>Syrian</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Baby</age>
+    <date>3/7/2025</date>
+    <time>23:16</time>
+    <area> Tacoma</area>
+    <address>6469 Forest Way</address>
+    <locationDesc>Spotted near the dog park</locationDesc>
+    <description>A curious, average-sized Syrian was spotted stuffing its cheeks. It appeared to be a baby unclear with light fur.</description>
+  </animal>
+  <animal>
+    <type>Hamster</type>
+    <breed>Roborovski</breed>
+    <size>Medium</size>
+    <gender>Male</gender>
+    <pattern>Tabby</pattern>
+    <color>Mix</color>
+    <age>Young</age>
+    <date>4/4/2025</date>
+    <time>0:17</time>
+    <area> Seattle</area>
+    <address>2175 Summer Rd</address>
+    <locationDesc>Spotted under a park bench</locationDesc>
+    <description>A spirited, moderate Roborovski was spotted digging. He appeared to be a young male with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Hamster</type>
+    <breed>Roborovski</breed>
+    <size>Small</size>
+    <gender>Unclear</gender>
+    <pattern>Tabby</pattern>
+    <color>Light</color>
+    <age>Baby</age>
+    <date>2/16/2025</date>
+    <time>9:25</time>
+    <area> Everett</area>
+    <address>3359 Winter Way</address>
+    <locationDesc>Spotted under the bridge</locationDesc>
+    <description>A curious, petite Roborovski was spotted cleaning its whiskers. It appeared to be a baby unclear with light fur.</description>
+  </animal>
+  <animal>
+    <type>Hedgehog</type>
+    <breed>African Pygmy</breed>
+    <size>Small</size>
+    <gender>Unclear</gender>
+    <pattern>Tabby</pattern>
+    <color>Brown</color>
+    <age>Young</age>
+    <date>3/22/2025</date>
+    <time>7:33</time>
+    <area> Kirkland</area>
+    <address>5064 Pine St</address>
+    <locationDesc>Spotted under the bridge</locationDesc>
+    <description>A active, pocket-sized African Pygmy was spotted exploring cautiously. It had dark spines and appeared to be a young unclear.</description>
+  </animal>
+  <animal>
+    <type>Hedgehog</type>
+    <breed>African Pygmy</breed>
+    <size>Big</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>Black</color>
+    <age>Baby</age>
+    <date>3/4/2025</date>
+    <time>19:35</time>
+    <area> Bellevue</area>
+    <address>808 Lake Blvd</address>
+    <locationDesc>Spotted near the bus stop</locationDesc>
+    <description>A adorable, hefty African Pygmy was spotted foraging for food. He had dark spines and appeared to be a baby male.</description>
+  </animal>
+  <animal>
+    <type>Hedgehog</type>
+    <breed>African Pygmy</breed>
+    <size>Big</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>Light</color>
+    <age>Old</age>
+    <date>2/22/2025</date>
+    <time>6:39</time>
+    <area> Lynnwood</area>
+    <address>2565 Sunset Blvd</address>
+    <locationDesc>Spotted beside the walking trail</locationDesc>
+    <description>A calm, hefty African Pygmy was spotted exploring cautiously. She had light spines and appeared to be a old female.</description>
+  </animal>
+  <animal>
+    <type>Hedgehog</type>
+    <breed>Long-eared</breed>
+    <size>Big</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Baby</age>
+    <date>2/17/2025</date>
+    <time>6:15</time>
+    <area> Kirkland</area>
+    <address>3760 Mountain View Dr</address>
+    <locationDesc>Spotted by the baseball field</locationDesc>
+    <description>A curious, substantial Long-eared was spotted exploring cautiously. It had dark spines and appeared to be a baby unclear.</description>
+  </animal>
+  <animal>
+    <type>Duck</type>
+    <breed>Pekin</breed>
+    <size>Small</size>
+    <gender>Male</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Baby</age>
+    <date>3/16/2025</date>
+    <time>13:41</time>
+    <area> Kent</area>
+    <address>2318 Autumn Ct</address>
+    <locationDesc>Spotted near the bus stop</locationDesc>
+    <description>A tiny, petite Pekin was spotted preening its feathers. He had light feathers and seemed to be a baby male.</description>
+  </animal>
+  <animal>
+    <type>Duck</type>
+    <breed>Pekin</breed>
+    <size>Medium</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Young</age>
+    <date>3/30/2025</date>
+    <time>9:45</time>
+    <area> Lynnwood</area>
+    <address>1878 Spring St</address>
+    <locationDesc>Spotted behind the local coffee shop</locationDesc>
+    <description>A spirited, standard Pekin was spotted looking for water. She had dark feathers and seemed to be a young female.</description>
+  </animal>
+  <animal>
+    <type>Duck</type>
+    <breed>Pekin</breed>
+    <size>Small</size>
+    <gender>Female</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Unclear</age>
+    <date>3/11/2025</date>
+    <time>21:45</time>
+    <area> Seattle</area>
+    <address>9139 Maple Dr</address>
+    <locationDesc>Spotted by the waterfront</locationDesc>
+    <description>A mysterious, pocket-sized Pekin was spotted preening its feathers. She had light feathers and seemed to be a unclear female.</description>
+  </animal>
+  <animal>
+    <type>Duck</type>
+    <breed>Indian Runner</breed>
+    <size>Small</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Baby</age>
+    <date>2/5/2025</date>
+    <time>8:04</time>
+    <area> Kent</area>
+    <address>2448 Oak Ave</address>
+    <locationDesc>Spotted near the pond</locationDesc>
+    <description>A adorable, pocket-sized Indian Runner was spotted looking for water. It had light feathers and seemed to be a baby unclear.</description>
+  </animal>
+  <animal>
+    <type>Goose</type>
+    <breed>Snow</breed>
+    <size>Big</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>White</color>
+    <age>Baby</age>
+    <date>2/18/2025</date>
+    <time>11:38</time>
+    <area> Seattle</area>
+    <address>534 Meadow Ln</address>
+    <locationDesc>Spotted under a picnic table</locationDesc>
+    <description>A tiny, substantial Snow was spotted stretching its wings. It had dark feathers and seemed to be a baby unclear.</description>
+  </animal>
+  <animal>
+    <type>Goose</type>
+    <breed>Greylag</breed>
+    <size>Small</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Black</color>
+    <age>Baby</age>
+    <date>3/3/2025</date>
+    <time>20:18</time>
+    <area> Redmond</area>
+    <address>425 Park Ave</address>
+    <locationDesc>Spotted in the alley behind restaurants</locationDesc>
+    <description>A curious, compact Greylag was spotted watching vigilantly. It had dark feathers and seemed to be a baby unclear.</description>
+  </animal>
+  <animal>
+    <type>Goose</type>
+    <breed>Egyptian</breed>
+    <size>Big</size>
+    <gender>Male</gender>
+    <pattern>Tabby</pattern>
+    <color>Mix</color>
+    <age>Unclear</age>
+    <date>2/17/2025</date>
+    <time>15:43</time>
+    <area> Lynnwood</area>
+    <address>8781 River Rd</address>
+    <locationDesc>Spotted near the train tracks</locationDesc>
+    <description>A mysterious, hefty Egyptian was spotted honking loudly. He had dark feathers and seemed to be a unclear male.</description>
+  </animal>
+  <animal>
+    <type>Goose</type>
+    <breed>Egyptian</breed>
+    <size>Small</size>
+    <gender>Male</gender>
+    <pattern>Tabby</pattern>
+    <color>Mix</color>
+    <age>Old</age>
+    <date>4/2/2025</date>
+    <time>15:26</time>
+    <area> Everett</area>
+    <address>9709 Lake Blvd</address>
+    <locationDesc>Spotted under a large oak tree</locationDesc>
+    <description>A gentle, tiny Egyptian was spotted stretching its wings. He had light feathers and seemed to be a old male.</description>
+  </animal>
+</animals>

@@ -111,7 +111,7 @@ public class View extends JFrame implements IView {
         reportButton = new JButton("Report Animal");
         mapViewer = new JXMapViewer();
         sortComboBox = new JComboBox<>(new String[]{"", "Ascending", "Descending"});
-        sortButton = new JButton("Sort by Date");
+        sortButton = new JButton("Sort");
         //addSelectedButton = new JButton("Add Selected to List");
         selectedAnimals = new HashSet<>();
 
@@ -404,36 +404,39 @@ public class View extends JFrame implements IView {
             filterPanel.add(filterRows[i]);
         }
 
-        // Add sort components to filter panel
+        // Add buttons with left alignment and minimal spacing
+        filterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        resetButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        filterPanel.add(filterButton);
+        filterPanel.add(resetButton);
+        
+        // Add sort components to filter panel after reset button
         JPanel sortPanel = new JPanel();
         sortPanel.setLayout(new BoxLayout(sortPanel, BoxLayout.Y_AXIS));
         sortPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        sortPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除边距
         
         JLabel sortLabel = new JLabel("Sort by Date:");
         sortLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         sortComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         sortComboBox.setMaximumSize(new Dimension(200, sortComboBox.getPreferredSize().height));
+        sortButton.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         sortPanel.add(sortLabel);
         sortPanel.add(sortComboBox);
         sortPanel.add(sortButton);
         filterPanel.add(sortPanel);
 
-        // Add buttons with left alignment
-        filterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        resetButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        filterPanel.add(filterButton);
-        filterPanel.add(resetButton);
-
         // Add export functionality
         JPanel exportPanel = new JPanel();
         exportPanel.setLayout(new BoxLayout(exportPanel, BoxLayout.Y_AXIS));
         exportPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        exportPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除边距
         
         JLabel exportLabel = new JLabel("Export as:");
         exportLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JComboBox<String> exportFormatComboBox = new JComboBox<>(new String[]{"XML", "JSON", "TXT", "CSV"});
+        JComboBox<String> exportFormatComboBox = new JComboBox<>(new String[]{"", "XML", "JSON", "TXT", "CSV"});
         exportFormatComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         exportFormatComboBox.setMaximumSize(new Dimension(200, exportFormatComboBox.getPreferredSize().height));
         
@@ -442,7 +445,7 @@ public class View extends JFrame implements IView {
         
         exportButton.addActionListener(e -> {
             String format = (String) exportFormatComboBox.getSelectedItem();
-            if (format != null) {
+            if (format != null && !format.isEmpty()) {
                 controller.exportData(format.toLowerCase());
             }
         });
@@ -451,6 +454,46 @@ public class View extends JFrame implements IView {
         exportPanel.add(exportFormatComboBox);
         exportPanel.add(exportButton);
         filterPanel.add(exportPanel);
+        
+        // Set minimal spacing between components
+        for (Component comp : filterPanel.getComponents()) {
+            if (comp instanceof JPanel) {
+                ((JPanel) comp).setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除所有面板的边距
+            }
+        }
+        
+        // 设置所有按钮的边距为0
+        filterButton.setMargin(new Insets(0, 0, 0, 0));
+        resetButton.setMargin(new Insets(0, 0, 0, 0));
+        sortButton.setMargin(new Insets(0, 0, 0, 0));
+        exportButton.setMargin(new Insets(0, 0, 0, 0));
+        
+        // 设置所有标签的边距为0
+        sortLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        exportLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        
+        // 设置所有下拉框的边距为0
+        sortComboBox.setMaximumSize(new Dimension(200, sortComboBox.getPreferredSize().height));
+        exportFormatComboBox.setMaximumSize(new Dimension(200, exportFormatComboBox.getPreferredSize().height));
+        
+        // 设置所有面板的布局间距为0
+        filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
+        sortPanel.setLayout(new BoxLayout(sortPanel, BoxLayout.Y_AXIS));
+        exportPanel.setLayout(new BoxLayout(exportPanel, BoxLayout.Y_AXIS));
+        
+        // 设置所有组件的首选大小为最小
+        filterButton.setPreferredSize(new Dimension(100, 20));
+        resetButton.setPreferredSize(new Dimension(100, 20));
+        sortButton.setPreferredSize(new Dimension(100, 20));
+        exportButton.setPreferredSize(new Dimension(100, 20));
+        
+        // 设置所有标签的首选大小为最小
+        sortLabel.setPreferredSize(new Dimension(100, 15));
+        exportLabel.setPreferredSize(new Dimension(100, 15));
+        
+        // 设置所有下拉框的首选大小为最小
+        sortComboBox.setPreferredSize(new Dimension(200, 20));
+        exportFormatComboBox.setPreferredSize(new Dimension(200, 20));
     }
 
     private String[] combineArrays(String[] first, String[] second) {
@@ -477,9 +520,23 @@ public class View extends JFrame implements IView {
                 case "DUCK" -> getEnumValues(Ducks.class);
                 default -> null;
             };
-            for (String breed : breeds) {
-                breedComboBox.addItem(breed);
+            
+            // 保持下拉框的大小不变
+            Dimension originalSize = breedComboBox.getPreferredSize();
+            
+            if (breeds != null) {
+                for (String breed : breeds) {
+                    breedComboBox.addItem(breed);
+                }
             }
+            
+            // 恢复下拉框的大小
+            breedComboBox.setPreferredSize(originalSize);
+            breedComboBox.setMaximumSize(new Dimension(200, originalSize.height));
+            
+            // 强制重新验证和重绘
+            breedComboBox.revalidate();
+            breedComboBox.repaint();
         }
     }
 
@@ -773,7 +830,7 @@ public class View extends JFrame implements IView {
             controller.handleFilter("AGE", age);
         }
         if (city != null && !city.isEmpty()) {
-            controller.handleFilter("AREA", city);
+            controller.handleFilter("AREA", city.toUpperCase());
         }
         if (dateRange != null && !dateRange.isEmpty()) {
             controller.handleFilter("SEENDATE", dateRange);
