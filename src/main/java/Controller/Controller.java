@@ -174,13 +174,13 @@ public class Controller implements IController {
                 animal.getPattern(),
                 animal.getColor(),
                 animal.getAge(),
-                animal.getSeenDate(),
-                animal.getTime(),
                 animal.getAddress(),
                 animal.getArea(),
-                animal.getLocDesc(),
-                animal.getDescription()
-        );
+                animal.getTime(),
+                animal.getSeenDate(),
+                animal.getDescription(),
+                animal.getLocDesc()
+                );
         updateView();
     }
 
