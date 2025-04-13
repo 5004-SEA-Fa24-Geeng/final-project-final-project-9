@@ -8,13 +8,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import Model.AnimalList;
 import Model.Animals.IAnimal;
 import Model.IAnimalList;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class MapGeocoder {
 
@@ -44,15 +44,26 @@ public class MapGeocoder {
     }
 
     public static GeoLocation getCoordinates(String address) throws IOException {
+//        System.out.println("Attempting to geocode address: " + address);
+        
+        // Add Washington state to the address if not already present
+        String searchAddress = address;
+        if (!address.toLowerCase().contains("washington")) {
+            searchAddress = address + ", Washington, USA";
+        }
+        
         // URL encode the address
-        String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8);
+        String encodedAddress = URLEncoder.encode(searchAddress, StandardCharsets.UTF_8);
 
         // Create the URL for the Nominatim API request
         String requestUrl = NOMINATIM_API +
                 "?q=" + encodedAddress +
                 "&format=json" +
                 "&addressdetails=1" +
-                "&limit=1";
+                "&limit=1" +
+                "&countrycodes=us"; // Restrict to US results
+
+//        System.out.println("Request URL: " + requestUrl);
 
         // Create the HTTP connection
         URL url = new URL(requestUrl);
@@ -66,6 +77,7 @@ public class MapGeocoder {
 
         // Get the response
         int responseCode = connection.getResponseCode();
+//        System.out.println("Response code: " + responseCode);
 
         if (responseCode == 200) {
             BufferedReader reader = new BufferedReader(
@@ -78,6 +90,8 @@ public class MapGeocoder {
             }
             reader.close();
 
+//            System.out.println("Response: " + response.toString());
+
             // Parse the JSON response
             JSONArray jsonArray = new JSONArray(response.toString());
 
@@ -88,7 +102,16 @@ public class MapGeocoder {
                 double longitude = result.getDouble("lon");
                 String displayName = result.getString("display_name");
 
-                return new GeoLocation(latitude, longitude, displayName);
+                // Verify the result is in Washington state
+                if (displayName.toLowerCase().contains("washington")) {
+//                    System.out.println("Successfully geocoded to: " + latitude + ", " + longitude);
+                    return new GeoLocation(latitude, longitude, displayName);
+                } else {
+//                    System.out.println("Result not in Washington state: " + displayName);
+                    return null;
+                }
+            } else {
+//                System.out.println("No results found for address");
             }
         } else {
             System.out.println("HTTP request failed with response code: " + responseCode);

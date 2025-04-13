@@ -1,19 +1,32 @@
 package View;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -27,14 +40,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.ListSelectionModel;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 
-import Model.AnimalInfo.Species.*;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -53,6 +63,14 @@ import Model.AnimalInfo.Area;
 import Model.AnimalInfo.Gender;
 import Model.AnimalInfo.Pattern;
 import Model.AnimalInfo.Size;
+import Model.AnimalInfo.Species.Birds;
+import Model.AnimalInfo.Species.Cats;
+import Model.AnimalInfo.Species.Dogs;
+import Model.AnimalInfo.Species.Ducks;
+import Model.AnimalInfo.Species.Geese;
+import Model.AnimalInfo.Species.Hamsters;
+import Model.AnimalInfo.Species.Hedgehogs;
+import Model.AnimalInfo.Species.Rabbits;
 import Model.Animals.IAnimal;
 
 
@@ -83,6 +101,7 @@ public class View extends JFrame implements IView {
     private final JButton sortButton;
     //private final JButton addSelectedButton;
     private final Set<IAnimal> selectedAnimals;
+    private final Map<String, GeoPosition> geocodingCache = new HashMap<>();
 
     public View(IController controller) {
         this.controller = controller;
@@ -131,6 +150,14 @@ public class View extends JFrame implements IView {
         tabbedPane.addTab("Map View", mapPanel);
         add(tabbedPane, BorderLayout.CENTER);
         add(reportButton, BorderLayout.NORTH);
+
+        // Add tab change listener
+        tabbedPane.addChangeListener(e -> {
+            if (tabbedPane.getSelectedIndex() == 1) { // Map tab is selected
+                System.out.println("Switching to map tab");
+                controller.handleMapDisplay();
+            }
+        });
 
         // Add action listeners
         reportButton.addActionListener(e -> showReportDialog());
@@ -958,73 +985,122 @@ public class View extends JFrame implements IView {
 
 
     private void initializeMapPanel() {
+        System.out.println("Initializing map panel");
+        
         // Set up map
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapViewer.setTileFactory(tileFactory);
 
-        // Set initial map position
+        // Set initial map position to Seattle, Washington
         GeoPosition seattle = new GeoPosition(47.6062, -122.3321);
-        mapViewer.setZoom(7);
-        mapViewer.setAddressLocation(seattle);
-
+        System.out.println("Setting initial map position to: " + seattle.getLatitude() + ", " + seattle.getLongitude());
+        
+        // Set zoom level and center
+        mapViewer.setZoom(8); // Zoomed out to show more of Washington state
+        mapViewer.setCenterPosition(seattle);
+        
         // Add mouse controls
         MouseInputListener mia = new PanMouseInputListener(mapViewer);
         mapViewer.addMouseListener(mia);
         mapViewer.addMouseMotionListener(mia);
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCenter(mapViewer));
 
+        // Set map viewer size
+        mapViewer.setPreferredSize(new Dimension(800, 600));
+        
+        // Add map viewer to panel
         mapPanel.add(mapViewer, BorderLayout.CENTER);
+        
+        // Force layout update
+        mapPanel.revalidate();
+        mapPanel.repaint();
+        
+        System.out.println("Map panel initialization complete");
     }
 
     @Override
     public void displayMap(List<IAnimal> animals) {
+        System.out.println("View: Displaying map with " + animals.size() + " animals");
+        
+        // Clear existing waypoints
         Set<Waypoint> waypoints = new HashSet<>();
+        
+        // Create waypoints for each animal
         for (IAnimal animal : animals) {
             try {
                 String fullAddress = animal.getAddress() + ", " + animal.getArea();
+                System.out.println("View: Processing animal at address: " + fullAddress);
+                
                 GeoPosition position = getGeoPosition(fullAddress);
-                waypoints.add(new DefaultWaypoint(position));
+                if (position != null) {
+                    System.out.println("View: Successfully got coordinates: " + position.getLatitude() + ", " + position.getLongitude());
+                    Waypoint waypoint = new DefaultWaypoint(position);
+                    waypoints.add(waypoint);
+                } else {
+                    System.out.println("View: Failed to get coordinates for address: " + fullAddress);
+                }
             } catch (Exception e) {
-                System.err.println("Error getting position for " + animal.getArea() + ": " + e.getMessage());
+                System.out.println("View: Error processing animal: " + e.getMessage());
+                e.printStackTrace();
             }
         }
-
-        // Create a custom waypoint painter
-        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<Waypoint>() {
+        
+        System.out.println("View: Created " + waypoints.size() + " waypoints");
+        
+        // Create a waypoint painter with a custom renderer
+        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>() {
             @Override
             protected void doPaint(Graphics2D g, JXMapViewer map, int width, int height) {
-                // Set anti-aliasing for smoother drawing
-                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                // For each waypoint, paint a custom marker
-                for (Waypoint wp : getWaypoints()) {
-                    Point2D point = map.getTileFactory().geoToPixel(
-                            wp.getPosition(), map.getZoom());
-
-                    // Set marker size
-                    int markerSize = 20; // Adjust size as needed
-                    int x = (int) (point.getX() - (double) markerSize / 2);
-                    int y = (int) (point.getY() - markerSize);
-
-                    // Draw red circle marker
-                    g.setColor(Color.RED); // Change color as needed
-                    g.fillOval(x, y, markerSize, markerSize);
-
-                    // Add border to the marker
-                    g.setColor(Color.RED);
-                    g.setStroke(new BasicStroke(2.0f));
-                    g.drawOval(x, y, markerSize, markerSize);
-
-                    // Optional: Add a drop shadow for better visibility
-                    g.setColor(new Color(0, 0, 0, 50));
-                    g.fillOval(x + 2, y + 2, markerSize, markerSize);
+                System.out.println("View: Painting waypoints");
+                System.out.println("View: Map size: " + width + "x" + height);
+                System.out.println("View: Current zoom level: " + map.getZoom());
+                
+                // Get the map's center position
+                GeoPosition center = map.getCenterPosition();
+                System.out.println("View: Map center: " + center.getLatitude() + ", " + center.getLongitude());
+                
+                for (Waypoint waypoint : getWaypoints()) {
+                    // Convert geo coordinates to screen coordinates
+                    Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
+                    
+                    // Get the center point in screen coordinates
+                    Point2D centerPoint = map.getTileFactory().geoToPixel(center, map.getZoom());
+                    
+                    // Calculate the offset from the center
+                    double x = point.getX() - centerPoint.getX() + width / 2;
+                    double y = point.getY() - centerPoint.getY() + height / 2;
+                    
+                    // Debug coordinates
+                    System.out.println("View: Drawing waypoint at screen coordinates: " + x + ", " + y);
+                    System.out.println("View: Waypoint position: " + waypoint.getPosition().getLatitude() + ", " + waypoint.getPosition().getLongitude());
+                    
+                    // Only draw if the point is within the visible area
+                    if (x >= 0 && x <= width && y >= 0 && y <= height) {
+                        // Draw a large red cross
+                        g.setColor(Color.RED);
+                        g.setStroke(new BasicStroke(3));
+                        g.drawLine((int)x - 10, (int)y - 10, (int)x + 10, (int)y + 10);
+                        g.drawLine((int)x - 10, (int)y + 10, (int)x + 10, (int)y - 10);
+                        
+                        // Draw a circle around the cross
+                        g.setColor(Color.BLACK);
+                        g.setStroke(new BasicStroke(2));
+                        g.drawOval((int)x - 15, (int)y - 15, 30, 30);
+                    } else {
+                        System.out.println("View: Waypoint outside visible area");
+                    }
                 }
             }
         };
-
         waypointPainter.setWaypoints(waypoints);
+        
+        // Set the painter to the map
         mapViewer.setOverlayPainter(waypointPainter);
+        
+        // Repaint the map
+        mapViewer.repaint();
+        System.out.println("View: Map repainted");
     }
 
     /**
@@ -1033,30 +1109,31 @@ public class View extends JFrame implements IView {
      * @return the GeoPosition of the animal
      */
     private GeoPosition getGeoPosition(String fullAddress) {
+        // Check cache first
+        if (geocodingCache.containsKey(fullAddress)) {
+            System.out.println("Using cached coordinates for: " + fullAddress);
+            return geocodingCache.get(fullAddress);
+        }
+
         try {
+            System.out.println("Attempting to geocode address: " + fullAddress);
             MapGeocoder.GeoLocation geoLocation = MapGeocoder.getCoordinates(fullAddress);
             if (geoLocation != null) {
-                return new GeoPosition(geoLocation.getLatitude(), geoLocation.getLongitude());
+                System.out.println("Successfully geocoded address to: " + 
+                    geoLocation.getLatitude() + ", " + geoLocation.getLongitude());
+                GeoPosition position = new GeoPosition(geoLocation.getLatitude(), geoLocation.getLongitude());
+                // Cache the result
+                geocodingCache.put(fullAddress, position);
+                System.out.println("Cached coordinates for: " + fullAddress);
+                return position;
             }
-        } catch (IOException e) {
+            System.err.println("Failed to geocode address: " + fullAddress);
+            return null;
+        } catch (Exception e) {
+            System.err.println("Error getting coordinates for address: " + fullAddress);
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-//    private GeoPosition getGeoPosition(String area) {
-//        return switch (area) {
-//            case "SEATTLE" -> new GeoPosition(47.6062, -122.3321);
-//            case "BELLEVUE" -> new GeoPosition(47.6101, -122.2015);
-//            case "REDMOND" -> new GeoPosition(47.6740, -122.1215);
-//            case "KIRKLAND" -> new GeoPosition(47.6769, -122.2060);
-//            case "EVERETT" -> new GeoPosition(47.9789, -122.2021);
-//            case "TACOMA" -> new GeoPosition(47.2529, -122.4443);
-//            case "RENTON" -> new GeoPosition(47.4829, -122.2171);
-//            case "KENT" -> new GeoPosition(47.3809, -122.2348);
-//            case "LYNNWOOD" -> new GeoPosition(47.8279, -122.3053);
-//            case "BOTHELL" -> new GeoPosition(47.7601, -122.2054);
-//            default -> new GeoPosition(47.6062, -122.3321); // Default to Seattle
-//        };
-//    }
 }
