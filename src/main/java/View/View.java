@@ -899,10 +899,7 @@ public class View extends JFrame implements IView {
                 
                 // 创建按钮面板，使用最小间距
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
-                
-                // 创建 Add to List 按钮
-                JButton addToListButton = new JButton("View Details");
-                addToListButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
+
                 // 创建查看详情按钮
                 JButton viewDetailsButton = new JButton("View Details");
                 viewDetailsButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
@@ -910,7 +907,6 @@ public class View extends JFrame implements IView {
                 // 将组件添加到面板
                 buttonPanel.add(viewDetailsButton);
                 // 将按钮添加到按钮面板
-                buttonPanel.add(addToListButton);
 
                 // 将标签和按钮面板添加到信息面板
                 infoPanel.add(label, BorderLayout.CENTER);
