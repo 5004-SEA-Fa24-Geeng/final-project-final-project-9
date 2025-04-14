@@ -95,7 +95,7 @@ public class MapGeocoder {
             // Parse the JSON response
             JSONArray jsonArray = new JSONArray(response.toString());
 
-            if (jsonArray.length() > 0) {
+            if (!jsonArray.isEmpty()) {
                 JSONObject result = jsonArray.getJSONObject(0);
 
                 double latitude = result.getDouble("lat");
