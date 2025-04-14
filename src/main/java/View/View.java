@@ -549,13 +549,30 @@ public class View extends JFrame implements IView {
         String imagePath = animal.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
             try {
-                // 如果是相对路径，转换为绝对路径
-                if (!imagePath.startsWith("/")) {
-                    imagePath = "data/image/" + imagePath;
+                // 直接使用原始图片路径，不进行修改
+                ImageIcon originalIcon = new ImageIcon(imagePath);
+                
+                // 计算保持宽高比的缩放尺寸
+                int originalWidth = originalIcon.getIconWidth();
+                int originalHeight = originalIcon.getIconHeight();
+                int maxSize = 300;
+                
+                int scaledWidth, scaledHeight;
+                if (originalWidth > originalHeight) {
+                    scaledWidth = maxSize;
+                    scaledHeight = (int) ((double) originalHeight / originalWidth * maxSize);
+                } else {
+                    scaledHeight = maxSize;
+                    scaledWidth = (int) ((double) originalWidth / originalHeight * maxSize);
                 }
-                ImageIcon originalIcon = new ImageIcon(animal.getImage());
-                Image scaledImage = originalIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+                
+                // 使用保持宽高比的缩放
+                Image scaledImage = originalIcon.getImage().getScaledInstance(
+                    scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+                
+                // 创建图片标签并居中显示
                 JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+                imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 imagePanel.add(imageLabel, BorderLayout.CENTER);
             } catch (Exception e) {
                 JLabel noImageLabel = new JLabel("No Image Available");
