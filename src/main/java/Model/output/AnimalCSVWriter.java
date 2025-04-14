@@ -21,7 +21,6 @@ public class AnimalCSVWriter {
                     "LocationDescription", "Number"
             };
             writer.writeNext(header);
-
             // Write data
             for (IAnimal animal : animals) {
                 String[] data = {
