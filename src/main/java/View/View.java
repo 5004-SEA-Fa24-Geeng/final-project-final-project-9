@@ -626,8 +626,11 @@ public class View extends JFrame implements IView {
         }
 
         // 创建信息面板
-        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 0, 0)); // 减小水平和垂直间距
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2)); // 减小边距
+        //JPanel infoPanel = new JPanel(new GridLayout(0, 1, 0, 0)); // 移除水平和垂直间距
+
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // 移除边距
 
         // 添加动物信息
         addInfoField(infoPanel, "Type:", animal.getAnimalType());
@@ -643,7 +646,7 @@ public class View extends JFrame implements IView {
         addInfoField(infoPanel, "Address:", animal.getAddress());
         addInfoField(infoPanel, "Location Description:", animal.getLocDesc());
         addInfoField(infoPanel, "Description:", animal.getDescription());
-        addInfoField(infoPanel, "Image Path:", imagePath); // 添加图片路径信息
+        //addInfoField(infoPanel, "Image Path:", imagePath); // 添加图片路径信息
 
         // 创建滚动面板来容纳信息面板
         JScrollPane scrollPane = new JScrollPane(infoPanel);
@@ -664,6 +667,58 @@ public class View extends JFrame implements IView {
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
+    }
+
+    private void addInfoField(JPanel panel, String label, String value) {
+        // 创建一个面板来容纳标签和内容
+        JPanel fieldPanel = new JPanel(new BorderLayout(0, 0));
+        fieldPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        fieldPanel.setOpaque(false); // 设置面板透明
+        
+        // 创建标签
+        JLabel labelComponent = new JLabel(label);
+        labelComponent.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        
+        // 创建文本框
+        JTextField textField;
+        if (label.equals("Description:")) {
+            // 为 description 字段创建多行文本框
+            JTextArea textArea = new JTextArea(value);
+            textArea.setEditable(false);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            textArea.setRows(5); // 增加行数为5
+            textArea.setColumns(20); // 减少列数
+            textArea.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
+            textArea.setOpaque(true); // 设置文本区域不透明
+            textArea.setBackground(Color.WHITE); // 设置白色背景
+            
+            // 将文本区域添加到滚动面板
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            scrollPane.setPreferredSize(new Dimension(250, 100)); // 增加高度为100
+            scrollPane.setOpaque(false); // 设置滚动面板透明
+            scrollPane.getViewport().setOpaque(false); // 设置视口透明
+            
+            // 将标签和滚动面板添加到字段面板
+            fieldPanel.add(labelComponent, BorderLayout.WEST);
+            fieldPanel.add(scrollPane, BorderLayout.CENTER);
+        } else {
+            // 为其他字段创建单行文本框
+            textField = new JTextField(value);
+            textField.setEditable(false);
+            textField.setColumns(20); // 减少列数
+            textField.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            textField.setOpaque(false); // 设置文本框透明
+            textField.setBackground(new Color(0, 0, 0, 0)); // 设置透明背景
+            
+            // 将标签和文本框添加到字段面板
+            fieldPanel.add(labelComponent, BorderLayout.WEST);
+            fieldPanel.add(textField, BorderLayout.CENTER);
+        }
+        
+        // 将整个面板添加到主面板
+        panel.add(fieldPanel);
     }
 
     private void showReportDialog() {
@@ -925,18 +980,6 @@ public class View extends JFrame implements IView {
 
             return panel;
         }
-    }
-
-
-    private void addInfoField(JPanel panel, String labelText, String value) {
-        JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 0)); // 减小水平间距为1，垂直间距为0
-        JLabel label = new JLabel(labelText);
-        JTextField valueField = new JTextField(value);
-        valueField.setEditable(false);
-        valueField.setColumns(12); // 减小文本框的列数，使整体更紧凑
-        fieldPanel.add(label);
-        fieldPanel.add(valueField);
-        panel.add(fieldPanel);
     }
 
 
