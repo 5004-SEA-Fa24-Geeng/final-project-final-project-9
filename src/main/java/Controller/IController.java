@@ -2,31 +2,39 @@ package Controller;
 
 import Model.Animals.IAnimal;
 import View.IView;
+
+import java.io.OutputStream;
 import java.util.List;
-import java.util.Set;
+
 
 public interface IController {
+    /** Export data to file. */
+    String EXPORT_TO = "animal_data.";
+
     /**
-     * 设置视图
-     * @param view 视图实例
+     * Set View.
+     * @param view an instance of View
      */
     void setView(IView view);
 
+
     /**
-     * 处理过滤请求
-     * @param filterType 过滤类型
-     * @param filterValue 过滤值
+     * Handle filter request.
+     * @param filterType filter on
+     * @param filterValue filter value
      */
     void handleFilter(String filterType, String filterValue);
 
+
     /**
-     * 处理排序请求
-     * @param ascending 是否升序
+     * Handle sort request.
+     * @param ascending ascending or not
      */
     void handleSort(boolean ascending);
 
+
     /**
-     * 处理重置请求
+     * Handle reset request.
      */
     void handleReset();
 
@@ -37,34 +45,70 @@ public interface IController {
      */
     void resetFilteredAnimals();
 
+
     /**
-     * 处理地图显示请求
+     * Handle map display request.
      */
     void handleMapDisplay();
 
+
     /**
-     * 获取当前过滤后的动物列表
-     * @return 动物列表
+     * Get the current filtered list of animals.
+     * @return the filtered list
      */
     List<IAnimal> getFilteredAnimals();
 
+
     /**
-     * 初始化控制器
+     * Initialize the application.
      */
     void initialize();
 
+
+    /**
+     * Creates a new animal instance with the specified attributes.
+     *
+     * @param type The type of animal
+     * @param breed The species of animal
+     * @param size The size of animal
+     * @param gender The gender of animal
+     * @param pattern The pattern of animal
+     * @param color The color of animal
+     * @param age The age of animal
+     * @param date The date when animal was seen
+     * @param time The time when animal was seen
+     * @param city The city where animal was seen
+     * @param address The address where animal was seen
+     * @param locDesc The location description
+     * @param description The general description
+     * @param fileSrc the file source
+     * @return A new animal instance
+     */
     IAnimal createAnimal(
             String type, String breed, String size, String gender,
             String pattern, String color, String age, String date,
             String time, String city, String address, String locDesc,
-            String description, String image
+            String description, String fileSrc
     );
 
+
+    /**
+     * Get the number for next animal.
+     * @return the number as string
+     */
+    String getNextAnimalNumberAsString();
+
+    /**
+     * Adds a new animal to the model and updates the view.
+     *
+     * @param animal The animal to be added
+     */
     void addAnimal(IAnimal animal);
+
 
     /**
      * Export animal data to a file in the specified format.
-     * Animals default to all animals.
+     * Default to all animals and FileOutputStream
      * @param format the format to export (xml, json, txt, csv)
      */
     void exportData(String format);
@@ -72,7 +116,17 @@ public interface IController {
 
     /**
      * Export animal data to a file in the specified format.
+     * Default to FileOutputStream
+     * @param list list of animals to export
      * @param format the format to export (xml, json, txt, csv)
      */
     void exportData(List<IAnimal> list, String format);
+
+
+
+    /**
+     * Export animal data to a file in the specified format.
+     * @param format the format to export (xml, json, txt, csv)
+     */
+    void exportData(List<IAnimal> list, String format, OutputStream os);
 }

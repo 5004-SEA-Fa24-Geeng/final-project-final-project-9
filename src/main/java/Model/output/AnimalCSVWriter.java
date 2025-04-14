@@ -18,7 +18,7 @@ public class AnimalCSVWriter {
             String[] header = {
                     "AnimalType", "Species", "AnimalSize", "Gender", "Pattern", "Color",
                     "Age", "Address", "City", "Time", "Date", "AnimalDescription",
-                    "LocationDescription", "Number"
+                    "LocationDescription", "Number", "Image"
             };
             writer.writeNext(header);
             // Write data
@@ -37,7 +37,8 @@ public class AnimalCSVWriter {
                         animal.getSeenDate(),            // Date
                         animal.getDescription(),     // AnimalDescription
                         animal.getLocDesc(),         // LocationDescription
-                        animal.getNumber()           // Number
+                        animal.getNumber(),           // Number
+                        animal.getImage()           // Image
                 };
                 writer.writeNext(data);
             }

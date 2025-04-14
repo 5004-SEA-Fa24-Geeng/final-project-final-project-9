@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
 
 import Model.Animals.IAnimal;
 
+
+/**
+ * IA concrete animal filter class that contains the filtered list of animals.
+ */
 public class AnimalFilter implements IAnimalFilter {
     /** The filtered list of animals for GUI display on list and map. */
     private List<IAnimal> filtered;
@@ -49,57 +53,97 @@ public class AnimalFilter implements IAnimalFilter {
         filtered = new CopyOnWriteArrayList<>(newFiltered);
     }
 
-    @Override
-    public List<IAnimal> filterOnType(String filterStr) {
+
+    /**
+     * Filter the list on animal type.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnType(String filterStr) {
         return filtered.stream()
                 .filter(animal -> animal.getAnimalType().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnSpecies(String filterStr) {
+
+    /**
+     * Filter the list on animal breed.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnSpecies(String filterStr) {
         return filtered.stream()
                 .filter(animal -> animal.getSpecies().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnSize(String filterStr) {
+
+    /**
+     * Filter the list on animal size.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnSize(String filterStr) {
         return filtered.stream()
                 .filter(animal -> animal.getAnimalSize().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnGender(String filterStr) {
+
+    /**
+     * Filter the list on animal gender.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnGender(String filterStr) {
         return filtered.stream()
                 .filter(animal -> animal.getGender().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnPattern(String filterStr) {
+
+    /**
+     * Filter the list on animal pattern.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnPattern(String filterStr) {
         return filtered.stream()
                 .filter(animal -> animal.getPattern().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnColor(String filterStr) {
+
+    /**
+     * Filter the list on animal color.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnColor(String filterStr) {
         return filtered.stream()
                 .filter(animal -> animal.getColor().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnAge(String filterStr) {
+
+    /**
+     * Filter the list on animal age.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnAge(String filterStr) {
         return filtered.stream()
                 .filter(animal -> animal.getAge().equalsIgnoreCase(filterStr))
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnArea(String filterStr) {
+
+    /**
+     * Filter the list on city.
+     * @param filterStr filter matching value
+     * @return the filtered list
+     */
+    private List<IAnimal> filterOnArea(String filterStr) {
         return filtered.stream()
                 .filter(animal -> {
                     String animalArea = animal.getArea().trim().toUpperCase();
@@ -109,8 +153,13 @@ public class AnimalFilter implements IAnimalFilter {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<IAnimal> filterOnSeenDate(String filterStr) {
+
+    /**
+     * Filter the animals based on the filterOn and filterStr.
+     * within 1 week, within 2 weeks, within 1 month, within 3 months
+     * @param filterStr the filter string
+     */
+    private List<IAnimal> filterOnSeenDate(String filterStr) {
         long currentTime = System.currentTimeMillis();
         long timeRange = switch (filterStr.toLowerCase()) {
             case "within 1 week" -> 7 * 24 * 60 * 60 * 1000L;  // 7 days in milliseconds
@@ -134,6 +183,7 @@ public class AnimalFilter implements IAnimalFilter {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public void sortOnDate(boolean asc) {
         filtered = filtered.stream()
@@ -146,10 +196,9 @@ public class AnimalFilter implements IAnimalFilter {
         filtered = List.copyOf(originalList.getAnimals());
     }
 
-    /**
-     * 获取过滤后的动物列表
-     * @return 过滤后的动物列表
-     */
+
+
+    @Override
     public List<IAnimal> getFilteredAnimals() {
         return filtered;
     }

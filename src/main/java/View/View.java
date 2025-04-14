@@ -18,8 +18,17 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.io.File;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -72,7 +81,6 @@ import Model.AnimalInfo.Species.Hamsters;
 import Model.AnimalInfo.Species.Hedgehogs;
 import Model.AnimalInfo.Species.Rabbits;
 import Model.Animals.IAnimal;
-import Model.Sorts;
 
 public class View extends JFrame implements IView {
     private final IController controller;
@@ -136,7 +144,7 @@ public class View extends JFrame implements IView {
         selectedAnimals = new HashSet<>();
 
         // Set up window
-        setTitle("Animal Finder");
+        setTitle("STRAY ANIMAL SPOTTER");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -160,11 +168,7 @@ public class View extends JFrame implements IView {
             String sortOrder = (String) sortComboBox.getSelectedItem();
             if (sortOrder != null && !sortOrder.isEmpty()) {
                 boolean ascending = "Ascending".equals(sortOrder);
-                List<IAnimal> sortedAnimals = controller.getFilteredAnimals();
-                sortedAnimals = sortedAnimals.stream()
-                    .sorted(Sorts.sortByDate(ascending))
-                    .collect(Collectors.toList());
-                displayAnimals(sortedAnimals);
+                controller.handleSort(ascending);
             }
         });
 
@@ -441,7 +445,7 @@ public class View extends JFrame implements IView {
             
             // 更新地图显示当前筛选的动物
             List<IAnimal> filteredAnimals = controller.getFilteredAnimals();
-            System.out.println("地图视图请求，当前动物数量: " + filteredAnimals.size());
+            System.out.println("Current number of animals: " + filteredAnimals.size());
             displayMap(filteredAnimals);
         });
         filterPanel.add(viewMapButton);
@@ -484,9 +488,8 @@ public class View extends JFrame implements IView {
                 for (int i = 0; i < selectedListModel.size(); i++) {
                     animalsToExport.add(selectedListModel.getElementAt(i));
                 }
-
                 if (animalsToExport.isEmpty()) {
-                    controller.exportData(format);
+                    controller.exportData(format.toLowerCase());
                 } else {
                     controller.exportData(animalsToExport, format.toLowerCase());
                 }
@@ -540,16 +543,16 @@ public class View extends JFrame implements IView {
         JDialog dialog = new JDialog(this, "Animal Details", true);
         dialog.setLayout(new BorderLayout());
 
-        // 创建图片面板
+        // Create image panel
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setPreferredSize(new Dimension(300, 300));
         imagePanel.setBorder(BorderFactory.createTitledBorder("Image"));
 
-        // 加载图片
+        // Load image
         String imagePath = animal.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
             try {
-                // 如果是相对路径，转换为绝对路径
+                // Switch relative path to asolute path
                 if (!imagePath.startsWith("/")) {
                     imagePath = "data/image/" + imagePath;
                 }
@@ -568,11 +571,11 @@ public class View extends JFrame implements IView {
             imagePanel.add(noImageLabel, BorderLayout.CENTER);
         }
 
-        // 创建信息面板
+        // Create info panel
         JPanel infoPanel = new JPanel(new GridLayout(0, 2, 0, 0)); // 减小水平和垂直间距
         infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2)); // 减小边距
 
-        // 添加动物信息
+        // Add animal information
         addInfoField(infoPanel, "Type:", animal.getAnimalType());
         addInfoField(infoPanel, "Breed:", animal.getSpecies());
         addInfoField(infoPanel, "Size:", animal.getAnimalSize());
@@ -586,7 +589,7 @@ public class View extends JFrame implements IView {
         addInfoField(infoPanel, "Address:", animal.getAddress());
         addInfoField(infoPanel, "Location Description:", animal.getLocDesc());
         
-        // 添加走失信息，使用突出显示的方式
+        // Add missing animal information
         JPanel descriptionPanel = new JPanel(new BorderLayout());
         descriptionPanel.setBorder(BorderFactory.createTitledBorder("Description - Missing Information"));
         
@@ -594,7 +597,7 @@ public class View extends JFrame implements IView {
         descArea.setEditable(false);
         descArea.setLineWrap(true);
         descArea.setWrapStyleWord(true);
-        descArea.setBackground(new Color(255, 250, 205)); // 淡黄色背景
+        descArea.setBackground(new Color(255, 250, 205)); // light yellow
         descArea.setFont(new Font("Dialog", Font.BOLD, 12));
         descArea.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
         
@@ -647,6 +650,9 @@ public class View extends JFrame implements IView {
         JTextArea descriptionArea = new JTextArea(3, 20);
         JButton imageButton = new JButton("Select Image");
         JLabel imageLabel = new JLabel("No image selected");
+        
+        // Use an array to store the selected file (arrays are effectively final)
+        final File[] selectedImageFile = new File[1];
 
         // Add empty option to breed combo box
         breedComboBox.addItem("");
@@ -672,8 +678,6 @@ public class View extends JFrame implements IView {
                 for (String breed : breeds) {
                     breedComboBox.addItem(breed);
                 }
-
-
             }
         });
 
@@ -706,12 +710,33 @@ public class View extends JFrame implements IView {
         dialog.add(new JLabel("Image:"));
         dialog.add(imageButton);
 
+        AtomicReference<String> fileName = new AtomicReference<>();
         imageButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileNameExtensionFilter("Image files", "jpg", "jpeg", "png", "gif"));
             if (fileChooser.showOpenDialog(dialog) == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                imageLabel.setText(selectedFile.getName());
+                selectedImageFile[0] = fileChooser.getSelectedFile();
+                imageLabel.setText(selectedImageFile[0].getName());
+                
+                // Create data/image directory if it doesn't exist
+                File imageDir = new File(IAnimal.IMG_SRC);
+
+                // Copy the selected file to data/image directory
+                try {
+                    String extension = selectedImageFile[0].getName().substring(selectedImageFile[0].getName().lastIndexOf("."));
+                    String newFileName = controller.getNextAnimalNumberAsString() + extension;
+                    fileName.set(newFileName);
+                    File destFile = new File(imageDir, newFileName);
+                    
+                    // Copy the file
+                    Files.copy(selectedImageFile[0].toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    imageLabel.setText("Image saved as: " + newFileName);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(dialog, 
+                        "Error saving image: " + ex.getMessage(), 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -725,13 +750,13 @@ public class View extends JFrame implements IView {
                     (String) patternComboBox.getSelectedItem(),
                     (String) colorComboBox.getSelectedItem(),
                     (String) ageComboBox.getSelectedItem(),
-                    addressField.getText(),
                     (String) cityComboBox.getSelectedItem(),
+                    addressField.getText(),
                     timeField.getText(),
                     dateField.getText(),
                     descriptionArea.getText(),
                     locDescArea.getText(),
-                    imageLabel.getText()
+                    IAnimal.IMG_SRC + fileName.toString()
             );
             controller.addAnimal(animal);
             dialog.dispose();
@@ -752,8 +777,6 @@ public class View extends JFrame implements IView {
             listModel.addElement(animal);
         }
     }
-
-
 
     @Override
     public void showFilterOptions() {
@@ -844,9 +867,6 @@ public class View extends JFrame implements IView {
         // Update map view to display filtered animals - but don't automatically switch to map view
         List<IAnimal> filteredAnimals = controller.getFilteredAnimals();
         System.out.println("Filtered animals count: " + filteredAnimals.size());
-        
-        // Still update the map, so users can see filtered results when they switch to map view
-        displayMap(filteredAnimals);
     }
 
     private static class AnimalListCellRenderer extends DefaultListCellRenderer {
@@ -925,7 +945,7 @@ public class View extends JFrame implements IView {
 
         // Set initial map position
         GeoPosition seattle = new GeoPosition(47.6062, -122.3321);
-        mapViewer.setZoom(7);
+        mapViewer.setZoom(3);
         mapViewer.setAddressLocation(seattle);
 
         // Add mouse controls
@@ -1004,9 +1024,8 @@ public class View extends JFrame implements IView {
         tabbedPane.addChangeListener(e -> {
             if (tabbedPane.getSelectedIndex() == 1) { // Map view selected
                 // Automatically update map when switching to map view
-                List<IAnimal> animals = controller.getFilteredAnimals();
-                System.out.println("Switching to map view, automatically loading animal count: " + animals.size());
-                displayMap(animals);
+                System.out.println("Switching to map view");
+                controller.handleMapDisplay();
             }
         });
     }

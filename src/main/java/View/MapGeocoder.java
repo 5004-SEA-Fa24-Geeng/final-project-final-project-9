@@ -18,8 +18,12 @@ import Model.IAnimalList;
 
 public class MapGeocoder {
 
+    /** The API to look up addresses. */
     private static final String NOMINATIM_API = "https://nominatim.openstreetmap.org/search";
+
+    /** The name of this application. */
     private static final String USER_AGENT = "Stray Pet Spotter";
+
 
     /**
      * Test getCoordinates() method.
@@ -43,8 +47,15 @@ public class MapGeocoder {
         }
     }
 
+
+    /**
+     * Get the coordinates of a given address.
+     * @param address given address
+     * @return a new GeoLocation object
+     * @throws IOException if fails
+     */
     public static GeoLocation getCoordinates(String address) throws IOException {
-//        System.out.println("Attempting to geocode address: " + address);
+        System.out.println("Attempting to geocode address: " + address);
         
         // Add Washington state to the address if not already present
         String searchAddress = address;
@@ -120,26 +131,56 @@ public class MapGeocoder {
         return null;
     }
 
-    // Helper class to store location information
+
+    /**
+     * Helper class to store location information.
+     */
     public static class GeoLocation {
+        /** Latitude. */
         private final double latitude;
+
+        /** Longitude. */
         private final double longitude;
+
+        /** Diaplay name. */
         private final String displayName;
 
+
+        /**
+         * Constructor of GeoLocation.
+         * @param latitude latitude of the address
+         * @param longitude longitude of the address
+         * @param displayName display name of the address
+         */
         public GeoLocation(double latitude, double longitude, String displayName) {
             this.latitude = latitude;
             this.longitude = longitude;
             this.displayName = displayName;
         }
 
+
+        /**
+         * Get latitude.
+         * @return latitude
+         */
         public double getLatitude() {
             return latitude;
         }
 
+
+        /**
+         * Get longitude.
+         * @return longitude
+         */
         public double getLongitude() {
             return longitude;
         }
 
+
+        /**
+         * Get display name.
+         * @return displayName
+         */
         public String getDisplayName() {
             return displayName;
         }

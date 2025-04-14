@@ -5,9 +5,12 @@ import Model.Animals.IAnimal;
 import Model.output.AnimalCSVReader;
 import Model.output.AnimalCSVWriter;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
+/**
+ * A class to store the original list of all animals.
+ */
 public class AnimalList implements IAnimalList {
     /** Original list of animals. */
     private List<IAnimal> animalList;
@@ -31,6 +34,7 @@ public class AnimalList implements IAnimalList {
         return animalList.size();
     }
 
+
     @Override
     public int getMaxNumber() {
         return animalList.stream()
@@ -42,11 +46,11 @@ public class AnimalList implements IAnimalList {
     @Override
     public void addNewAnimal(String type, String species, String size, String gender, String pattern, String color,
                            String age, String seenDate, String seenTime, String address, String area, String locDesc,
-                           String description) {
+                           String description, String fileSrc) {
         try {
             String newNumber = String.valueOf(getMaxNumber() + 1);
             animalList.add(new Animal(type, species, size, gender, pattern, color, age, address,
-                    area, seenTime, seenDate, description, locDesc, newNumber));
+                    area, seenTime, seenDate, description, locDesc, newNumber, fileSrc));
             write();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

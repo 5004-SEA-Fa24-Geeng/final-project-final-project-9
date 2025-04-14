@@ -3,7 +3,16 @@ package Model;
 import java.util.List;
 import Model.Animals.IAnimal;
 
+/**
+ * An Animal filter that contains the filtered list of animals.
+ */
 public interface IAnimalFilter {
+
+    /**
+     * Get the filtered list of animals
+     * @return the filtered list.
+     */
+    List<IAnimal> getFilteredAnimals();
 
 
     /**
@@ -14,31 +23,17 @@ public interface IAnimalFilter {
      */
     void filter(String filterOn, String filterStr);
 
-    List<IAnimal> filterOnType(String filterStr);
-
-    List<IAnimal> filterOnSpecies(String filterStr);
-
-    List<IAnimal> filterOnSize(String filterStr);
-
-    List<IAnimal> filterOnGender(String filterStr);
-
-    List<IAnimal> filterOnPattern(String filterStr);
-
-    List<IAnimal> filterOnColor(String filterStr);
-
-    List<IAnimal> filterOnAge(String filterStr);
 
     /**
-     * Filter the animals based on the filterOn and filterStr.
-     * within 1 week, within 2 weeks, within 1 month, within 3 months
-     * @param filterStr the filter string
+     * Sort the filtered list by date.
+     * @param asc ascending or not
      */
-    List<IAnimal> filterOnSeenDate(String filterStr);
-
-    List<IAnimal> filterOnArea(String filterStr);
-
     void sortOnDate(boolean asc);
 
+
+    /**
+     * Rest the filtered list to original list.
+     */
     void reset();
 
 }

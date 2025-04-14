@@ -6,6 +6,10 @@ import Model.Animals.IAnimal;
 import java.io.OutputStream;
 import java.util.List;
 
+
+/**
+ * Interface of output generator.
+ */
 public interface IOutputGenerator {
     /**
      * Generate output in the specified format

@@ -47,6 +47,9 @@ public class AnimalCSV {
     @CsvBindByName(column = "Number")
     private String number;
 
+    @CsvBindByName(column = "Image")
+    private String image;
+
     public IAnimal toAnimal() {
         return new Animal(
                 animalType,
@@ -62,7 +65,8 @@ public class AnimalCSV {
                 date,
                 description,
                 locDesc,
-                number
+                number,
+                image
         );
     }
 }

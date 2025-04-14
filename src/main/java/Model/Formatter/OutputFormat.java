@@ -1,8 +1,21 @@
 package Model.Formatter;
 
 public enum OutputFormat {
-    JSON,   // Output in JSON format
-    CSV,    // Output in CSV format
-    XML,    // Output in XML format
-    PRETTY  // Output in a human-readable format
+    /** Formats to output. */
+    JSON, CSV, XML, TXT;
+
+
+    /**
+     * Get the format type from string value.
+     * @param value string value of format
+     * @return the enum type of format
+     */
+    public static OutputFormat fromString(String value) {
+        for (OutputFormat format : OutputFormat.values()) {
+            if (format.toString().equalsIgnoreCase(value)) {
+                return format;
+            }
+        }
+        return null;
+    }
 }
