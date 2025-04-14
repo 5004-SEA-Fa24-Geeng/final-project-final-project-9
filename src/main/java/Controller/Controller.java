@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Set;
 
 import Model.AnimalFilter;
 import Model.AnimalList;
@@ -195,22 +196,25 @@ public class Controller implements IController {
 
     @Override
     public void exportData(String format) {
+        exportData(model.getAnimals(), format);
+    }
+
+    @Override
+    public void exportData(List<IAnimal> list, String format) {
         try {
             String fileName = "animal_data." + format;
-            List<IAnimal> animals = model.getAnimals();
-            
-            switch (format) {
+            switch (format.toLowerCase()) {
                 case "xml":
-                    exportToXML(animals, fileName);
+                    exportToXML(list, fileName);
                     break;
                 case "json":
-                    exportToJSON(animals, fileName);
+                    exportToJSON(list, fileName);
                     break;
                 case "txt":
-                    exportToTXT(animals, fileName);
+                    exportToTXT(list, fileName);
                     break;
                 case "csv":
-                    exportToCSV(animals, fileName);
+                    exportToCSV(list, fileName);
                     break;
                 default:
                     view.showError("Unsupported export format: " + format);

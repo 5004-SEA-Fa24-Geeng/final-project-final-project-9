@@ -8,46 +8,62 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import Model.AnimalList;
+import Model.Animals.IAnimal;
+import Model.IAnimalList;
 
 public class MapGeocoder {
 
     private static final String NOMINATIM_API = "https://nominatim.openstreetmap.org/search";
     private static final String USER_AGENT = "Stray Pet Spotter";
 
+    /**
+     * Test getCoordinates() method.
+     * @param args input
+     */
     public static void main(String[] args) {
+        IAnimalList animals = new AnimalList();
         try {
-            // Example address
-            String address = "9950 Highland Ave, Seattle";
-
+            GeoLocation location;
+            String address;
             // Get coordinates
-            GeoLocation location = getCoordinates(address);
-
-            if (location != null) {
-                System.out.println("Address: " + address);
-                System.out.println("Latitude: " + location.getLatitude());
-                System.out.println("Longitude: " + location.getLongitude());
-                System.out.println("Display Name: " + location.getDisplayName());
-            } else {
-                System.out.println("Location not found for address: " + address);
+            for (IAnimal animal : animals.getAnimals()) {
+                address = animal.getAddress() + "," + animal.getArea();
+                location = getCoordinates(address);
+                if (location == null) {
+                    System.out.println("Animal Number: " + animal.getNumber() + " need to change address.");
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static GeoLocation getCoordinates(String address) throws IOException {
+//        System.out.println("Attempting to geocode address: " + address);
+        
+        // Add Washington state to the address if not already present
+        String searchAddress = address;
+        if (!address.toLowerCase().contains("washington")) {
+            searchAddress = address + ", Washington, USA";
+        }
+        
         // URL encode the address
-        String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8);
+        String encodedAddress = URLEncoder.encode(searchAddress, StandardCharsets.UTF_8);
 
         // Create the URL for the Nominatim API request
         String requestUrl = NOMINATIM_API +
                 "?q=" + encodedAddress +
                 "&format=json" +
                 "&addressdetails=1" +
-                "&limit=1";
+                "&limit=1" +
+                "&countrycodes=us"; // Restrict to US results
+
+        System.out.println("Request URL: " + requestUrl);
 
         // Create the HTTP connection
         URL url = new URL(requestUrl);
@@ -61,6 +77,7 @@ public class MapGeocoder {
 
         // Get the response
         int responseCode = connection.getResponseCode();
+        System.out.println("Response code: " + responseCode);
 
         if (responseCode == 200) {
             BufferedReader reader = new BufferedReader(
@@ -73,6 +90,8 @@ public class MapGeocoder {
             }
             reader.close();
 
+            System.out.println("Response: " + response.toString());
+
             // Parse the JSON response
             JSONArray jsonArray = new JSONArray(response.toString());
 
@@ -83,7 +102,16 @@ public class MapGeocoder {
                 double longitude = result.getDouble("lon");
                 String displayName = result.getString("display_name");
 
-                return new GeoLocation(latitude, longitude, displayName);
+                // Verify the result is in Washington state
+                if (displayName.toLowerCase().contains("washington")) {
+                    System.out.println("Successfully geocoded to: " + latitude + ", " + longitude);
+                    return new GeoLocation(latitude, longitude, displayName);
+                } else {
+                    System.out.println("Result not in Washington state: " + displayName);
+                    return null;
+                }
+            } else {
+                System.out.println("No results found for address");
             }
         } else {
             System.out.println("HTTP request failed with response code: " + responseCode);
