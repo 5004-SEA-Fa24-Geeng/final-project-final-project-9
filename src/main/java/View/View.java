@@ -249,30 +249,27 @@ public class View extends JFrame implements IView {
         selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
         
         // 添加鼠标点击事件监听器
-        selectedAnimalList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 1) {
-                    int index = selectedAnimalList.locationToIndex(e.getPoint());
-                    if (index >= 0) {
-                        Rectangle cellBounds = selectedAnimalList.getCellBounds(index, index);
-                        if (cellBounds != null) {
-                            // 获取点击位置相对于列表项的坐标
-                            int relativeX = e.getX() - cellBounds.x;
+        //selectedAnimalList.addMouseListener(new MouseAdapter() {
+        //    @Override
+        //    public void mouseClicked(MouseEvent e) {
+        //        if (e.getClickCount() == 1) {
+        //            int index = selectedAnimalList.locationToIndex(e.getPoint());
+        //            if (index >= 0) {
+        //                Rectangle cellBounds = selectedAnimalList.getCellBounds(index, index);
+        //                if (cellBounds != null) {
+        //                    // 获取点击位置相对于列表项的坐标
+        //                    int relativeX = e.getX() - cellBounds.x;
                             
-                            if (relativeX < cellBounds.width * 0.95) {
-                                // 如果点击位置在左侧区域（小于90%的宽度），则显示详情
-                                IAnimal animal = selectedListModel.getElementAt(index);
-                                showAnimalDetails(animal);
-                            } else if (relativeX > cellBounds.width * 0.95) {
-                                // 如果点击位置在右侧区域（大于90%的宽度），则删除该项
-                                selectedListModel.remove(index);
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        //                    if (relativeX < cellBounds.width && relativeX > cellBounds.width*0.95) {
+        //                        // 如果点击位置在左侧区域（小于90%的宽度），则显示详情
+        //                        IAnimal animal = selectedListModel.getElementAt(index);
+        //                        showAnimalDetails(animal);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //});
     }
 
     private void initializeListPanel() {
@@ -291,7 +288,7 @@ public class View extends JFrame implements IView {
                             int relativeX = e.getX() - cellBounds.x;
                             
                             // 如果点击位置在左侧区域（小于70%的宽度），则显示详情
-                            if (relativeX < cellBounds.width * 0.7) {
+                            if (relativeX > cellBounds.width * 0.9) {
                                 showAnimalDetails(listModel.getElementAt(index));
                             }
                         }
@@ -330,18 +327,6 @@ public class View extends JFrame implements IView {
         });
 
         listPanel.add(new JScrollPane(animalList), BorderLayout.CENTER);
-
-        // Add selected animal list to list panel
-        JPanel selectedPanel = new JPanel(new BorderLayout());
-        selectedPanel.add(new JLabel("Selected Animals:"), BorderLayout.NORTH);
-        
-        // 设置 selectedAnimalList 的显示行数和首选大小
-        selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
-        JScrollPane selectedScrollPane = new JScrollPane(selectedAnimalList);
-        selectedScrollPane.setPreferredSize(new Dimension(0, 100));  // 减小高度从300像素到100像素
-        
-        selectedPanel.add(selectedScrollPane, BorderLayout.CENTER);
-        listPanel.add(selectedPanel, BorderLayout.SOUTH);
 
         // Add button to list panel
         JPanel buttonPanel = new JPanel();
@@ -901,7 +886,7 @@ public class View extends JFrame implements IView {
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
                 
                 // 创建 Add to List 按钮
-                JButton addToListButton = new JButton("Add to List");
+                JButton addToListButton = new JButton("View Details");
                 addToListButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
                 
                 // 将按钮添加到按钮面板
