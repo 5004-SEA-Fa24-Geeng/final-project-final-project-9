@@ -3,6 +3,7 @@ package Controller;
 import Model.Animals.IAnimal;
 import View.IView;
 import java.util.List;
+import java.util.Set;
 
 public interface IController {
     /**
@@ -62,8 +63,16 @@ public interface IController {
     void addAnimal(IAnimal animal);
 
     /**
-     * Export animal data to a file in the specified format
+     * Export animal data to a file in the specified format.
+     * Animals default to all animals.
      * @param format the format to export (xml, json, txt, csv)
      */
     void exportData(String format);
+
+
+    /**
+     * Export animal data to a file in the specified format.
+     * @param format the format to export (xml, json, txt, csv)
+     */
+    void exportData(List<IAnimal> list, String format);
 }

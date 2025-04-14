@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -473,7 +474,18 @@ public class View extends JFrame implements IView {
         exportButton.addActionListener(e -> {
             String format = (String) exportFormatComboBox.getSelectedItem();
             if (format != null && !format.isEmpty()) {
-                controller.exportData(format.toLowerCase());
+                // Get animals from selectedAnimalList instead of selectedAnimals
+                List<IAnimal> animalsToExport = new ArrayList<>();
+                for (int i = 0; i < selectedListModel.size(); i++) {
+                    animalsToExport.add(selectedListModel.getElementAt(i));
+                }
+                
+                if (animalsToExport.isEmpty()) {
+                    showError("Please select animals to export first");
+                    return;
+                }
+                
+                controller.exportData(animalsToExport, format.toLowerCase());
             }
         });
         
