@@ -18,11 +18,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
@@ -103,10 +99,10 @@ public class View extends JFrame implements IView {
     private final JXMapViewer mapViewer;
     private final JComboBox<String> sortComboBox;
     private final JButton sortButton;
-    //private final JButton addSelectedButton;
     private final Set<IAnimal> selectedAnimals;
     private Map<Point2D, IAnimal> pointToAnimalMap = new HashMap<>();
     private Map<GeoPosition, IAnimal> positionToAnimalMap = new HashMap<>();
+    private final Map<String, GeoPosition> geocodingCache = new HashMap<>();
 
     public View(IController controller) {
         this.controller = controller;
@@ -171,21 +167,6 @@ public class View extends JFrame implements IView {
                 displayAnimals(sortedAnimals);
             }
         });
-
-        //addSelectedButton.addActionListener(e -> {
-        //    if (!selectedAnimals.isEmpty()) {
-        //        for (IAnimal animal : selectedAnimals) {
-        //            if (!selectedListModel.contains(animal)) {
-        //                selectedListModel.addElement(animal);
-        //            }
-        //        }
-        //        JOptionPane.showMessageDialog(this, "Added " + selectedAnimals.size() + " animals to the list");
-        //        selectedAnimals.clear();
-        //        animalList.clearSelection();
-        //    } else {
-        //        JOptionPane.showMessageDialog(this, "Please select animals first");
-        //    }
-       // });
 
         // Initialize view
         controller.initialize();
@@ -322,6 +303,10 @@ public class View extends JFrame implements IView {
                                     selectedAnimals.clear();
                                     animalList.clearSelection();
                                 }
+                            }
+                            // 如果点击位置在左侧区域（80% ~ 90%的宽度），则显示详情
+                            if (relativeX > cellBounds.width * 0.8 && relativeX < cellBounds.width * 0.9) {
+                                showAnimalDetails(listModel.getElementAt(index));
                             }
                         }
                     }
@@ -478,21 +463,36 @@ public class View extends JFrame implements IView {
         JComboBox<String> exportFormatComboBox = new JComboBox<>(new String[]{"XML", "JSON", "TXT", "CSV"});
         exportFormatComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         exportFormatComboBox.setMaximumSize(new Dimension(200, exportFormatComboBox.getPreferredSize().height));
-        
-        JButton exportButton = new JButton("Export");
-        exportButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
-        exportButton.addActionListener(e -> {
-            String format = (String) exportFormatComboBox.getSelectedItem();
-            if (format != null) {
-                controller.exportData(format.toLowerCase());
-            }
-        });
-        
+
+        JButton exportButton = getJButton(exportFormatComboBox);
+
         exportPanel.add(exportLabel);
         exportPanel.add(exportFormatComboBox);
         exportPanel.add(exportButton);
         filterPanel.add(exportPanel);
+    }
+
+    private JButton getJButton(JComboBox<String> exportFormatComboBox) {
+        JButton exportButton = new JButton("Export");
+        exportButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        exportButton.addActionListener(e -> {
+            String format = (String) exportFormatComboBox.getSelectedItem();
+            if (format != null && !format.isEmpty()) {
+                // Get animals from selectedAnimalList instead of selectedAnimals
+                List<IAnimal> animalsToExport = new ArrayList<>();
+                for (int i = 0; i < selectedListModel.size(); i++) {
+                    animalsToExport.add(selectedListModel.getElementAt(i));
+                }
+
+                if (animalsToExport.isEmpty()) {
+                    controller.exportData(format);
+                } else {
+                    controller.exportData(animalsToExport, format.toLowerCase());
+                }
+            }
+        });
+        return exportButton;
     }
 
     private String[] combineArrays(String[] first, String[] second) {
@@ -808,6 +808,9 @@ public class View extends JFrame implements IView {
         String area = (String) cityComboBox.getSelectedItem();
         String dateRange = (String) dateRangeComboBox.getSelectedItem();
 
+        // unfilter
+        controller.resetFilteredAnimals();
+
         // Apply filters in sequence
         if (type != null && !type.isEmpty()) {
             controller.handleFilter("TYPE", type);
@@ -837,8 +840,6 @@ public class View extends JFrame implements IView {
             controller.handleFilter("SEENDATE", dateRange);
         }
 
-        // Load filtered animals through controller
-        controller.loadFilteredAnimals(type);
         
         // Update map view to display filtered animals - but don't automatically switch to map view
         List<IAnimal> filteredAnimals = controller.getFilteredAnimals();
@@ -848,7 +849,7 @@ public class View extends JFrame implements IView {
         displayMap(filteredAnimals);
     }
 
-    private class AnimalListCellRenderer extends DefaultListCellRenderer {
+    private static class AnimalListCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
@@ -875,10 +876,15 @@ public class View extends JFrame implements IView {
                 // 创建 Add to List 按钮
                 JButton addToListButton = new JButton("Add to List");
                 addToListButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
-                
+
+                // 创建查看详情按钮
+                JButton viewDetailsButton = new JButton("View Details");
+                viewDetailsButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
+
                 // 将按钮添加到按钮面板
+                buttonPanel.add(viewDetailsButton);
                 buttonPanel.add(addToListButton);
-                
+
                 // 将标签和按钮面板添加到信息面板
                 infoPanel.add(label, BorderLayout.CENTER);
                 infoPanel.add(buttonPanel, BorderLayout.EAST);
@@ -898,63 +904,6 @@ public class View extends JFrame implements IView {
         }
     }
 
-    private JPanel createAnimalPanel(IAnimal animal) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        panel.setBackground(Color.WHITE);
-
-        // 创建左侧图片面板
-        JPanel imagePanel = new JPanel(new BorderLayout());
-        imagePanel.setPreferredSize(new Dimension(150, 150));
-        imagePanel.setBackground(Color.WHITE);
-        
-        // 加载图片
-        String imagePath = animal.getImage();
-        if (imagePath != null && !imagePath.isEmpty()) {
-            try {
-                // 如果是相对路径，转换为绝对路径
-                if (!imagePath.startsWith("/")) {
-                    imagePath = "data/image/" + imagePath;
-                }
-                ImageIcon originalIcon = new ImageIcon(imagePath);
-                Image scaledImage = originalIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-                JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
-                imagePanel.add(imageLabel, BorderLayout.CENTER);
-            } catch (Exception e) {
-                JLabel noImageLabel = new JLabel("No Image");
-                noImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                imagePanel.add(noImageLabel, BorderLayout.CENTER);
-            }
-        } else {
-            JLabel noImageLabel = new JLabel("No Image");
-            noImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            imagePanel.add(noImageLabel, BorderLayout.CENTER);
-        }
-
-        // 创建右侧信息面板，减小水平和垂直间距
-        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 2, 2)); // 将间距从 5,5 改为 2,2
-        infoPanel.setBackground(Color.WHITE);
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2)); // 减小边距
-
-        // 只添加指定的字段
-        addInfoField(infoPanel, "Type:", animal.getAnimalType());
-        addInfoField(infoPanel, "Breed:", animal.getSpecies());
-        addInfoField(infoPanel, "Date:", animal.getSeenDate());
-        addInfoField(infoPanel, "Time:", animal.getTime());
-        addInfoField(infoPanel, "Area:", animal.getArea());
-        addInfoField(infoPanel, "Address:", animal.getAddress());
-
-        // 创建查看详情按钮
-        JButton viewDetailsButton = new JButton("View Details");
-        viewDetailsButton.addActionListener(e -> showAnimalDetails(animal));
-
-        // 将组件添加到面板
-        panel.add(imagePanel, BorderLayout.WEST);
-        panel.add(infoPanel, BorderLayout.CENTER);
-        panel.add(viewDetailsButton, BorderLayout.SOUTH);
-
-        return panel;
-    }
 
     private void addInfoField(JPanel panel, String labelText, String value) {
         JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 0)); // 减小水平间距为1，垂直间距为0
@@ -1023,7 +972,24 @@ public class View extends JFrame implements IView {
         JLabel rabbitLabel = new JLabel("Rabbits");
         rabbitLabel.setForeground(new Color(255, 165, 0));
         legendPanel.add(rabbitLabel);
-        
+
+        JLabel hamsterLabel = new JLabel("Hamsters");
+        hamsterLabel.setForeground(new Color(255, 215, 0));
+        legendPanel.add(hamsterLabel);
+
+        JLabel hedgehogLabel = new JLabel("Hedgehogs");
+        hedgehogLabel.setForeground(new Color(139, 69, 19));
+        legendPanel.add(hedgehogLabel);
+
+
+        JLabel gooseLabel = new JLabel("Geese");
+        gooseLabel.setForeground(new Color(0, 191, 255));
+        legendPanel.add(gooseLabel);
+
+        JLabel duckLabel = new JLabel("Ducks");
+        duckLabel.setForeground(new Color(34, 139, 34));
+        legendPanel.add(duckLabel);
+
         // Add map info text
         JLabel mapInfoLabel = new JLabel("Map shows all animals matching your filters. Click on markers to see animal details.");
         mapInfoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -1060,51 +1026,14 @@ public class View extends JFrame implements IView {
             System.out.println("Animal Type: " + animal.getAnimalType() + ", Species: " + animal.getSpecies());
         }
         System.out.println("-----------------------------------");
-        
+
         for (IAnimal animal : animals) {
+            String fullAddress = animal.getAddress() + ", " + animal.getArea();
             try {
-                // Use the animal's actual address instead of just the city
-                String address = animal.getAddress();
-                String area = animal.getArea();
-                
-                System.out.println("Processing animal: " + animal.getAnimalType() + " " + animal.getSpecies());
-                System.out.println("Address: " + address);
-                System.out.println("Area: " + area);
-                
-                // Ensure address is not empty
-                if (address != null && !address.isEmpty()) {
-                    // Add city and state information to ensure accuracy
-                    String fullAddress = address;
-                    if (!fullAddress.toLowerCase().contains(area.toLowerCase())) {
-                        fullAddress += ", " + area;
-                    }
-                    if (!fullAddress.toLowerCase().contains("washington")) {
-                        fullAddress += ", Washington State, USA";
-                    }
-                    
-                    System.out.println("Full address: " + fullAddress);
-                    
-                    // Get geographic position
-                    GeoPosition position = getGeoPositionFromAddress(fullAddress);
-                    if (position != null) {
-                        System.out.println("Got coordinates from address: " + position.getLatitude() + ", " + position.getLongitude());
-                        waypoints.add(new WaypointWithInfo(position, animal));
-                        // Store in position map
-                        positionToAnimalMap.put(position, animal);
-                    } else {
-                        // If address lookup fails, use city's default coordinates
-                        System.out.println("Address parsing failed, using city default coordinates");
-                        position = getGeoPosition(area);
-                        System.out.println("City default coordinates: " + position.getLatitude() + ", " + position.getLongitude());
-                        waypoints.add(new WaypointWithInfo(position, animal));
-                        // Store in position map
-                        positionToAnimalMap.put(position, animal);
-                    }
-                } else {
-                    // If no specific address, use city's default coordinates
-                    System.out.println("No address, using city default coordinates");
-                    GeoPosition position = getGeoPosition(area);
-                    System.out.println("City default coordinates: " + position.getLatitude() + ", " + position.getLongitude());
+                // Get geographic position
+                GeoPosition position = getGeoPosition(fullAddress);
+                if (position != null) {
+                    System.out.println("Got coordinates from address: " + position.getLatitude() + ", " + position.getLongitude());
                     waypoints.add(new WaypointWithInfo(position, animal));
                     // Store in position map
                     positionToAnimalMap.put(position, animal);
@@ -1198,259 +1127,70 @@ public class View extends JFrame implements IView {
         System.out.println("Map display complete");
     }
 
-    /**
-     * Get geographic coordinates from address
-     * Note: This is a simplified implementation, in a real application you would use a geocoding API
-     * @param address Full address
-     * @return Geographic coordinates, returns null if parsing fails
-     */
-    private GeoPosition getGeoPositionFromAddress(String address) {
-        // Convert address to lowercase for easier matching
-        String lowerAddress = address.toLowerCase();
-        System.out.println("Trying to parse address: " + lowerAddress);
-        
-        // First try exact address matching
-        GeoPosition exactMatch = getExactAddressPosition(address);
-        if (exactMatch != null) {
-            System.out.println("Found exact address match: " + address);
-            return exactMatch;
-        }
-        
-        // Check if address contains city name
-        for (Area area : Area.values()) {
-            String cityName = area.name().toLowerCase();
-            if (lowerAddress.contains(cityName)) {
-                System.out.println("Found city in address: " + cityName);
-                // First check for specific landmarks
-                GeoPosition landmark = checkForLandmarks(lowerAddress, cityName);
-                if (landmark != null) {
-                    System.out.println("Found landmark coordinates");
-                    return landmark;
-                }
-                
-                // If no matching landmark, return default city coordinates
-                System.out.println("Using default city coordinates: " + cityName);
-                return getGeoPosition(area.name());
-            }
-        }
-        
-        // If no matching city is found, check for common landmarks
-        GeoPosition landmark = checkForLandmarks(lowerAddress, null);
-        if (landmark != null) {
-            return landmark;
-        }
-        
-        // If none of the above matches, return Seattle center as default
-        System.out.println("Unable to parse address, using Seattle center as default");
-        return new GeoPosition(47.6062, -122.3321);
-    }
-    
-    /**
-     * Get exact position from address - handle specific addresses in the image
-     */
-    private GeoPosition getExactAddressPosition(String address) {
-        // Remove case sensitivity issues
-        String normalizedAddress = address.toLowerCase().trim();
-        
-        // Tacoma addresses
-        if (normalizedAddress.contains("2743 marina way") || normalizedAddress.contains("2743 marina")) {
-            return new GeoPosition(47.3049, -122.5123); // Tacoma, Marina Way
-        }
-        if (normalizedAddress.contains("6955 autumn ct") || normalizedAddress.contains("6955 autumn")) {
-            return new GeoPosition(47.2841, -122.5433); // Tacoma, Autumn Ct
-        }
-        if (normalizedAddress.contains("3678 valley rd") || normalizedAddress.contains("3678 valley")) {
-            return new GeoPosition(47.2529, -122.4812); // Tacoma, Valley Rd
-        }
-        if (normalizedAddress.contains("526 autumn ct") || normalizedAddress.contains("526 autumn")) {
-            return new GeoPosition(47.2732, -122.4991); // Tacoma, Autumn Ct (different area)
-        }
-        
-        // Bellevue addresses
-        if (normalizedAddress.contains("2475 main st") || normalizedAddress.contains("2475 main")) {
-            return new GeoPosition(47.6118, -122.1923); // Bellevue, Main St
-        }
-        
-        // Kent addresses
-        if (normalizedAddress.contains("5314 harbor dr") || normalizedAddress.contains("5314 harbor")) {
-            return new GeoPosition(47.3821, -122.2754); // Kent, Harbor Dr
-        }
-        if (normalizedAddress.contains("395 river rd") || normalizedAddress.contains("395 river")) {
-            return new GeoPosition(47.3881, -122.2510); // Kent, River Rd
-        }
-        
-        // Kirkland addresses
-        if (normalizedAddress.contains("3682 bay st") || normalizedAddress.contains("3682 bay")) {
-            return new GeoPosition(47.6712, -122.2051); // Kirkland, Bay St
-        }
-        if (normalizedAddress.contains("3301 valley rd") || normalizedAddress.contains("3301 valley")) {
-            return new GeoPosition(47.6602, -122.1954); // Kirkland, Valley Rd
-        }
-        
-        // Everett addresses
-        if (normalizedAddress.contains("5338 spring st") || normalizedAddress.contains("5338 spring")) {
-            return new GeoPosition(47.9661, -122.2143); // Everett, Spring St
-        }
-        if (normalizedAddress.contains("2069 harbor dr") || normalizedAddress.contains("2069 harbor")) {
-            return new GeoPosition(47.9872, -122.2235); // Everett, Harbor Dr
-        }
-        if (normalizedAddress.contains("2355 summer rd") || normalizedAddress.contains("2355 summer")) {
-            return new GeoPosition(47.9734, -122.2066); // Everett, Summer Rd
-        }
-        
-        // Renton addresses
-        if (normalizedAddress.contains("7395 lake blvd") || normalizedAddress.contains("7395 lake")) {
-            return new GeoPosition(47.4932, -122.2167); // Renton, Lake Blvd
-        }
-        if (normalizedAddress.contains("7163 pine st") || normalizedAddress.contains("7163 pine")) {
-            return new GeoPosition(47.4842, -122.2095); // Renton, Pine St
-        }
-        
-        // Redmond addresses
-        if (normalizedAddress.contains("9003 mountain view dr") || normalizedAddress.contains("9003 mountain")) {
-            return new GeoPosition(47.6832, -122.1088); // Redmond, Mountain View Dr
-        }
-        if (normalizedAddress.contains("8715 cedar rd") || normalizedAddress.contains("8715 cedar")) {
-            return new GeoPosition(47.6705, -122.1286); // Redmond, Cedar Rd
-        }
-        
-        // Seattle addresses
-        if (normalizedAddress.contains("9950 highland ave") || normalizedAddress.contains("9950 highland")) {
-            return new GeoPosition(47.5993, -122.3188); // Seattle, Highland Ave
-        }
-        
-        // Lynnwood addresses
-        if (normalizedAddress.contains("2505 harbor dr") || normalizedAddress.contains("2505 harbor")) {
-            return new GeoPosition(47.8301, -122.3129); // Lynnwood, Harbor Dr
-        }
-        if (normalizedAddress.contains("8691 cedar rd") || normalizedAddress.contains("8691 cedar")) {
-            return new GeoPosition(47.8198, -122.3045); // Lynnwood, Cedar Rd
-        }
-        
-        // Bothell addresses
-        if (normalizedAddress.contains("7248 valley rd") || normalizedAddress.contains("7248 valley")) {
-            return new GeoPosition(47.7635, -122.2172); // Bothell, Valley Rd
-        }
-        
-        return null; // No exact match found
-    }
 
     /**
-     * 检查地址中是否包含已知地标
+     * Get the latitude and longitude of an animal's address.
+     * @param fullAddress the address of the animal
+     * @return the GeoPosition of the animal
      */
-    private GeoPosition checkForLandmarks(String address, String cityContext) {
-        // 西雅图地标
-        if (address.contains("space needle") || address.contains("seattle center")) {
-            return new GeoPosition(47.6205, -122.3493);
-        } else if (address.contains("pike place") || address.contains("pike market")) {
-            return new GeoPosition(47.6097, -122.3422);
-        } else if (address.contains("university of washington") || address.contains(" uw ") || address.contains("uw campus")) {
-            return new GeoPosition(47.6553, -122.3035);
-        } else if (address.contains("downtown seattle")) {
-            return new GeoPosition(47.6050, -122.3344);
-        } else if (address.contains("capitol hill")) {
-            return new GeoPosition(47.6253, -122.3222);
-        } else if (address.contains("ballard")) {
-            return new GeoPosition(47.6677, -122.3847);
-        } else if (address.contains("fremont")) {
-            return new GeoPosition(47.6510, -122.3473);
-        } else if (address.contains("green lake")) {
-            return new GeoPosition(47.6795, -122.3271);
-        } else if (address.contains("south lake union")) {
-            return new GeoPosition(47.6267, -122.3366);
-        } else if (address.contains("queen anne")) {
-            return new GeoPosition(47.6370, -122.3570);
-        } else if (address.contains("georgetown")) {
-            return new GeoPosition(47.5479, -122.3230);
-        } else if (address.contains("west seattle")) {
-            return new GeoPosition(47.5667, -122.3875);
-        } else if (address.contains("rainier")) {
-            return new GeoPosition(47.5685, -122.3200);
-        } else if (address.contains("u district") || address.contains("university district")) {
-            return new GeoPosition(47.6614, -122.3127);
-        } else if (address.contains("beacon hill")) {
-            return new GeoPosition(47.5792, -122.3109);
+    private GeoPosition getGeoPosition(String fullAddress) {
+        // Check cache first
+        if (geocodingCache.containsKey(fullAddress)) {
+            System.out.println("Using cached coordinates for: " + fullAddress);
+            return geocodingCache.get(fullAddress);
         }
-        
-        // 贝尔维尤地标
-        if ("bellevue".equals(cityContext)) {
-            if (address.contains("downtown") || address.contains("bellevue square")) {
-                return new GeoPosition(47.6156, -122.2054);
-            } else if (address.contains("factoria")) {
-                return new GeoPosition(47.5772, -122.1734);
-            } else if (address.contains("crossroads")) {
-                return new GeoPosition(47.6287, -122.1565);
+
+        try {
+            System.out.println("Attempting to geocode address: " + fullAddress);
+            MapGeocoder.GeoLocation geoLocation = MapGeocoder.getCoordinates(fullAddress);
+            if (geoLocation != null) {
+                System.out.println("Successfully geocoded address to: " +
+                        geoLocation.getLatitude() + ", " + geoLocation.getLongitude());
+                GeoPosition position = new GeoPosition(geoLocation.getLatitude(), geoLocation.getLongitude());
+                // Cache the result
+                geocodingCache.put(fullAddress, position);
+                System.out.println("Cached coordinates for: " + fullAddress);
+                return position;
             }
+            System.err.println("Failed to geocode address: " + fullAddress);
+            return null;
+        } catch (Exception e) {
+            System.err.println("Error getting coordinates for address: " + fullAddress);
+            e.printStackTrace();
+            return null;
         }
-        
-        // 雷德蒙德地标
-        if ("redmond".equals(cityContext)) {
-            if (address.contains("microsoft") || address.contains("campus")) {
-                return new GeoPosition(47.6423, -122.1392);
-            } else if (address.contains("downtown") || address.contains("redmond town center")) {
-                return new GeoPosition(47.6728, -122.1246);
-            }
-        }
-        
-        // 柯克兰地标
-        if ("kirkland".equals(cityContext)) {
-            if (address.contains("downtown") || address.contains("marina")) {
-                return new GeoPosition(47.6755, -122.2055);
-            }
-        }
-        
-        return null;
     }
 
-    /**
-     * 通过城市名称获取默认地理坐标
-     * @param area 城市名称
-     * @return 城市的地理坐标
-     */
-    private GeoPosition getGeoPosition(String area) {
-        return switch (area) {
-            case "SEATTLE" -> new GeoPosition(47.6062, -122.3321);
-            case "BELLEVUE" -> new GeoPosition(47.6101, -122.2015);
-            case "REDMOND" -> new GeoPosition(47.6740, -122.1215);
-            case "KIRKLAND" -> new GeoPosition(47.6769, -122.2060);
-            case "EVERETT" -> new GeoPosition(47.9789, -122.2021);
-            case "TACOMA" -> new GeoPosition(47.2529, -122.4443);
-            case "RENTON" -> new GeoPosition(47.4829, -122.2171);
-            case "KENT" -> new GeoPosition(47.3809, -122.2348);
-            case "LYNNWOOD" -> new GeoPosition(47.8279, -122.3053);
-            case "BOTHELL" -> new GeoPosition(47.7601, -122.2054);
-            default -> new GeoPosition(47.6062, -122.3321); // Default to Seattle
-        };
-    }
 
     /**
      * Waypoint with animal information
      */
-public class WaypointWithInfo extends DefaultWaypoint {
-    private final IAnimal animal;
-    
-    public WaypointWithInfo(GeoPosition position, IAnimal animal) {
-        super(position);
-        this.animal = animal;
+    public static class WaypointWithInfo extends DefaultWaypoint {
+        private final IAnimal animal;
+
+        public WaypointWithInfo(GeoPosition position, IAnimal animal) {
+            super(position);
+            this.animal = animal;
+        }
+
+        public IAnimal getAnimal() {
+            return animal;
+        }
+
+        @Override
+        public String toString() {
+            return animal.getAnimalType() + " - " + animal.getSpecies() + " at " + animal.getAddress();
+        }
     }
-    
-    public IAnimal getAnimal() {
-        return animal;
-    }
-    
-    @Override
-    public String toString() {
-        return animal.getAnimalType() + " - " + animal.getSpecies() + " at " + animal.getAddress();
-    }
-}
-    
+
+
     /**
      * Animal waypoint renderer that colors markers based on animal type
      */
-    private class AnimalWaypointRenderer implements WaypointRenderer<WaypointWithInfo> {
+     private static class AnimalWaypointRenderer implements WaypointRenderer<WaypointWithInfo> {
         // Store colors for different animal types
         private final Map<String, Color> typeColors = new HashMap<>();
-        
+
         public AnimalWaypointRenderer() {
             // Initialize color mapping
             typeColors.put("DOG", new Color(65, 105, 225)); // Blue
@@ -1462,29 +1202,29 @@ public class WaypointWithInfo extends DefaultWaypoint {
             typeColors.put("GOOSE", new Color(0, 191, 255)); // Light blue
             typeColors.put("DUCK", new Color(34, 139, 34)); // Forest green
         }
-        
+
         @Override
         public void paintWaypoint(Graphics2D g, JXMapViewer map, WaypointWithInfo waypoint) {
             try {
                 // Convert geographic coordinates to screen coordinates
                 GeoPosition pos = waypoint.getPosition();
                 Point2D point = map.getTileFactory().geoToPixel(pos, map.getZoom());
-                
+
                 // Note: No need to convert to viewport coordinates, as Graphics2D is already in the correct coordinate system
                 int x = (int) point.getX();
                 int y = (int) point.getY();
-                
+
                 // Get the animal directly from the waypoint
                 IAnimal animal = waypoint.getAnimal();
                 String animalType = animal.getAnimalType();
-                
+
                 // Normalize to uppercase to solve case sensitivity issues
                 String normalizedType = animalType.toUpperCase();
-                
+
                 // Simplified debug output to reduce console clutter
-                System.out.println("Painting animal: " + animalType + ", type: " + normalizedType + 
-                                  ", position: (" + x + ", " + y + ")");
-                
+                System.out.println("Painting animal: " + animalType + ", type: " + normalizedType +
+                        ", position: (" + x + ", " + y + ")");
+
                 // Determine color based on animal type
                 Color dotColor = Color.RED; // Default to red
                 if (typeColors.containsKey(normalizedType)) {
@@ -1492,12 +1232,12 @@ public class WaypointWithInfo extends DefaultWaypoint {
                 } else {
                     System.out.println("No color mapping found for: " + normalizedType + ", using default red");
                 }
-                
+
                 // Increase dot size to make it easier to click
                 g.setColor(dotColor);
                 Ellipse2D dot = new Ellipse2D.Double(x - 8, y - 8, 16, 16);  // 16x16 pixel size
                 g.fill(dot);
-                
+
                 // Add black border to enhance visibility
                 g.setColor(Color.BLACK);
                 g.draw(dot);
@@ -1505,38 +1245,5 @@ public class WaypointWithInfo extends DefaultWaypoint {
                 System.err.println("Error drawing waypoint: " + e.getMessage());
             }
         }
-    }
-
-    // 添加一个辅助方法，用于修复AnimalWaypointRenderer中的颜色映射问题
-    public void fixColorRendering() {
-        // 使用反射来修改AnimalWaypointRenderer类的paintWaypoint方法
-        try {
-            // 直接遍历已知的动物类型，输出调试信息
-            System.out.println("动物类型颜色映射调试：");
-            System.out.println("RABBIT -> 应使用橙色 (255, 165, 0)");
-            System.out.println("DOG -> 应使用蓝色 (65, 105, 225)");
-            System.out.println("CAT -> 应使用红色 (220, 20, 60)");
-            System.out.println("BIRD -> 应使用绿色 (50, 205, 50)");
-            System.out.println("确保AnimalWaypointRenderer类中的paintWaypoint方法将动物类型转换为大写再匹配颜色");
-        } catch (Exception e) {
-            System.err.println("Failed to fix color rendering: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    // Add a method specifically for displaying click debug information
-    private void debugClickInfo(Point clickPoint, Point2D waypointPoint, double distance, String animalType) {
-        // Calculate the difference between screen coordinates and map coordinates
-        double dx = Math.abs(clickPoint.getX() - waypointPoint.getX());
-        double dy = Math.abs(clickPoint.getY() - waypointPoint.getY());
-        
-        System.out.println("---------- Click Debug Info ----------");
-        System.out.println("Click coordinates: (" + clickPoint.x + ", " + clickPoint.y + ")");
-        System.out.println("Marker coordinates: (" + waypointPoint.getX() + ", " + waypointPoint.getY() + ")");
-        System.out.println("X-axis difference: " + dx + " pixels");
-        System.out.println("Y-axis difference: " + dy + " pixels");
-        System.out.println("Euclidean distance: " + distance + " pixels");
-        System.out.println("Animal type: " + animalType);
-        System.out.println("----------------------------------");
     }
 }
