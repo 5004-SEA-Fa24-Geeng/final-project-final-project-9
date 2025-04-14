@@ -203,7 +203,7 @@ public class Controller implements IController {
     public void exportData(List<IAnimal> list, String format) {
         try {
             String fileName = "animal_data." + format;
-            switch (format) {
+            switch (format.toLowerCase()) {
                 case "xml":
                     exportToXML(list, fileName);
                     break;
