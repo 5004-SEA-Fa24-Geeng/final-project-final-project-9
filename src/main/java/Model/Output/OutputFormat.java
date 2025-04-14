@@ -1,4 +1,4 @@
-package Model.Formatter;
+package Model.Output;
 
 public enum OutputFormat {
     /** Formats to output. */

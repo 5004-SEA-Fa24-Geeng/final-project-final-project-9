@@ -1,4 +1,4 @@
-package Model.output;
+package Model.Input;
 
 import Model.Animals.Animal;
 import Model.Animals.IAnimal;

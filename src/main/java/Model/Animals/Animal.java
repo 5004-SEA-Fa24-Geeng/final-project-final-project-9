@@ -91,6 +91,12 @@ public class Animal implements IAnimal {
 
 
     @Override
+    public String[] getSpeciesOfThisType() {
+        return new String[]{species};
+    }
+
+
+    @Override
     public String getAnimalSize() {
         return size;
     }

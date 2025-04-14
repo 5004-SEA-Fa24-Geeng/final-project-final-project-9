@@ -20,6 +20,14 @@ public interface IAnimal {
      */
     String getSpecies();
 
+
+    /**
+     * Get all the breeds as string array.
+     * @return the string array of breeds of this animal type
+     */
+    String[] getSpeciesOfThisType();
+
+
     /**
      * Gets the size of the animal.
      * @return The animal size

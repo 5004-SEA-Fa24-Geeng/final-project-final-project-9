@@ -7,9 +7,9 @@ import Model.AnimalFilter;
 import Model.AnimalList;
 import Model.Animals.Animal;
 import Model.Animals.IAnimal;
-import Model.Formatter.AnimalOutputGenerator;
-import Model.Formatter.IOutputGenerator;
-import Model.Formatter.OutputFormat;
+import Model.Output.AnimalOutputGenerator;
+import Model.Output.IOutputGenerator;
+import Model.Output.OutputFormat;
 import View.IView;
 
 /**
@@ -26,13 +26,14 @@ public class Controller implements IController {
     /**
      * The model containing the list of animals.
      */
-    private AnimalList model;
+    private final AnimalList model;
 
     /**
      * The filter used to filter and sort animals.
      */
-    private AnimalFilter filter;
+    private final AnimalFilter filter;
 
+    /** The output generator to export data. */
     private final IOutputGenerator generator = new AnimalOutputGenerator();
 
 
@@ -73,6 +74,12 @@ public class Controller implements IController {
         } catch (Exception e) {
             view.showError("Sort failed: " + e.getMessage());
         }
+    }
+
+
+    @Override
+    public void handleSort() {
+        handleSort(true);
     }
 
 
@@ -159,6 +166,18 @@ public class Controller implements IController {
                 animal.getImage()
         );
         updateView();
+    }
+
+
+    @Override
+    public void exportData() {
+        exportData("TXT");
+    }
+
+
+    @Override
+    public void exportData(List<IAnimal> list) {
+        exportData(list, "TXT");
     }
 
 

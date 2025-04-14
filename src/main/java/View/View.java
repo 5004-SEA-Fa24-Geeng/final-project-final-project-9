@@ -18,7 +18,6 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -139,8 +138,8 @@ public class View extends JFrame implements IView {
         reportButton = new JButton("Report Animal");
         mapViewer = new JXMapViewer();
         sortComboBox = new JComboBox<>(new String[]{"", "Ascending", "Descending"});
-        sortButton = new JButton("Sort by Date");
-        //addSelectedButton = new JButton("Add Selected to List");
+        sortButton = new JButton("Sort");
+        sortButton.setMaximumSize(new Dimension(200, 100));
         selectedAnimals = new HashSet<>();
 
         // Set up window
@@ -166,9 +165,13 @@ public class View extends JFrame implements IView {
         resetButton.addActionListener(e -> controller.handleReset());
         sortButton.addActionListener(e -> {
             String sortOrder = (String) sortComboBox.getSelectedItem();
-            if (sortOrder != null && !sortOrder.isEmpty()) {
-                boolean ascending = "Ascending".equals(sortOrder);
-                controller.handleSort(ascending);
+            if (sortOrder != null) {
+                if (sortOrder.isEmpty()) {
+                    controller.handleSort();  // default on ascending
+                } else {
+                    boolean ascending = "Ascending".equals(sortOrder);
+                    controller.handleSort(ascending);
+                }
             }
         });
 
@@ -188,14 +191,14 @@ public class View extends JFrame implements IView {
                 JLabel label = new JLabel();
 
                 if (value instanceof IAnimal animal) {
-                    StringBuilder text = new StringBuilder();
-                    text.append("Type: ").append(animal.getAnimalType()).append(" | ");
-                    text.append("Breed: ").append(animal.getSpecies()).append(" | ");
-                    text.append("Date: ").append(animal.getSeenDate()).append(" | ");
-                    text.append("Time: ").append(animal.getTime()).append(" | ");
-                    text.append("Area: ").append(animal.getArea()).append(" | ");
-                    text.append("Address: ").append(animal.getAddress());
-                    label.setText(text.toString());
+                    String text = String.format("%s %s | %s %s | %s %s | %s %s | %s %s | %s %s",
+                            "Type:", animal.getAnimalType(),
+                            "Breed:", animal.getSpecies(),
+                            "Date:", animal.getSeenDate(),
+                            "Time:", animal.getTime(),
+                            "Area:", animal.getArea(),
+                            "Address:", animal.getAddress());
+                    label.setText(text);
                     
                     // 创建按钮面板，使用最小间距
                     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
@@ -244,7 +247,7 @@ public class View extends JFrame implements IView {
                         if (cellBounds != null) {
                             // 获取点击位置相对于列表项的坐标
                             int relativeX = e.getX() - cellBounds.x;
-                            
+
                             if (relativeX < cellBounds.width * 0.95) {
                                 // 如果点击位置在左侧区域（小于90%的宽度），则显示详情
                                 IAnimal animal = selectedListModel.getElementAt(index);
@@ -436,23 +439,12 @@ public class View extends JFrame implements IView {
         sortPanel.add(sortButton);
         filterPanel.add(sortPanel);
 
-        // 添加查看地图按钮
-        JButton viewMapButton = new JButton("View on Map");
-        viewMapButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        viewMapButton.addActionListener(e -> {
-            // 切换到地图标签页
-            tabbedPane.setSelectedIndex(1);
-            
-            // 更新地图显示当前筛选的动物
-            List<IAnimal> filteredAnimals = controller.getFilteredAnimals();
-            System.out.println("Current number of animals: " + filteredAnimals.size());
-            displayMap(filteredAnimals);
-        });
-        filterPanel.add(viewMapButton);
 
         // Add buttons with left alignment
         filterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        filterButton.setMaximumSize(new Dimension(200, 100));
         resetButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        resetButton.setMaximumSize(new Dimension(200, 100));
         filterPanel.add(filterButton);
         filterPanel.add(resetButton);
 
@@ -464,29 +456,35 @@ public class View extends JFrame implements IView {
         JLabel exportLabel = new JLabel("Export as:");
         exportLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        JComboBox<String> exportFormatComboBox = new JComboBox<>(new String[]{"XML", "JSON", "TXT", "CSV"});
+        JComboBox<String> exportFormatComboBox = new JComboBox<>(new String[]{"", "TXT", "XML", "JSON", "CSV"});
         exportFormatComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         exportFormatComboBox.setMaximumSize(new Dimension(200, exportFormatComboBox.getPreferredSize().height));
 
-        JButton exportButton = getJButton(exportFormatComboBox);
+        JButton exportButton = getExportJButton(exportFormatComboBox);
+        JButton addAllButton = getAddAllJButton();
 
         exportPanel.add(exportLabel);
         exportPanel.add(exportFormatComboBox);
         exportPanel.add(exportButton);
+        exportPanel.add(addAllButton);
         filterPanel.add(exportPanel);
     }
 
-    private JButton getJButton(JComboBox<String> exportFormatComboBox) {
+    private JButton getExportJButton(JComboBox<String> exportFormatComboBox) {
         JButton exportButton = new JButton("Export");
         exportButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        exportButton.setMaximumSize(new Dimension(200, 100));
 
         exportButton.addActionListener(e -> {
             String format = (String) exportFormatComboBox.getSelectedItem();
-            if (format != null && !format.isEmpty()) {
+            if (format != null) {
                 // Get animals from selectedAnimalList instead of selectedAnimals
                 List<IAnimal> animalsToExport = new ArrayList<>();
                 for (int i = 0; i < selectedListModel.size(); i++) {
                     animalsToExport.add(selectedListModel.getElementAt(i));
+                }
+                if (format.isEmpty()) {
+                    format = "TXT";
                 }
                 if (animalsToExport.isEmpty()) {
                     controller.exportData(format.toLowerCase());
@@ -495,7 +493,20 @@ public class View extends JFrame implements IView {
                 }
             }
         });
+
         return exportButton;
+    }
+
+    private JButton getAddAllJButton() {
+        JButton addAllButton = new JButton("Add all");
+        addAllButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        addAllButton.setMaximumSize(new Dimension(200, 100));
+
+        addAllButton.addActionListener(e -> {
+            selectedListModel.addAll(controller.getFilteredAnimals());
+        });
+
+        return addAllButton;
     }
 
     private String[] combineArrays(String[] first, String[] second) {
@@ -881,14 +892,15 @@ public class View extends JFrame implements IView {
             JLabel label = new JLabel();
 
             if (value instanceof IAnimal animal) {
-                StringBuilder text = new StringBuilder();
-                text.append("Type: ").append(animal.getAnimalType()).append(" | ");
-                text.append("Breed: ").append(animal.getSpecies()).append(" | ");
-                text.append("Date: ").append(animal.getSeenDate()).append(" | ");
-                text.append("Time: ").append(animal.getTime()).append(" | ");
-                text.append("Area: ").append(animal.getArea()).append(" | ");
-                text.append("Address: ").append(animal.getAddress());
-                label.setText(text.toString());
+                String text = String.format("%s %s | %s %s | %s %s | %s %s | %s %s | %s %s",
+                        "Type:", animal.getAnimalType(),
+                        "Breed:", animal.getSpecies(),
+                        "Date:", animal.getSeenDate(),
+                        "Time:", animal.getTime(),
+                        "Area:", animal.getArea(),
+                        "Address:", animal.getAddress());
+                label.setText(text);
+//                label.setText(text.toString());
                 
                 // 创建按钮面板，使用最小间距
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0

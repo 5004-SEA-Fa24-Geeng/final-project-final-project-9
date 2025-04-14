@@ -1,4 +1,4 @@
-package Model.Formatter;
+package Model.Output;
 
 import Model.Animals.IAnimal;
 
