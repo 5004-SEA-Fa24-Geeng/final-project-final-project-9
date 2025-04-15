@@ -7,10 +7,21 @@ plugins {
 
 // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     id 'jacoco'
+
+    id 'application'
 }
 
 group 'CS 5004 - Summer 2024'
 version '1.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    mainClass = 'Main'
+}
 
 repositories {
     mavenCentral()
@@ -23,8 +34,11 @@ dependencies {
     implementation 'org.jxmapviewer:jxmapviewer2:2.6'
     implementation 'commons-logging:commons-logging:1.2'
 
-    // OpenCSV
-    implementation 'com.opencsv:opencsv:5.7.1'
+    // Apache Commons Collections4
+    implementation 'org.apache.commons:commons-collections4:4.4'
+
+    // OpenCSV - 使用单一版本
+    implementation 'com.opencsv:opencsv:5.8'
 
     // JSON
     implementation 'org.json:json:20231013'
@@ -38,7 +52,6 @@ dependencies {
     // optional, left these in here in case you wanted to use them.
     implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.25.3'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
-    implementation 'com.opencsv:opencsv:5.8'
     // Jackson Core
     implementation 'com.fasterxml.jackson.core:jackson-core:2.16.0'
     // Jackson Annotations

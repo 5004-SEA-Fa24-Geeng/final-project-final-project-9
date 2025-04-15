@@ -257,6 +257,9 @@ public class View extends JFrame implements IView, Species {
     }
 
     private void initializeListPanel() {
+        // 设置 filterPanel 的首选大小和最大大小
+        filterPanel.setPreferredSize(new Dimension(250, 0));
+        filterPanel.setMaximumSize(new Dimension(250, Integer.MAX_VALUE));
         listPanel.add(filterPanel, BorderLayout.WEST);
 
         animalList.setCellRenderer(new AnimalListCellRenderer());
@@ -343,8 +346,6 @@ public class View extends JFrame implements IView, Species {
         });
     }
 
-
-
     private void initializeFilterPanel() {
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
 
@@ -417,6 +418,14 @@ public class View extends JFrame implements IView, Species {
             filterPanel.add(filterRows[i]);
         }
 
+        // Add buttons with left alignment
+        filterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        filterButton.setMaximumSize(new Dimension(200, 100));
+        resetButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        resetButton.setMaximumSize(new Dimension(200, 100));
+        filterPanel.add(filterButton);
+        filterPanel.add(resetButton);
+
         // Add sort components to filter panel
         JPanel sortPanel = new JPanel();
         sortPanel.setLayout(new BoxLayout(sortPanel, BoxLayout.Y_AXIS));
@@ -431,15 +440,6 @@ public class View extends JFrame implements IView, Species {
         sortPanel.add(sortComboBox);
         sortPanel.add(sortButton);
         filterPanel.add(sortPanel);
-
-
-        // Add buttons with left alignment
-        filterButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        filterButton.setMaximumSize(new Dimension(200, 100));
-        resetButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        resetButton.setMaximumSize(new Dimension(200, 100));
-        filterPanel.add(filterButton);
-        filterPanel.add(resetButton);
 
         // Add export functionality
         JPanel exportPanel = new JPanel();
@@ -541,28 +541,43 @@ public class View extends JFrame implements IView, Species {
         return result;
     }
 
-
-
-    public void showAnimalDetails(IAnimal animal) {
+    private void showAnimalDetails(IAnimal animal) {
         JDialog dialog = new JDialog(this, "Animal Details", true);
         dialog.setLayout(new BorderLayout());
 
-        // Create image panel
+        // 创建图片面板
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setPreferredSize(new Dimension(300, 300));
         imagePanel.setBorder(BorderFactory.createTitledBorder("Image"));
 
-        // Load image
+        // 加载图片
         String imagePath = animal.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
             try {
-                // Switch relative path to asolute path
-                if (!imagePath.startsWith("/")) {
-                    imagePath = "data/image/" + imagePath;
+                // 直接使用原始图片路径，不进行修改
+                ImageIcon originalIcon = new ImageIcon(imagePath);
+
+                // 计算保持宽高比的缩放尺寸
+                int originalWidth = originalIcon.getIconWidth();
+                int originalHeight = originalIcon.getIconHeight();
+                int maxSize = 300;
+
+                int scaledWidth, scaledHeight;
+                if (originalWidth > originalHeight) {
+                    scaledWidth = maxSize;
+                    scaledHeight = (int) ((double) originalHeight / originalWidth * maxSize);
+                } else {
+                    scaledHeight = maxSize;
+                    scaledWidth = (int) ((double) originalWidth / originalHeight * maxSize);
                 }
-                ImageIcon originalIcon = new ImageIcon(animal.getImage());
-                Image scaledImage = originalIcon.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+
+                // 使用保持宽高比的缩放
+                Image scaledImage = originalIcon.getImage().getScaledInstance(
+                        scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+
+                // 创建图片标签并居中显示
                 JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+                imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 imagePanel.add(imageLabel, BorderLayout.CENTER);
             } catch (Exception e) {
                 JLabel noImageLabel = new JLabel("No Image Available");
@@ -575,11 +590,14 @@ public class View extends JFrame implements IView, Species {
             imagePanel.add(noImageLabel, BorderLayout.CENTER);
         }
 
-        // Create info panel
-        JPanel infoPanel = new JPanel(new GridLayout(0, 2, 0, 0)); // 减小水平和垂直间距
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2)); // 减小边距
+        // 创建信息面板
+        //JPanel infoPanel = new JPanel(new GridLayout(0, 1, 0, 0)); // 移除水平和垂直间距
 
-        // Add animal information
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // 移除边距
+
+        // 添加动物信息
         addInfoField(infoPanel, "Type:", animal.getAnimalType());
         addInfoField(infoPanel, "Breed:", animal.getSpecies());
         addInfoField(infoPanel, "Size:", animal.getAnimalSize());
@@ -592,31 +610,12 @@ public class View extends JFrame implements IView, Species {
         addInfoField(infoPanel, "City:", animal.getArea());
         addInfoField(infoPanel, "Address:", animal.getAddress());
         addInfoField(infoPanel, "Location Description:", animal.getLocDesc());
-        
-        // Add missing animal information
-        JPanel descriptionPanel = new JPanel(new BorderLayout());
-        descriptionPanel.setBorder(BorderFactory.createTitledBorder("Description - Missing Information"));
-        
-        JTextArea descArea = new JTextArea(animal.getDescription());
-        descArea.setEditable(false);
-        descArea.setLineWrap(true);
-        descArea.setWrapStyleWord(true);
-        descArea.setBackground(new Color(255, 250, 205)); // light yellow
-        descArea.setFont(new Font("Dialog", Font.BOLD, 12));
-        descArea.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2));
-        
-        JScrollPane descScroll = new JScrollPane(descArea);
-        descScroll.setPreferredSize(new Dimension(0, 100));
-        descriptionPanel.add(descScroll, BorderLayout.CENTER);
-        
+        addInfoField(infoPanel, "Description:", animal.getDescription());
+        //addInfoField(infoPanel, "Image Path:", imagePath); // 添加图片路径信息
+
         // 创建滚动面板来容纳信息面板
         JScrollPane scrollPane = new JScrollPane(infoPanel);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Animal Information"));
-
-        // 创建主信息面板，包含普通信息和走失信息
-        JPanel mainInfoPanel = new JPanel(new BorderLayout());
-        mainInfoPanel.add(scrollPane, BorderLayout.CENTER);
-        mainInfoPanel.add(descriptionPanel, BorderLayout.SOUTH);
 
         // 创建按钮面板
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -626,13 +625,65 @@ public class View extends JFrame implements IView, Species {
 
         // 将组件添加到对话框
         dialog.add(imagePanel, BorderLayout.WEST);
-        dialog.add(mainInfoPanel, BorderLayout.CENTER);
+        dialog.add(scrollPane, BorderLayout.CENTER);
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
         // 设置对话框大小和位置
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
+    }
+
+    private void addInfoField(JPanel panel, String label, String value) {
+        // 创建一个面板来容纳标签和内容
+        JPanel fieldPanel = new JPanel(new BorderLayout(0, 0));
+        fieldPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        fieldPanel.setOpaque(false); // 设置面板透明
+
+        // 创建标签
+        JLabel labelComponent = new JLabel(label);
+        labelComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        // 创建文本框
+        JTextField textField;
+        if (label.equals("Description:")) {
+            // 为 description 字段创建多行文本框
+            JTextArea textArea = new JTextArea(value);
+            textArea.setEditable(false);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            textArea.setRows(5); // 增加行数为5
+            textArea.setColumns(20); // 减少列数
+            textArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            textArea.setOpaque(true); // 设置文本区域不透明
+            textArea.setBackground(Color.WHITE); // 设置白色背景
+
+            // 将文本区域添加到滚动面板
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            scrollPane.setPreferredSize(new Dimension(250, 100)); // 增加高度为100
+            scrollPane.setOpaque(false); // 设置滚动面板透明
+            scrollPane.getViewport().setOpaque(false); // 设置视口透明
+
+            // 将标签和滚动面板添加到字段面板
+            fieldPanel.add(labelComponent, BorderLayout.WEST);
+            fieldPanel.add(scrollPane, BorderLayout.CENTER);
+        } else {
+            // 为其他字段创建单行文本框
+            textField = new JTextField(value);
+            textField.setEditable(false);
+            textField.setColumns(20); // 减少列数
+            textField.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+            textField.setOpaque(false); // 设置文本框透明
+            textField.setBackground(new Color(0, 0, 0, 0)); // 设置透明背景
+
+            // 将标签和文本框添加到字段面板
+            fieldPanel.add(labelComponent, BorderLayout.WEST);
+            fieldPanel.add(textField, BorderLayout.CENTER);
+        }
+
+        // 将整个面板添加到主面板
+        panel.add(fieldPanel);
     }
 
     private void showReportDialog() {
@@ -929,17 +980,6 @@ public class View extends JFrame implements IView, Species {
         }
     }
 
-
-    private void addInfoField(JPanel panel, String labelText, String value) {
-        JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 0)); // 减小水平间距为1，垂直间距为0
-        JLabel label = new JLabel(labelText);
-        JTextField valueField = new JTextField(value);
-        valueField.setEditable(false);
-        valueField.setColumns(12); // 减小文本框的列数，使整体更紧凑
-        fieldPanel.add(label);
-        fieldPanel.add(valueField);
-        panel.add(fieldPanel);
-    }
 
 
     private void initializeMapPanel() {
