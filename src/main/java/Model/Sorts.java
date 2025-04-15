@@ -55,7 +55,7 @@ public class Sorts {
     public static Comparator<IAnimal> sortBySize(boolean ascending) {
         return (o1, o2) -> {
             int compare = o1.getAnimalSize().compareTo(o2.getAnimalSize());
-            return ascending ? compare : -compare;
+            return ascending ? -compare : compare;
         };
     }
 

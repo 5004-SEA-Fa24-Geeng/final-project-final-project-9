@@ -11,14 +11,15 @@ public enum Area {
     /**
      * Converts a string representation of a city to the corresponding Area enum value.
      * Handles spaces in city names by converting them to underscores.
-     * @param area The string representation of the city name (case-insensitive)
+     * @param value The string representation of the city name (case-insensitive)
      * @return The corresponding Area enum value, or null if the string doesn't match any city
      */
-    public static Area fromString(String area) {
-        try {
-            return Area.valueOf(area.toUpperCase().replace(" ", "_"));
-        } catch (IllegalArgumentException e) {
-            return null;
+    public static Area fromString(String value) {
+        for (Area area : Area.values()) {
+            if (area.name().equalsIgnoreCase(value)) {
+                return area;
+            }
         }
+        return null;
     }
 }
