@@ -26,29 +26,6 @@ public class MapGeocoder {
 
 
     /**
-     * Test getCoordinates() method.
-     * @param args input
-     */
-    public static void main(String[] args) {
-        IAnimalList animals = new AnimalList();
-        try {
-            GeoLocation location;
-            String address;
-            // Get coordinates
-            for (IAnimal animal : animals.getAnimals()) {
-                address = animal.getAddress() + "," + animal.getArea();
-                location = getCoordinates(address);
-                if (location == null) {
-                    System.out.println("Animal Number: " + animal.getNumber() + " need to change address.");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    /**
      * Get the coordinates of a given address.
      * @param address given address
      * @return a new GeoLocation object
