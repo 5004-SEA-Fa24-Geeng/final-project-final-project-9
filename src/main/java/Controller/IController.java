@@ -27,6 +27,11 @@ public interface IController {
 
 
     /**
+     * Handle sort request, default to ascending.
+     */
+    void handleSort();
+
+    /**
      * Handle sort request.
      * @param ascending ascending or not
      */
@@ -104,6 +109,20 @@ public interface IController {
      * @param animal The animal to be added
      */
     void addAnimal(IAnimal animal);
+
+
+    /**
+     * Export animal data to a file in the specified format.
+     * Default to all animals in TXT format to FileOutputStream
+     */
+    void exportData();
+
+
+    /**
+     * Export animal data to a file in the specified format.
+     * Default TXT format to FileOutputStream
+     */
+    void exportData(List<IAnimal> list);
 
 
     /**

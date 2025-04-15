@@ -2,8 +2,8 @@ package Model;
 
 import Model.Animals.Animal;
 import Model.Animals.IAnimal;
-import Model.output.AnimalCSVReader;
-import Model.output.AnimalCSVWriter;
+import Model.Input.AnimalCSVReader;
+import Model.Input.AnimalCSVWriter;
 
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class AnimalList implements IAnimalList {
     /** Original list of animals. */
-    private List<IAnimal> animalList;
+    private final List<IAnimal> animalList;
 
     /**
      * Constructor for animal list.

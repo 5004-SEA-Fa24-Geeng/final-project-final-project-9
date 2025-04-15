@@ -1,4 +1,4 @@
-package Model.output;
+package Model.Input;
 
 import java.util.List;
 import Model.Animals.IAnimal;

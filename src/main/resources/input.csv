@@ -1,5 +1,0 @@
-AnimalType,Pattern,AnimalColor,AnimalAge,WitnessedTime,LoDescription,Location,IfAdded,Witness,Image,Description,Gender,AnimalSize,Species,Number
-Dog,Spotted,Brown,3,"25-02-15",Near park,New York,false,5,dog1.jpg,Friendly dog,1,2,Mammal,1
-Cat,Striped,Black,2,"25-03-15",Behind supermarket,Los Angeles,false,3,cat1.jpg,Lost kitten,0,1,Mammal,1
-Bird,Plain,White,1,"25-04-05",On rooftop,Chicago,false,2,bird1.jpg,Small white bird,1,0,Avian,2"3.0",
-"cat","American Shorthair","1","1","Tabby","Black","1","25-3-30","near Standard","Seattle, UD","false","2","2","1"

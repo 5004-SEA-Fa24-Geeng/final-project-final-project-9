@@ -1,4 +1,4 @@
-package Model;
+package Model.Animals;
 
 /**
  * Animal data columns for filter and sort.
