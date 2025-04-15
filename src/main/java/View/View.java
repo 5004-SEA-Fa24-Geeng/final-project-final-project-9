@@ -53,6 +53,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import Model.AnimalInfo.Species.*;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -71,17 +72,9 @@ import Model.AnimalInfo.Area;
 import Model.AnimalInfo.Gender;
 import Model.AnimalInfo.Pattern;
 import Model.AnimalInfo.Size;
-import Model.AnimalInfo.Species.Birds;
-import Model.AnimalInfo.Species.Cats;
-import Model.AnimalInfo.Species.Dogs;
-import Model.AnimalInfo.Species.Ducks;
-import Model.AnimalInfo.Species.Geese;
-import Model.AnimalInfo.Species.Hamsters;
-import Model.AnimalInfo.Species.Hedgehogs;
-import Model.AnimalInfo.Species.Rabbits;
 import Model.Animals.IAnimal;
 
-public class View extends JFrame implements IView {
+public class View extends JFrame implements IView, Species {
     private final IController controller;
     private final JTabbedPane tabbedPane;
     private final JPanel listPanel;

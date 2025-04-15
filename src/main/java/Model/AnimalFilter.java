@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import Model.Animals.AnimalData;
 import Model.Animals.IAnimal;
 
 
