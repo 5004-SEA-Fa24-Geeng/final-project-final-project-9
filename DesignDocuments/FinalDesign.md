@@ -108,15 +108,6 @@ classDiagram
         -AnimalList originalList
         +AnimalFilter()
         +void filter(String, String)
-        -List~IAnimal~ filterOnType(String)
-        -List~IAnimal~ filterOnSpecies(String)
-        -List~IAnimal~ filterOnSize(String)
-        -List~IAnimal~ filterOnGender(String)
-        -List~IAnimal~ filterOnPattern(String)
-        -List~IAnimal~ filterOnColor(String)
-        -List~IAnimal~ filterOnAge(String)
-        -List~IAnimal~ filterOnArea(String)
-        -List~IAnimal~ filterOnSeenDate(String)
         +void sortOnDate(boolean)
         +void reset()
     }
