@@ -96,12 +96,6 @@ classDiagram
         +Animal(String, String, String, String, String, String, String, String, String, String, String, String, String, String)
     }
 
-    class AnimalData {
-        -List~IAnimal~ animals
-        +AnimalData()
-        +void readData()
-    }
-
     class AnimalList {
         -List~IAnimal~ animals
         -int maxNumber
@@ -110,7 +104,21 @@ classDiagram
     }
 
     class AnimalFilter {
+        -List~IAnimal~ filtered
+        -AnimalList originalList
         +AnimalFilter()
+        +void filter(String, String)
+        -List~IAnimal~ filterOnType(String)
+        -List~IAnimal~ filterOnSpecies(String)
+        -List~IAnimal~ filterOnSize(String)
+        -List~IAnimal~ filterOnGender(String)
+        -List~IAnimal~ filterOnPattern(String)
+        -List~IAnimal~ filterOnColor(String)
+        -List~IAnimal~ filterOnAge(String)
+        -List~IAnimal~ filterOnArea(String)
+        -List~IAnimal~ filterOnSeenDate(String)
+        +void sortOnDate(boolean)
+        +void reset()
     }
 
     class Sorts {
@@ -164,10 +172,6 @@ classDiagram
         +static void main(String[])
     }
 
-    %% Enums
-    class Operation {
-        <<enumeration>>
-    }
 
     class OutputFormat {
         <<enumeration>>
@@ -178,22 +182,25 @@ classDiagram
     Animal ..|> IAnimal : implements
     AnimalList ..|> IAnimalList : implements
     AnimalFilter ..|> IAnimalFilter : implements
+    AnimalFilter --> Sorts : uses
     Controller ..|> IController : implements
     View ..|> IView : implements
     AnimalOutputGenerator ..|> IOutputGenerator : implements
+    AnimalOutputGenerator --> OutputFormat: uses
 
-    Controller --> IAnimalList : uses
-    Controller --> IAnimalFilter : uses
-    Controller --> Sorts : uses
-    Controller --> IView : updates
-    Controller --> IOutputGenerator : uses
+    Controller --> AnimalOutputGenerator : uses
+    Controller --> AnimalList : uses
+    Controller --> AnimalFilter : uses
+    Controller --> View : updates
+
     
-    View --> IController : calls
+    View --> Controller : calls
     View --> MapGeocoder : uses
     
-    AnimalList --> IAnimal : contains
-    AnimalList --> AnimalData : uses
+    AnimalFilter --> AnimalList: contains
+    AnimalList --> Animal : contains
     
+    Main --> AnimalFilter : creates
     Main --> Controller : creates
     Main --> View : creates
     Main --> AnimalList : creates
