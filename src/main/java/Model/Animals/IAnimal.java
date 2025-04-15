@@ -8,6 +8,7 @@ public interface IAnimal {
     /** The source of animal images. */
     String IMG_SRC = "data/image/"; // e.g.   .../image/50.img
 
+
     /**
      * Gets the type of the animal.
      * @return The animal type
@@ -19,13 +20,6 @@ public interface IAnimal {
      * @return The animal species
      */
     String getSpecies();
-
-
-    /**
-     * Get all the breeds as string array.
-     * @return the string array of breeds of this animal type
-     */
-    String[] getSpeciesOfThisType();
 
 
     /**
