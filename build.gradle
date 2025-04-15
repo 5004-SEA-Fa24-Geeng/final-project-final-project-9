@@ -7,6 +7,9 @@ plugins {
 
 // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     id 'jacoco'
+    
+// Application plugin for running the application
+    id 'application'
 }
 
 group 'CS 5004 - Summer 2024'
@@ -132,4 +135,9 @@ task doAll {
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
+}
+
+// Configure the application main class
+application {
+    mainClass = 'Main'
 }

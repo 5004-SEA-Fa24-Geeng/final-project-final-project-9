@@ -1,11 +1,13 @@
 package Model.Output;
 
-import java.io.*;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 
-import Model.Animals.IAnimal;
-
 import com.opencsv.CSVWriter;
+
+import Model.Animals.IAnimal;
 
 
 /**
@@ -44,23 +46,28 @@ public class AnimalOutputGenerator implements IOutputGenerator {
      * @param writer PrintWriter instance -- to where
      */
     private void exportToTXT(List<IAnimal> animals, PrintWriter writer) {
-            for (IAnimal animal : animals) {
-                writer.println("Animal Information:");
-                writer.println("Type: " + animal.getAnimalType());
-                writer.println("Breed: " + animal.getSpecies());
-                writer.println("Size: " + animal.getAnimalSize());
-                writer.println("Gender: " + animal.getGender());
-                writer.println("Pattern: " + animal.getPattern());
-                writer.println("Color: " + animal.getColor());
-                writer.println("Age: " + animal.getAge());
-                writer.println("Date Seen: " + animal.getSeenDate());
-                writer.println("Time Seen: " + animal.getTime());
-                writer.println("Area: " + animal.getArea());
-                writer.println("Address: " + animal.getAddress());
-                writer.println("Location Description: " + animal.getLocDesc());
-                writer.println("Description: " + animal.getDescription());
-                writer.println("----------------------------------------");
-            }
+        if (animals == null || animals.isEmpty()) {
+            writer.println("No animals found.");
+            return;
+        }
+        
+        for (IAnimal animal : animals) {
+            writer.println("Animal Information:");
+            writer.println("Type: " + animal.getAnimalType());
+            writer.println("Breed: " + animal.getSpecies());
+            writer.println("Size: " + animal.getAnimalSize());
+            writer.println("Gender: " + animal.getGender());
+            writer.println("Pattern: " + animal.getPattern());
+            writer.println("Color: " + animal.getColor());
+            writer.println("Age: " + animal.getAge());
+            writer.println("Date Seen: " + animal.getSeenDate());
+            writer.println("Time Seen: " + animal.getTime());
+            writer.println("Area: " + animal.getArea());
+            writer.println("Address: " + animal.getAddress());
+            writer.println("Location Description: " + animal.getLocDesc());
+            writer.println("Description: " + animal.getDescription());
+            writer.println("----------------------------------------");
+        }
     }
 
 
@@ -71,26 +78,35 @@ public class AnimalOutputGenerator implements IOutputGenerator {
      */
     private void exportToJSON(List<IAnimal> animals, PrintWriter writer) {
         writer.println("{");
-        writer.println("  \"animals\": [");
-        for (int i = 0; i < animals.size(); i++) {
-            IAnimal animal = animals.get(i);
-            writer.println("    {");
-            writer.println("      \"type\": \"" + animal.getAnimalType() + "\",");
-            writer.println("      \"breed\": \"" + animal.getSpecies() + "\",");
-            writer.println("      \"size\": \"" + animal.getAnimalSize() + "\",");
-            writer.println("      \"gender\": \"" + animal.getGender() + "\",");
-            writer.println("      \"pattern\": \"" + animal.getPattern() + "\",");
-            writer.println("      \"color\": \"" + animal.getColor() + "\",");
-            writer.println("      \"age\": \"" + animal.getAge() + "\",");
-            writer.println("      \"date\": \"" + animal.getSeenDate() + "\",");
-            writer.println("      \"time\": \"" + animal.getTime() + "\",");
-            writer.println("      \"city\": \"" + animal.getArea() + "\",");
-            writer.println("      \"address\": \"" + animal.getAddress() + "\",");
-            writer.println("      \"locationDesc\": \"" + animal.getLocDesc() + "\",");
-            writer.println("      \"description\": \"" + animal.getDescription() + "\"");
-            writer.println("    }" + (i < animals.size() - 1 ? "," : ""));
+        
+        if (animals == null || animals.isEmpty()) {
+            // For empty lists, use a simple format with proper spacing
+            writer.println("  \"animals\": []");
+        } else {
+            writer.println("  \"animals\": [");
+            
+            for (int i = 0; i < animals.size(); i++) {
+                IAnimal animal = animals.get(i);
+                writer.println("    {");
+                writer.println("      \"type\": \"" + animal.getAnimalType() + "\",");
+                writer.println("      \"breed\": \"" + animal.getSpecies() + "\",");
+                writer.println("      \"size\": \"" + animal.getAnimalSize() + "\",");
+                writer.println("      \"gender\": \"" + animal.getGender() + "\",");
+                writer.println("      \"pattern\": \"" + animal.getPattern() + "\",");
+                writer.println("      \"color\": \"" + animal.getColor() + "\",");
+                writer.println("      \"age\": \"" + animal.getAge() + "\",");
+                writer.println("      \"date\": \"" + animal.getSeenDate() + "\",");
+                writer.println("      \"time\": \"" + animal.getTime() + "\",");
+                writer.println("      \"city\": \"" + animal.getArea() + "\",");
+                writer.println("      \"address\": \"" + animal.getAddress() + "\",");
+                writer.println("      \"locationDesc\": \"" + animal.getLocDesc() + "\",");
+                writer.println("      \"description\": \"" + animal.getDescription() + "\"");
+                writer.println("    }" + (i < animals.size() - 1 ? "," : ""));
+            }
+            
+            writer.println("  ]");
         }
-        writer.println("  ]");
+        
         writer.println("}");
     }
 
@@ -109,25 +125,28 @@ public class AnimalOutputGenerator implements IOutputGenerator {
                 "City", "LocationDesc", "Description",};
         csvWriter.writeNext(header);
 
-        // Write data
-        for (IAnimal animal : animals) {
-            String[] data = {
-                    animal.getAnimalType(),
-                    animal.getSpecies(),
-                    animal.getAnimalSize(),
-                    animal.getGender(),
-                    animal.getPattern(),
-                    animal.getColor(),
-                    animal.getAge(),
-                    animal.getSeenDate(),
-                    animal.getTime(),
-                    animal.getAddress(),
-                    animal.getArea(),
-                    animal.getLocDesc(),
-                    animal.getDescription()
-            };
-            csvWriter.writeNext(data);
+        // Write data (only if we have animals)
+        if (animals != null && !animals.isEmpty()) {
+            for (IAnimal animal : animals) {
+                String[] data = {
+                        animal.getAnimalType(),
+                        animal.getSpecies(),
+                        animal.getAnimalSize(),
+                        animal.getGender(),
+                        animal.getPattern(),
+                        animal.getColor(),
+                        animal.getAge(),
+                        animal.getSeenDate(),
+                        animal.getTime(),
+                        animal.getAddress(),
+                        animal.getArea(),
+                        animal.getLocDesc(),
+                        animal.getDescription()
+                };
+                csvWriter.writeNext(data);
+            }
         }
+        
         writer.println(stringWriter);
     }
 
@@ -141,25 +160,26 @@ public class AnimalOutputGenerator implements IOutputGenerator {
         writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         writer.println("<animals>");
 
-        for (IAnimal animal : animals) {
-            writer.println("  <animal>");
-            writer.println("    <type>" + animal.getAnimalType() + "</type>");
-            writer.println("    <breed>" + animal.getSpecies() + "</breed>");
-            writer.println("    <size>" + animal.getAnimalSize() + "</size>");
-            writer.println("    <gender>" + animal.getGender() + "</gender>");
-            writer.println("    <pattern>" + animal.getPattern() + "</pattern>");
-            writer.println("    <color>" + animal.getColor() + "</color>");
-            writer.println("    <age>" + animal.getAge() + "</age>");
-            writer.println("    <date>" + animal.getSeenDate() + "</date>");
-            writer.println("    <time>" + animal.getTime() + "</time>");
-            writer.println("    <city>" + animal.getArea() + "</city>");
-            writer.println("    <address>" + animal.getAddress() + "</address>");
-            writer.println("    <locationDesc>" + animal.getLocDesc() + "</locationDesc>");
-            writer.println("    <description>" + animal.getDescription() + "</description>");
-            writer.println("  </animal>");
+        if (animals != null && !animals.isEmpty()) {
+            for (IAnimal animal : animals) {
+                writer.println("  <animal>");
+                writer.println("    <type>" + animal.getAnimalType() + "</type>");
+                writer.println("    <breed>" + animal.getSpecies() + "</breed>");
+                writer.println("    <size>" + animal.getAnimalSize() + "</size>");
+                writer.println("    <gender>" + animal.getGender() + "</gender>");
+                writer.println("    <pattern>" + animal.getPattern() + "</pattern>");
+                writer.println("    <color>" + animal.getColor() + "</color>");
+                writer.println("    <age>" + animal.getAge() + "</age>");
+                writer.println("    <date>" + animal.getSeenDate() + "</date>");
+                writer.println("    <time>" + animal.getTime() + "</time>");
+                writer.println("    <city>" + animal.getArea() + "</city>");
+                writer.println("    <address>" + animal.getAddress() + "</address>");
+                writer.println("    <locationDesc>" + animal.getLocDesc() + "</locationDesc>");
+                writer.println("    <description>" + animal.getDescription() + "</description>");
+                writer.println("  </animal>");
+            }
         }
 
         writer.println("</animals>");
     }
-
 }
