@@ -135,3 +135,10 @@ test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
 }
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+application {
+    mainClass = 'Main'
+}

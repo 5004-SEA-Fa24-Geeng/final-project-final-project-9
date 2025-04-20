@@ -1,9 +1,9 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/IE0ITl4j)
 # Final Project for CS 5004 - (Group 9)
 Member:  
-Lihan Zhou  
-Lijun Wan  
-Jiaming Li
+Lihan Zhou(https://github.com/Eternity1824)  
+Lijun Wan(https://github.com/lietcooper)  
+Jiaming Li(https://github.com/jiaming2li)
 
 
 # 🐶🐱🐰 STRAY PETS WALL - A Platform for Reporting and Browsing Stray Pets
@@ -18,7 +18,6 @@ The application is built using the MVC (Model-View-Controller) design pattern an
 * **Be able to view all items in the collection - in a logical order**
 * **Be able to build a list of items from the collection**
 * **Be able to save out that list using a file format we covered in the course such as .xml, .json, or .csv.**    
-  mvc
 * Graphical User Interface (Can be a website or java swing/awt)
 * Be able to load in lists of items / previously saved lists, and modify them.
 * Be able to sort items in the collection
