@@ -171,16 +171,15 @@ public class View extends JFrame implements IView, Species {
         // Initialize view
         controller.initialize();
 
-        // 在构造函数中初始化 selectedAnimalList
         selectedAnimalList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                         boolean isSelected, boolean cellHasFocus) {
-                JPanel panel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
-                panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除外边距
+                JPanel panel = new JPanel(new BorderLayout(0, 0));
+                panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
                 
-                JPanel infoPanel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
-                infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除内边距
+                JPanel infoPanel = new JPanel(new BorderLayout(0, 0));
+                infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
                 JLabel label = new JLabel();
 
                 if (value instanceof IAnimal animal) {
@@ -193,20 +192,17 @@ public class View extends JFrame implements IView, Species {
                             "Address:", animal.getAddress());
                     label.setText(text);
                     
-                    // 创建按钮面板，使用最小间距
-                    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
-                    
-                    // 创建删除按钮
+
+                    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+
                     JButton deleteButton = new JButton("Delete");
-                    deleteButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
+                    deleteButton.setMargin(new Insets(0, 2, 0, 2));
                     deleteButton.addActionListener(e -> {
-                        selectedListModel.removeElement(animal);  // 只从选中列表中删除
+                        selectedListModel.removeElement(animal);
                     });
-                    
-                    // 将按钮添加到按钮面板
+
                     buttonPanel.add(deleteButton);
-                    
-                    // 将标签和按钮面板添加到信息面板
+
                     infoPanel.add(label, BorderLayout.CENTER);
                     infoPanel.add(buttonPanel, BorderLayout.EAST);
                 }
@@ -225,11 +221,10 @@ public class View extends JFrame implements IView, Species {
             }
         });
         
-        // 设置选择模式和其他属性
+
         selectedAnimalList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
-        
-        // 添加鼠标点击事件监听器
+        selectedAnimalList.setVisibleRowCount(3);
+
         selectedAnimalList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -238,15 +233,13 @@ public class View extends JFrame implements IView, Species {
                     if (index >= 0) {
                         Rectangle cellBounds = selectedAnimalList.getCellBounds(index, index);
                         if (cellBounds != null) {
-                            // 获取点击位置相对于列表项的坐标
                             int relativeX = e.getX() - cellBounds.x;
 
                             if (relativeX < cellBounds.width * 0.95) {
-                                // 如果点击位置在左侧区域（小于90%的宽度），则显示详情
+
                                 IAnimal animal = selectedListModel.getElementAt(index);
                                 showAnimalDetails(animal);
                             } else if (relativeX > cellBounds.width * 0.95) {
-                                // 如果点击位置在右侧区域（大于90%的宽度），则删除该项
                                 selectedListModel.remove(index);
                             }
                         }
@@ -257,7 +250,6 @@ public class View extends JFrame implements IView, Species {
     }
 
     private void initializeListPanel() {
-        // 设置 filterPanel 的首选大小和最大大小
         filterPanel.setPreferredSize(new Dimension(250, 0));
         filterPanel.setMaximumSize(new Dimension(250, Integer.MAX_VALUE));
         listPanel.add(filterPanel, BorderLayout.WEST);
@@ -271,10 +263,8 @@ public class View extends JFrame implements IView, Species {
                     if (index >= 0) {
                         Rectangle cellBounds = animalList.getCellBounds(index, index);
                         if (cellBounds != null) {
-                            // 获取点击位置相对于列表项的坐标
                             int relativeX = e.getX() - cellBounds.x;
-                            
-                            // 如果点击位置在左侧区域（小于70%的宽度），则显示详情
+
                             if (relativeX < cellBounds.width * 0.7) {
                                 showAnimalDetails(listModel.getElementAt(index));
                             }
@@ -292,10 +282,8 @@ public class View extends JFrame implements IView, Species {
                     if (index >= 0) {
                         Rectangle cellBounds = animalList.getCellBounds(index, index);
                         if (cellBounds != null) {
-                            // 获取点击位置相对于列表项的坐标
                             int relativeX = e.getX() - cellBounds.x;
 
-                            // 如果点击位置在右侧区域（大于90%的宽度），则添加到列表
                             if (relativeX > cellBounds.width * 0.9 && relativeX < cellBounds.width) {
                                 if (!selectedAnimals.isEmpty()) {
                                     for (IAnimal animal : selectedAnimals) {
@@ -307,7 +295,6 @@ public class View extends JFrame implements IView, Species {
                                     animalList.clearSelection();
                                 }
                             }
-                            // 如果点击位置在左侧区域（80% ~ 90%的宽度），则显示详情
                             if (relativeX > cellBounds.width * 0.8 && relativeX < cellBounds.width * 0.9) {
                                 showAnimalDetails(listModel.getElementAt(index));
                             }
@@ -323,10 +310,10 @@ public class View extends JFrame implements IView, Species {
         JPanel selectedPanel = new JPanel(new BorderLayout());
         selectedPanel.add(new JLabel("Selected Animals:"), BorderLayout.NORTH);
         
-        // 设置 selectedAnimalList 的显示行数和首选大小
-        selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
+
+        selectedAnimalList.setVisibleRowCount(3);
         JScrollPane selectedScrollPane = new JScrollPane(selectedAnimalList);
-        selectedScrollPane.setPreferredSize(new Dimension(0, 100));  // 减小高度从300像素到100像素
+        selectedScrollPane.setPreferredSize(new Dimension(0, 100));
         
         selectedPanel.add(selectedScrollPane, BorderLayout.CENTER);
         listPanel.add(selectedPanel, BorderLayout.SOUTH);
@@ -375,15 +362,13 @@ public class View extends JFrame implements IView, Species {
         // Add type selection listener
         typeComboBox.addActionListener(e -> updateBreedOptions());
 
-        // 创建标签和下拉框的容器
-        JPanel[] filterRows = new JPanel[9];  // 9个筛选条件
+        JPanel[] filterRows = new JPanel[9];
         for (int i = 0; i < filterRows.length; i++) {
             filterRows[i] = new JPanel();
             filterRows[i].setLayout(new BoxLayout(filterRows[i], BoxLayout.Y_AXIS));
             filterRows[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }
 
-        // 创建左对齐的标签
         JLabel[] labels = new JLabel[]{
             new JLabel("Animal Type:"),
             new JLabel("Breed:"),
@@ -396,12 +381,10 @@ public class View extends JFrame implements IView, Species {
             new JLabel("Date Range:")
         };
 
-        // 设置标签左对齐
         for (JLabel label : labels) {
             label.setAlignmentX(Component.LEFT_ALIGNMENT);
         }
 
-        // 设置下拉框左对齐并设置最大宽度
         JComboBox<?>[] comboBoxes = {
             typeComboBox, breedComboBox, sizeComboBox, genderComboBox,
             patternComboBox, colorComboBox, ageComboBox, cityComboBox, dateRangeComboBox
@@ -411,7 +394,6 @@ public class View extends JFrame implements IView, Species {
             comboBox.setMaximumSize(new Dimension(200, comboBox.getPreferredSize().height));
         }
 
-        // 将标签和下拉框添加到各自的容器中
         for (int i = 0; i < filterRows.length; i++) {
             filterRows[i].add(labels[i]);
             filterRows[i].add(comboBoxes[i]);
@@ -545,19 +527,15 @@ public class View extends JFrame implements IView, Species {
         JDialog dialog = new JDialog(this, "Animal Details", true);
         dialog.setLayout(new BorderLayout());
 
-        // 创建图片面板
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setPreferredSize(new Dimension(300, 300));
         imagePanel.setBorder(BorderFactory.createTitledBorder("Image"));
 
-        // 加载图片
         String imagePath = animal.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
             try {
-                // 直接使用原始图片路径，不进行修改
                 ImageIcon originalIcon = new ImageIcon(imagePath);
 
-                // 计算保持宽高比的缩放尺寸
                 int originalWidth = originalIcon.getIconWidth();
                 int originalHeight = originalIcon.getIconHeight();
                 int maxSize = 300;
@@ -571,11 +549,9 @@ public class View extends JFrame implements IView, Species {
                     scaledWidth = (int) ((double) originalWidth / originalHeight * maxSize);
                 }
 
-                // 使用保持宽高比的缩放
                 Image scaledImage = originalIcon.getImage().getScaledInstance(
                         scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
 
-                // 创建图片标签并居中显示
                 JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
                 imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 imagePanel.add(imageLabel, BorderLayout.CENTER);
@@ -590,14 +566,11 @@ public class View extends JFrame implements IView, Species {
             imagePanel.add(noImageLabel, BorderLayout.CENTER);
         }
 
-        // 创建信息面板
-        //JPanel infoPanel = new JPanel(new GridLayout(0, 1, 0, 0)); // 移除水平和垂直间距
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // 移除边距
 
-        // 添加动物信息
         addInfoField(infoPanel, "Type:", animal.getAnimalType());
         addInfoField(infoPanel, "Breed:", animal.getSpecies());
         addInfoField(infoPanel, "Size:", animal.getAnimalSize());
@@ -611,78 +584,65 @@ public class View extends JFrame implements IView, Species {
         addInfoField(infoPanel, "Address:", animal.getAddress());
         addInfoField(infoPanel, "Location Description:", animal.getLocDesc());
         addInfoField(infoPanel, "Description:", animal.getDescription());
-        //addInfoField(infoPanel, "Image Path:", imagePath); // 添加图片路径信息
 
-        // 创建滚动面板来容纳信息面板
+
         JScrollPane scrollPane = new JScrollPane(infoPanel);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Animal Information"));
 
-        // 创建按钮面板
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton closeButton = new JButton("Close");
         closeButton.addActionListener(e -> dialog.dispose());
         buttonPanel.add(closeButton);
 
-        // 将组件添加到对话框
         dialog.add(imagePanel, BorderLayout.WEST);
         dialog.add(scrollPane, BorderLayout.CENTER);
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
-        // 设置对话框大小和位置
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
 
     private void addInfoField(JPanel panel, String label, String value) {
-        // 创建一个面板来容纳标签和内容
         JPanel fieldPanel = new JPanel(new BorderLayout(0, 0));
         fieldPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        fieldPanel.setOpaque(false); // 设置面板透明
+        fieldPanel.setOpaque(false);
 
-        // 创建标签
         JLabel labelComponent = new JLabel(label);
         labelComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        // 创建文本框
         JTextField textField;
         if (label.equals("Description:")) {
-            // 为 description 字段创建多行文本框
             JTextArea textArea = new JTextArea(value);
             textArea.setEditable(false);
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
-            textArea.setRows(5); // 增加行数为5
-            textArea.setColumns(20); // 减少列数
+            textArea.setRows(5);
+            textArea.setColumns(20);
             textArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            textArea.setOpaque(true); // 设置文本区域不透明
-            textArea.setBackground(Color.WHITE); // 设置白色背景
+            textArea.setOpaque(true);
+            textArea.setBackground(Color.WHITE);
 
-            // 将文本区域添加到滚动面板
             JScrollPane scrollPane = new JScrollPane(textArea);
             scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            scrollPane.setPreferredSize(new Dimension(250, 100)); // 增加高度为100
-            scrollPane.setOpaque(false); // 设置滚动面板透明
-            scrollPane.getViewport().setOpaque(false); // 设置视口透明
+            scrollPane.setPreferredSize(new Dimension(250, 100));
+            scrollPane.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
 
-            // 将标签和滚动面板添加到字段面板
             fieldPanel.add(labelComponent, BorderLayout.WEST);
             fieldPanel.add(scrollPane, BorderLayout.CENTER);
         } else {
-            // 为其他字段创建单行文本框
             textField = new JTextField(value);
             textField.setEditable(false);
-            textField.setColumns(20); // 减少列数
+            textField.setColumns(20);
             textField.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            textField.setOpaque(false); // 设置文本框透明
-            textField.setBackground(new Color(0, 0, 0, 0)); // 设置透明背景
+            textField.setOpaque(false);
+            textField.setBackground(new Color(0, 0, 0, 0));
 
-            // 将标签和文本框添加到字段面板
             fieldPanel.add(labelComponent, BorderLayout.WEST);
             fieldPanel.add(textField, BorderLayout.CENTER);
         }
 
-        // 将整个面板添加到主面板
         panel.add(fieldPanel);
     }
 
@@ -944,24 +904,19 @@ public class View extends JFrame implements IView, Species {
                         "Area:", animal.getArea(),
                         "Address:", animal.getAddress());
                 label.setText(text);
-//                label.setText(text.toString());
-                
-                // 创建按钮面板，使用最小间距
+
+
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
-                
-                // 创建 Add to List 按钮
+
                 JButton addToListButton = new JButton("Add to List");
                 addToListButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
 
-                // 创建查看详情按钮
                 JButton viewDetailsButton = new JButton("View Details");
                 viewDetailsButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
 
-                // 将按钮添加到按钮面板
                 buttonPanel.add(viewDetailsButton);
                 buttonPanel.add(addToListButton);
 
-                // 将标签和按钮面板添加到信息面板
                 infoPanel.add(label, BorderLayout.CENTER);
                 infoPanel.add(buttonPanel, BorderLayout.EAST);
             }

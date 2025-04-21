@@ -8,12 +8,16 @@ Similarly, our application allows users to efficiently browse reports of stray a
 ### 2. Getting Started
 
 #### 2.1 Launching the Application
-Run `main` class to start the application. The main view is like this with all the information on animals loaded.
-   ![Main Application Window](screen_shot/run_main.png)
+Run `main` class to start the application. 
+<br>If it fails to run, try:
+<br>go to the tool bar -> Run -> Edit Configurations -> In `Application/Main`, in `Build and Run` section, choose `java 17` and `-cp final-project-final-project-9.main` -> click Apply and OK -> Run `Main` again
+
+The main view is like this with all the information on animals loaded.
+![Main Application Window](screen_shot/run_main.png)
 ### 3. Realized Features
 
 #### 3.1 List View
-The List View tab displays animals in a list format with the following information: Animal Type, Breed, Date Seen, Time Seen, Area, Address
+- The List View tab displays animals in a list format with the following information: Animal Type, Breed, Date Seen, Time Seen, Area, Address
 ![Main Application Window](screen_shot/animal_list.png)
 - Click `View Details` to open a detailed view of the animal
 ![Main Application Window](screen_shot/animal_list_1.png)
@@ -22,11 +26,11 @@ Animal details include type, breed, size, gender, pattern, color, age, date seen
 
   
 #### 3.2 Build a list 
-- "Add to List": Add the animal to your selected list.
+- `Add to List`: Add the animal to your selected list.
   ![Main Application Window](screen_shot/animal_list_2.png)
   For convenience, click "Add all" button to add all the animals to your selected list.
   ![Main Application Window](screen_shot/add_all.png)
-  Animals that have been added will show in the below `Selected Animals` panel.
+- Animals that have been added will show in the below `Selected Animals` panel.
   ![Main Application Window](screen_shot/selected_animals.png)
 - Click specific piece of animal information in the `Selected Animals` list, which has the same effect with `View Details` button to open `Animal Detail` window.
   ![Main Application Window](screen_shot/detail1.png)
@@ -97,15 +101,15 @@ To report a new animal:
 
 #### 3.7 Exporting Data
 To export the selected animal data, in other words, animals in the below "Selected Animals" panel:
+![Main Application Window](screen_shot/export.png)
 1. Select animals using "Add to List" button. For convenience, you can click "Add all" button to add all the animals in the above panel to the below "Selected Animal" list.
-2. Choose export format from dropdown (**If no formated is chosen, the default format is XML**):
+2. Choose export format from dropdown (**If no format is chosen, the default format is XML**):
     - TXT
     - XML
     - JSON
     - CSV
-3. Click "Export" button
+3. Click "Export" button.
 4. Data will be exported in selected format and store in the file `final-project-final-project-9`.
-![Main Application Window](screen_shot/export.png)
 
 ### 4. Tips and Tricks
 
