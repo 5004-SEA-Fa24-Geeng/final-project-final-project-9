@@ -1,3 +1,22 @@
+/**
+ * View.java
+ *
+ * This file defines the View class, which serves as the graphical user interface (GUI) for the Stray Animal Spotter application.
+ * The View class is responsible for rendering the main window, including the list and map views of animals, filter and sort controls,
+ * animal detail dialogs, and reporting functionality. It interacts with the controller to update the display in response to user actions.
+ *
+ * Main Components:
+ * - List View: Displays a list of animals with filtering, sorting, and selection features.
+ * - Map View: Shows animal locations on an interactive map with clickable markers.
+ * - Filter Panel: Allows users to filter animals by type, breed, size, gender, pattern, color, age, city, and date range.
+ * - Reporting: Provides dialogs for users to report new animal sightings, including image uploads.
+ * - Export: Allows exporting selected animal data in various formats.
+ *
+ * The View class implements IView and Species, and uses Swing components for the GUI.
+ *
+ * Author: [Your Name]
+ * Date: [Date]
+ */
 package View;
 
 import java.awt.BorderLayout;
@@ -103,6 +122,11 @@ public class View extends JFrame implements IView, Species {
     private Map<GeoPosition, IAnimal> positionToAnimalMap = new HashMap<>();
     private final Map<String, GeoPosition> geocodingCache = new HashMap<>();
 
+    /**
+     * Constructs the View and initializes all GUI components.
+     * Sets up the main window, panels, and listeners.
+     * @param controller the controller to interact with business logic
+     */
     public View(IController controller) {
         this.controller = controller;
         this.controller.setView(this);
@@ -170,16 +194,16 @@ public class View extends JFrame implements IView, Species {
         // Initialize view
         controller.initialize();
 
-        // 在构造函数中初始化 selectedAnimalList
+        // Initialize selectedAnimalList in the constructor
         selectedAnimalList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                         boolean isSelected, boolean cellHasFocus) {
-                JPanel panel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
-                panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除外边距
+                JPanel panel = new JPanel(new BorderLayout(0, 0));  // Set layout manager gap to 0
+                panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // Remove outer margin
                 
-                JPanel infoPanel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
-                infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除内边距
+                JPanel infoPanel = new JPanel(new BorderLayout(0, 0));  // Set layout manager gap to 0
+                infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // Remove inner margin
                 JLabel label = new JLabel();
 
                 if (value instanceof IAnimal animal) {
@@ -192,20 +216,20 @@ public class View extends JFrame implements IView, Species {
                             "Address:", animal.getAddress());
                     label.setText(text);
                     
-                    // 创建按钮面板，使用最小间距
+                    // Create button panel with minimal spacing
                     JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
                     
-                    // 创建删除按钮
+                    // Create delete button
                     JButton deleteButton = new JButton("Delete");
-                    deleteButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
+                    deleteButton.setMargin(new Insets(0, 2, 0, 2));  // Reduce button padding
                     deleteButton.addActionListener(e -> {
                         selectedListModel.removeElement(animal);  // 只从选中列表中删除
                     });
                     
-                    // 将按钮添加到按钮面板
+                    // Add button to button panel
                     buttonPanel.add(deleteButton);
                     
-                    // 将标签和按钮面板添加到信息面板
+                    // Add label and button panel to info panel
                     infoPanel.add(label, BorderLayout.CENTER);
                     infoPanel.add(buttonPanel, BorderLayout.EAST);
                 }
@@ -224,11 +248,11 @@ public class View extends JFrame implements IView, Species {
             }
         });
         
-        // 设置选择模式和其他属性
+        // Set selection mode and other properties
         selectedAnimalList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
+        selectedAnimalList.setVisibleRowCount(3);  // Reduce visible rows from 6 to 3
         
-        // 添加鼠标点击事件监听器
+        // Add mouse click event listener
         selectedAnimalList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -237,15 +261,15 @@ public class View extends JFrame implements IView, Species {
                     if (index >= 0) {
                         Rectangle cellBounds = selectedAnimalList.getCellBounds(index, index);
                         if (cellBounds != null) {
-                            // 获取点击位置相对于列表项的坐标
+                            // Get click position relative to list item
                             int relativeX = e.getX() - cellBounds.x;
 
                             if (relativeX < cellBounds.width * 0.95) {
-                                // 如果点击位置在左侧区域（小于90%的宽度），则显示详情
+                                // If click is on the left area (<95% width), show details
                                 IAnimal animal = selectedListModel.getElementAt(index);
                                 showAnimalDetails(animal);
                             } else if (relativeX > cellBounds.width * 0.95) {
-                                // 如果点击位置在右侧区域（大于90%的宽度），则删除该项
+                                // If click is on the right area (>95% width), remove the item
                                 selectedListModel.remove(index);
                             }
                         }
@@ -255,8 +279,12 @@ public class View extends JFrame implements IView, Species {
         });
     }
 
+    /**
+     * Initializes the list panel, including the animal list, selected animal list,
+     * mouse listeners for selection and actions, and associated buttons.
+     */
     private void initializeListPanel() {
-        // 设置 filterPanel 的首选大小和最大大小
+        // Set preferred and maximum size for filterPanel
         filterPanel.setPreferredSize(new Dimension(250, 0));
         filterPanel.setMaximumSize(new Dimension(250, Integer.MAX_VALUE));
         listPanel.add(filterPanel, BorderLayout.WEST);
@@ -270,10 +298,10 @@ public class View extends JFrame implements IView, Species {
                     if (index >= 0) {
                         Rectangle cellBounds = animalList.getCellBounds(index, index);
                         if (cellBounds != null) {
-                            // 获取点击位置相对于列表项的坐标
+                            // Get click position relative to list item
                             int relativeX = e.getX() - cellBounds.x;
                             
-                            // 如果点击位置在左侧区域（小于70%的宽度），则显示详情
+                            // If click is on the left area (<70% width), show details
                             if (relativeX < cellBounds.width * 0.7) {
                                 showAnimalDetails(listModel.getElementAt(index));
                             }
@@ -291,10 +319,10 @@ public class View extends JFrame implements IView, Species {
                     if (index >= 0) {
                         Rectangle cellBounds = animalList.getCellBounds(index, index);
                         if (cellBounds != null) {
-                            // 获取点击位置相对于列表项的坐标
+                            // Get click position relative to list item
                             int relativeX = e.getX() - cellBounds.x;
 
-                            // 如果点击位置在右侧区域（大于90%的宽度），则添加到列表
+                            // If click is on the right area (>90% width), add to list
                             if (relativeX > cellBounds.width * 0.9 && relativeX < cellBounds.width) {
                                 if (!selectedAnimals.isEmpty()) {
                                     for (IAnimal animal : selectedAnimals) {
@@ -306,7 +334,7 @@ public class View extends JFrame implements IView, Species {
                                     animalList.clearSelection();
                                 }
                             }
-                            // 如果点击位置在左侧区域（80% ~ 90%的宽度），则显示详情
+                            // If click is in the left area (80%~90% width), show details
                             if (relativeX > cellBounds.width * 0.8 && relativeX < cellBounds.width * 0.9) {
                                 showAnimalDetails(listModel.getElementAt(index));
                             }
@@ -322,10 +350,10 @@ public class View extends JFrame implements IView, Species {
         JPanel selectedPanel = new JPanel(new BorderLayout());
         selectedPanel.add(new JLabel("Selected Animals:"), BorderLayout.NORTH);
         
-        // 设置 selectedAnimalList 的显示行数和首选大小
-        selectedAnimalList.setVisibleRowCount(3);  // 减少显示行数从6行到3行
+        // Set selectedAnimalList display rows and preferred size
+        selectedAnimalList.setVisibleRowCount(3);  // Reduce visible rows from 6 to 3
         JScrollPane selectedScrollPane = new JScrollPane(selectedAnimalList);
-        selectedScrollPane.setPreferredSize(new Dimension(0, 100));  // 减小高度从300像素到100像素
+        selectedScrollPane.setPreferredSize(new Dimension(0, 100));  // Reduce height from 300 pixels to 100 pixels
         
         selectedPanel.add(selectedScrollPane, BorderLayout.CENTER);
         listPanel.add(selectedPanel, BorderLayout.SOUTH);
@@ -345,6 +373,10 @@ public class View extends JFrame implements IView, Species {
         });
     }
 
+    /**
+     * Initializes the filter panel with combo boxes and filter options for animal attributes.
+     * Sets up listeners for filter changes and populates filter options.
+     */
     private void initializeFilterPanel() {
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
 
@@ -374,15 +406,15 @@ public class View extends JFrame implements IView, Species {
         // Add type selection listener
         typeComboBox.addActionListener(e -> updateBreedOptions());
 
-        // 创建标签和下拉框的容器
-        JPanel[] filterRows = new JPanel[9];  // 9个筛选条件
+        // Create containers for labels and combo boxes
+        JPanel[] filterRows = new JPanel[9];  // 9 filter conditions
         for (int i = 0; i < filterRows.length; i++) {
             filterRows[i] = new JPanel();
             filterRows[i].setLayout(new BoxLayout(filterRows[i], BoxLayout.Y_AXIS));
             filterRows[i].setAlignmentX(Component.LEFT_ALIGNMENT);
         }
 
-        // 创建左对齐的标签
+        // Create left-aligned labels
         JLabel[] labels = new JLabel[]{
             new JLabel("Animal Type:"),
             new JLabel("Breed:"),
@@ -395,12 +427,12 @@ public class View extends JFrame implements IView, Species {
             new JLabel("Date Range:")
         };
 
-        // 设置标签左对齐
+        // Set labels left-aligned
         for (JLabel label : labels) {
             label.setAlignmentX(Component.LEFT_ALIGNMENT);
         }
 
-        // 设置下拉框左对齐并设置最大宽度
+        // Set combo boxes left-aligned and set max width
         JComboBox<?>[] comboBoxes = {
             typeComboBox, breedComboBox, sizeComboBox, genderComboBox,
             patternComboBox, colorComboBox, ageComboBox, cityComboBox, dateRangeComboBox
@@ -410,7 +442,7 @@ public class View extends JFrame implements IView, Species {
             comboBox.setMaximumSize(new Dimension(200, comboBox.getPreferredSize().height));
         }
 
-        // 将标签和下拉框添加到各自的容器中
+        // Add labels and combo boxes to their containers
         for (int i = 0; i < filterRows.length; i++) {
             filterRows[i].add(labels[i]);
             filterRows[i].add(comboBoxes[i]);
@@ -462,6 +494,11 @@ public class View extends JFrame implements IView, Species {
         filterPanel.add(exportPanel);
     }
 
+    /**
+     * Creates and returns a JButton for exporting selected animal data in the chosen format.
+     * @param exportFormatComboBox the combo box for selecting export format
+     * @return the export JButton
+     */
     private JButton getExportJButton(JComboBox<String> exportFormatComboBox) {
         JButton exportButton = new JButton("Export");
         exportButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -489,6 +526,10 @@ public class View extends JFrame implements IView, Species {
         return exportButton;
     }
 
+    /**
+     * Creates and returns a JButton for adding all filtered animals to the selected list.
+     * @return the add all JButton
+     */
     private JButton getAddAllJButton() {
         JButton addAllButton = new JButton("Add all");
         addAllButton.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -501,6 +542,12 @@ public class View extends JFrame implements IView, Species {
         return addAllButton;
     }
 
+    /**
+     * Combines two string arrays into one.
+     * @param first the first array
+     * @param second the second array
+     * @return the combined array
+     */
     private String[] combineArrays(String[] first, String[] second) {
         String[] result = new String[first.length + second.length];
         System.arraycopy(first, 0, result, 0, first.length);
@@ -508,6 +555,9 @@ public class View extends JFrame implements IView, Species {
         return result;
     }
 
+    /**
+     * Updates the breed options in the breedComboBox based on the selected animal type.
+     */
     private void updateBreedOptions() {
         String type = (String) typeComboBox.getSelectedItem();
         breedComboBox.removeAllItems();
@@ -531,6 +581,12 @@ public class View extends JFrame implements IView, Species {
         }
     }
 
+    /**
+     * Returns an array of string names for all values of the specified enum class.
+     * @param enumClass the enum class
+     * @param <T> the enum type
+     * @return array of enum value names
+     */
     private <T extends Enum<T>> String[] getEnumValues(Class<T> enumClass) {
         T[] values = enumClass.getEnumConstants();
         String[] result = new String[values.length];
@@ -540,23 +596,27 @@ public class View extends JFrame implements IView, Species {
         return result;
     }
 
+    /**
+     * Displays a dialog with detailed information about the selected animal.
+     * @param animal the animal whose details are to be shown
+     */
     private void showAnimalDetails(IAnimal animal) {
         JDialog dialog = new JDialog(this, "Animal Details", true);
         dialog.setLayout(new BorderLayout());
 
-        // 创建图片面板
+        // Create image panel
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setPreferredSize(new Dimension(300, 300));
         imagePanel.setBorder(BorderFactory.createTitledBorder("Image"));
 
-        // 加载图片
+        // Load image
         String imagePath = animal.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
             try {
-                // 直接使用原始图片路径，不进行修改
+                // Use original image path directly, no modification
                 ImageIcon originalIcon = new ImageIcon(imagePath);
 
-                // 计算保持宽高比的缩放尺寸
+                // Calculate scaled size while maintaining aspect ratio
                 int originalWidth = originalIcon.getIconWidth();
                 int originalHeight = originalIcon.getIconHeight();
                 int maxSize = 300;
@@ -570,11 +630,11 @@ public class View extends JFrame implements IView, Species {
                     scaledWidth = (int) ((double) originalWidth / originalHeight * maxSize);
                 }
 
-                // 使用保持宽高比的缩放
+                // Scale image with aspect ratio preserved
                 Image scaledImage = originalIcon.getImage().getScaledInstance(
                         scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
 
-                // 创建图片标签并居中显示
+                // Create image label and center it
                 JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
                 imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
                 imagePanel.add(imageLabel, BorderLayout.CENTER);
@@ -589,14 +649,14 @@ public class View extends JFrame implements IView, Species {
             imagePanel.add(noImageLabel, BorderLayout.CENTER);
         }
 
-        // 创建信息面板
-        //JPanel infoPanel = new JPanel(new GridLayout(0, 1, 0, 0)); // 移除水平和垂直间距
+        // Create info panel
+        //JPanel infoPanel = new JPanel(new GridLayout(0, 1, 0, 0)); // Remove horizontal and vertical spacing
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // 移除边距
+        infoPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5)); // Remove margin
 
-        // 添加动物信息
+        // Add animal info
         addInfoField(infoPanel, "Type:", animal.getAnimalType());
         addInfoField(infoPanel, "Breed:", animal.getSpecies());
         addInfoField(infoPanel, "Size:", animal.getAnimalSize());
@@ -610,81 +670,90 @@ public class View extends JFrame implements IView, Species {
         addInfoField(infoPanel, "Address:", animal.getAddress());
         addInfoField(infoPanel, "Location Description:", animal.getLocDesc());
         addInfoField(infoPanel, "Description:", animal.getDescription());
-        //addInfoField(infoPanel, "Image Path:", imagePath); // 添加图片路径信息
+        //addInfoField(infoPanel, "Image Path:", imagePath); // Add image path info
 
-        // 创建滚动面板来容纳信息面板
+        // Create scroll pane to contain info panel
         JScrollPane scrollPane = new JScrollPane(infoPanel);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Animal Information"));
 
-        // 创建按钮面板
+        // Create button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton closeButton = new JButton("Close");
         closeButton.addActionListener(e -> dialog.dispose());
         buttonPanel.add(closeButton);
 
-        // 将组件添加到对话框
+        // Add components to dialog
         dialog.add(imagePanel, BorderLayout.WEST);
         dialog.add(scrollPane, BorderLayout.CENTER);
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
-        // 设置对话框大小和位置
+        // Set dialog size and position
         dialog.setSize(800, 600);
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
 
+    /**
+     * Adds a labeled information field to the specified panel.
+     * @param panel the panel to add the field to
+     * @param label the label for the field
+     * @param value the value/content for the field
+     */
     private void addInfoField(JPanel panel, String label, String value) {
-        // 创建一个面板来容纳标签和内容
+        // Create a panel to hold label and content
         JPanel fieldPanel = new JPanel(new BorderLayout(0, 0));
         fieldPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        fieldPanel.setOpaque(false); // 设置面板透明
+        fieldPanel.setOpaque(false); // Set panel transparent
 
         // 创建标签
         JLabel labelComponent = new JLabel(label);
         labelComponent.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
-        // 创建文本框
+        // Create text field
         JTextField textField;
         if (label.equals("Description:")) {
-            // 为 description 字段创建多行文本框
+            // Create multiline text area for description field
             JTextArea textArea = new JTextArea(value);
             textArea.setEditable(false);
             textArea.setLineWrap(true);
             textArea.setWrapStyleWord(true);
-            textArea.setRows(5); // 增加行数为5
-            textArea.setColumns(20); // 减少列数
+            textArea.setRows(5); // Increase rows to 5
+            textArea.setColumns(20); // Reduce columns
             textArea.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            textArea.setOpaque(true); // 设置文本区域不透明
-            textArea.setBackground(Color.WHITE); // 设置白色背景
+            textArea.setOpaque(true); // Set text area transparent
+            textArea.setBackground(Color.WHITE); // Set white background
 
-            // 将文本区域添加到滚动面板
+            // Add text area to scroll pane
             JScrollPane scrollPane = new JScrollPane(textArea);
             scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            scrollPane.setPreferredSize(new Dimension(250, 100)); // 增加高度为100
-            scrollPane.setOpaque(false); // 设置滚动面板透明
-            scrollPane.getViewport().setOpaque(false); // 设置视口透明
+            scrollPane.setPreferredSize(new Dimension(250, 100)); // Increase height to 100
+            scrollPane.setOpaque(false); // Set scroll pane transparent
+            scrollPane.getViewport().setOpaque(false); // Set viewport transparent
 
-            // 将标签和滚动面板添加到字段面板
+            // Add label and scroll pane to field panel
             fieldPanel.add(labelComponent, BorderLayout.WEST);
             fieldPanel.add(scrollPane, BorderLayout.CENTER);
         } else {
-            // 为其他字段创建单行文本框
+            // Create single-line text field for other fields
             textField = new JTextField(value);
             textField.setEditable(false);
-            textField.setColumns(20); // 减少列数
+            textField.setColumns(20); // Reduce columns
             textField.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-            textField.setOpaque(false); // 设置文本框透明
-            textField.setBackground(new Color(0, 0, 0, 0)); // 设置透明背景
+            textField.setOpaque(false); // Set text field transparent
+            textField.setBackground(new Color(0, 0, 0, 0)); // Set transparent background
 
-            // 将标签和文本框添加到字段面板
+            // Add label and text field to field panel
             fieldPanel.add(labelComponent, BorderLayout.WEST);
             fieldPanel.add(textField, BorderLayout.CENTER);
         }
 
-        // 将整个面板添加到主面板
+        // Add the whole field panel to the main panel
         panel.add(fieldPanel);
     }
 
+    /**
+     * Displays a dialog for reporting a new animal sighting, including image upload and attribute selection.
+     */
     private void showReportDialog() {
         JDialog dialog = new JDialog(this, "Report Animal", true);
         dialog.setLayout(new GridLayout(0, 2));
@@ -874,6 +943,9 @@ public class View extends JFrame implements IView, Species {
         displayAnimals(controller.getFilteredAnimals());
     }
 
+    /**
+     * Applies the selected filter criteria to the animal list and updates the view.
+     */
     private void applyFilters() {
         String type = (String) typeComboBox.getSelectedItem();
         String breed = (String) breedComboBox.getSelectedItem();
@@ -885,7 +957,7 @@ public class View extends JFrame implements IView, Species {
         String area = (String) cityComboBox.getSelectedItem();
         String dateRange = (String) dateRangeComboBox.getSelectedItem();
 
-        // unfilter
+        // Remove all filters
         controller.resetFilteredAnimals();
 
         // Apply filters in sequence
@@ -927,11 +999,11 @@ public class View extends JFrame implements IView, Species {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
-            JPanel panel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
-            panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除外边距
+            JPanel panel = new JPanel(new BorderLayout(0, 0));  // Set layout manager gap to 0
+            panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // Remove outer margin
             
-            JPanel infoPanel = new JPanel(new BorderLayout(0, 0));  // 设置布局管理器的间距为0
-            infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // 移除内边距
+            JPanel infoPanel = new JPanel(new BorderLayout(0, 0));  // Set layout manager gap to 0
+            infoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));  // Remove inner margin
             JLabel label = new JLabel();
 
             if (value instanceof IAnimal animal) {
@@ -945,22 +1017,22 @@ public class View extends JFrame implements IView, Species {
                 label.setText(text);
 //                label.setText(text.toString());
                 
-                // 创建按钮面板，使用最小间距
+                // Create button panel with minimal spacing
                 JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));  // 设置按钮间距为0
                 
-                // 创建 Add to List 按钮
+                // Create Add to List button
                 JButton addToListButton = new JButton("Add to List");
-                addToListButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
+                addToListButton.setMargin(new Insets(0, 2, 0, 2));  // Reduce button padding
 
-                // 创建查看详情按钮
+                // Create View Details button
                 JButton viewDetailsButton = new JButton("View Details");
-                viewDetailsButton.setMargin(new Insets(0, 2, 0, 2));  // 减小按钮内边距
+                viewDetailsButton.setMargin(new Insets(0, 2, 0, 2));  // Reduce button padding
 
-                // 将按钮添加到按钮面板
+                // Add button to button panel
                 buttonPanel.add(viewDetailsButton);
                 buttonPanel.add(addToListButton);
 
-                // 将标签和按钮面板添加到信息面板
+                // Add label and button panel to info panel
                 infoPanel.add(label, BorderLayout.CENTER);
                 infoPanel.add(buttonPanel, BorderLayout.EAST);
             }
@@ -1078,11 +1150,11 @@ public class View extends JFrame implements IView, Species {
     public void displayMap(List<IAnimal> animals) {
         System.out.println("Starting map display, total animals: " + animals.size());
         Set<WaypointWithInfo> waypoints = new HashSet<>();
-        
+
         // Clear both mappings first
         pointToAnimalMap.clear();
         positionToAnimalMap.clear();
-        
+
         // Debug output for each animal type
         System.out.println("---- Animal types in this display ----");
         for (IAnimal animal : animals) {
@@ -1108,7 +1180,7 @@ public class View extends JFrame implements IView, Species {
         }
 
         System.out.println("Total map markers: " + waypoints.size());
-        
+
         // If there are coordinates, set the map center to the first point
         if (!waypoints.isEmpty()) {
             WaypointWithInfo firstWaypoint = waypoints.iterator().next();
@@ -1119,20 +1191,20 @@ public class View extends JFrame implements IView, Species {
         } else {
             System.out.println("No valid coordinates, map remains unchanged");
         }
-        
+
         // Use custom marker renderer and painter
         WaypointPainter<WaypointWithInfo> waypointPainter = new WaypointPainter<>();
         waypointPainter.setWaypoints(waypoints);
         waypointPainter.setRenderer(new AnimalWaypointRenderer());
         mapViewer.setOverlayPainter(waypointPainter);
-        
+
         // Remove previous click listeners
         for (MouseListener listener : mapViewer.getMouseListeners()) {
             if (listener instanceof MouseAdapter && !(listener instanceof PanMouseInputListener)) {
                 mapViewer.removeMouseListener(listener);
             }
         }
-        
+
         // Add new click listener for map interactions
         final Set<WaypointWithInfo> finalWaypoints = waypoints;
         mapViewer.addMouseListener(new MouseAdapter() {
@@ -1140,33 +1212,33 @@ public class View extends JFrame implements IView, Species {
             public void mouseClicked(MouseEvent e) {
                 Point clickPoint = e.getPoint();
                 System.out.println("地图点击位置: (" + clickPoint.x + ", " + clickPoint.y + ")");
-                
+
                 // Direct comparison of screen coordinates to determine distance between click point and animal markers
                 boolean pointClicked = false;
-                
+
                 // Loop through all visible markers
                 for (WaypointWithInfo waypoint : finalWaypoints) {
                     try {
                         // Convert geographic coordinates to screen coordinates
                         GeoPosition pos = waypoint.getPosition();
-                        
+
                         // Use viewer's conversion method, not directly using tile factory
                         // This is key - ensure we get the correct screen coordinates relative to the current view
                         Rectangle viewportBounds = mapViewer.getViewportBounds();
                         Point2D point2D = mapViewer.getTileFactory().geoToPixel(pos, mapViewer.getZoom());
                         Point mapPoint = new Point(
-                            (int)(point2D.getX() - viewportBounds.getX()),
-                            (int)(point2D.getY() - viewportBounds.getY())
+                                (int)(point2D.getX() - viewportBounds.getX()),
+                                (int)(point2D.getY() - viewportBounds.getY())
                         );
-                        
+
                         // Calculate distance between click point and marker point (both are now in screen coordinate system)
                         double distance = clickPoint.distance(mapPoint);
-                        
+
                         // Output detailed debug information
-                        System.out.println("Animal: " + waypoint.getAnimal().getAnimalType() + 
-                                         ", Screen coordinates: (" + mapPoint.x + ", " + mapPoint.y + ")" +
-                                         ", Distance to click point: " + distance + " pixels");
-                        
+                        System.out.println("Animal: " + waypoint.getAnimal().getAnimalType() +
+                                ", Screen coordinates: (" + mapPoint.x + ", " + mapPoint.y + ")" +
+                                ", Distance to click point: " + distance + " pixels");
+
                         // If distance is less than 20 pixels, consider it a hit
                         if (distance < 20) {  // Slightly increase threshold to make clicking easier
                             pointClicked = true;
@@ -1178,13 +1250,13 @@ public class View extends JFrame implements IView, Species {
                         ex.printStackTrace();
                     }
                 }
-                
+
                 if (!pointClicked) {
                     System.out.println("No animal marker was clicked. Try clicking closer to a colored dot.");
                 }
             }
         });
-        
+
         // Ensure map repaints
         mapViewer.repaint();
         System.out.println("Map display complete");
@@ -1250,7 +1322,7 @@ public class View extends JFrame implements IView, Species {
     /**
      * Animal waypoint renderer that colors markers based on animal type
      */
-     private static class AnimalWaypointRenderer implements WaypointRenderer<WaypointWithInfo> {
+    private static class AnimalWaypointRenderer implements WaypointRenderer<WaypointWithInfo> {
         // Store colors for different animal types
         private final Map<String, Color> typeColors = new HashMap<>();
 
