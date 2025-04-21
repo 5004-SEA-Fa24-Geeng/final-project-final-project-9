@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .reset-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        .time-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .time-option {
+            background-color: #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .time-option.active {
+            background-color: #2196F3;
+            color: white;
+        }
+        .location-chip span {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .distance-option {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .distance-option:hover {
+            background-color: #e0e0e0;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .distance-option.active {
+            background-color: #2196F3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Animal Finder</h1>
+    <div class="form-container">
+        <div class="form-section">
+            <h2>Animal Details</h2>
+
+            <div class="form-group">
+                <label for="animalType">Animal Type:</label>
+                <select id="animalType">
+                    <option value="">Select Type</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="bird">Bird</option>
+                    <option value="rabbit">Rabbit</option>
+                    <option value="hamster">Hamster</option>
+                    <option value="guineaPig">Guinea Pig</option>
+                    <option value="hedgehog">Hedgehog</option>
+                    <option value="turtle">Turtle</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="species">Species:</label>
+                <select id="species">
+                    <option value="">Select Species</option>
+                    <!-- Options will be populated based on animal type -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="animalSize">Size:</label>
+                <select id="animalSize">
+                    <option value="">Select Size</option>
+                    <option value="microsize">Microsize</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="big">Big</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender">
+                    <option value="">Select Gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="unclear">Unclear</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pattern">Pattern:</label>
+                <select id="pattern">
+                    <option value="Not Sure">Select Pattern</option>
+                    <option value="Solid">Solid</option>
+                    <option value="Tabby">Tabby</option>
+                    <option value="Not Sure">Unclear</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="animalColor">Color:</label>
+                <select id="animalColor">
+                    <option value="Not Sure">Select Color</option>
+                    <option value="Black">Black</option>
+                    <option value="White">White</option>
+                    <option value="Not Sure">Unclear</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="animalAge">Age:</label>
+                <select id="animalAge">
+                    <option value="">Select Age</option>
+                    <option value="baby">Baby</option>
+                    <option value="young">Young</option>
+                    <option value="adult">Adult</option>
+                    <option value="old">Old</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Sighting Information</h2>
+
+            <div class="form-group">
+                <h3>Time Filter:</h3>
+                <div class="time-filter">
+                    <div class="time-option active">Within 1 week</div>
+                    <div class="time-option">Within 2 weeks</div>
+                    <div class="time-option">Within 1 month</div>
+                    <div class="time-option">Within 3 months</div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <h3>Location Filter:</h3>
+                <label for="locationArea1">Your Primary Area:</label>
+                <select id="locationArea1">
+                    <option value="">Select Primary Area</option>
+                    <option value="seattle">Seattle</option>
+                    <option value="bellevue">Bellevue</option>
+                    <option value="redmond">Redmond</option>
+                    <option value="kirkland">Kirkland</option>
+                    <option value="everett">Everett</option>
+                    <option value="tacoma">Tacoma</option>
+                    <option value="renton">Renton</option>
+                    <option value="kent">Kent</option>
+                    <option value="lynnwood">Lynnwood</option>
+                    <option value="bothell">Bothell</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="locationArea2">Your Secondary Area:</label>
+                <select id="locationArea2">
+                    <option value="">Select Secondary Area</option>
+                    <!-- Options will be populated based on primary area -->
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <div id="distance-options">
+                    <div class="distance-option active" data-distance="200">Within 200 meters</div>
+                    <div class="distance-option" data-distance="500">Within 500 meters</div>
+                    <div class="distance-option" data-distance="1000">Within 1 kilometer</div>
+                    <div class="distance-option" data-distance="2000">Within 2 kilometers</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="reset-btn">Reset Filters</button>
+        <button class="search-btn">Search</button>
+    </div>
+
+    <script>
+        // Sample code to demonstrate dynamic dropdown population
+        document.getElementById('animalType').addEventListener('change', function() {
+            const speciesDropdown = document.getElementById('species');
+            speciesDropdown.innerHTML = '<option value="">Select Species</option>';
+
+            // Example for dog breeds
+            if (this.value === 'dog') {
+                const dogBreeds = ['Labrador', 'Golden Retriever', 'German Shepherd', 'Beagle', 'Poodle'];
+                dogBreeds.forEach(breed => {
+                    const option = document.createElement('option');
+                    option.value = breed.toLowerCase().replace(' ', '_');
+                    option.textContent = breed;
+                    speciesDropdown.appendChild(option);
+                });
+            }
+            // Similar logic would be added for other animal types
+        });
+
+        document.getElementById('locationArea1').addEventListener('change', function() {
+            const area2Dropdown = document.getElementById('locationArea2');
+            area2Dropdown.innerHTML = '<option value="">Select Secondary Area</option>';
+
+            // Example for Seattle neighborhoods
+            if (this.value === 'seattle') {
+                const seattleAreas = ['Downtown Seattle', 'Belltown', 'Capitol Hill', 'University District', 'South Lake Union', 'Queen Anne'];
+                seattleAreas.forEach(area => {
+                    const option = document.createElement('option');
+                    option.value = area.toLowerCase().replace(' ', '_');
+                    option.textContent = area;
+                    area2Dropdown.appendChild(option);
+                });
+            }
+            // Similar logic would be added for other primary areas
+        });
+
+        // Time filter selection
+        //document.querySelectorAll('.time-option').forEach(option => {
+        //    option.addEventListener('click', function() {
+        //        document.querySelectorAll('.time-option').forEach(opt => opt.classList.remove('active'));
+        //        this.classList.add('active');
+        //    });
+        //});
+    </script>
+</body>
+</html>

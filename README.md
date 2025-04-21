@@ -35,7 +35,7 @@ If the issue persists, feel free to reach out to any group member.
 
 
 ## Documentation
-UML of Initial Design: [Initial UML](DesignDocuments/InitialDesign.md)  
+UML of Initial Design: [Initial UML](DesignDocuments/InitialDesign/InitialDesign.md)  
 UML of Final Design: [Final UML](DesignDocuments/FinalDesign.md)  
 Manual: [Manual](Manual/Manual.md)  
 GitHub Project board: https://github.com/orgs/5004-SEA-Fa24-Geeng/projects/15  

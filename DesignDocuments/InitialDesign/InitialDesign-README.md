@@ -163,17 +163,17 @@ IController --> AnimalList: uses
 ## 7. Expected Outcome
 
 - Map Simulation
-![img.png](img.png)
+![img.png](InitialDesign-img.png)
 
 - Report a Dog
-![img_1.png](img_1.png)
+![img_1.png](InitialDesign-img_1.png)
 
 - Filter/Search/sort Dogs
 
-![img_2.png](img_2.png)
+![img_2.png](InitialDesign-img_2.png)
 
 - Wishlist
-![img_3.png](img_3.png)
+![img_3.png](InitialDeisgn-img_3.png)
 
 
 ## 8. Work Breakdown

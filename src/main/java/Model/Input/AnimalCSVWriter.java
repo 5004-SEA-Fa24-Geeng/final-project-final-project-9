@@ -5,13 +5,27 @@ import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.util.List;
 
+/**
+ * Writes a list of IAnimal objects to a CSV file in the specified format.
+ */
 public class AnimalCSVWriter {
+    /** The path to the CSV file to write. */
     private final String filePath;
 
+    /**
+     * Constructs an AnimalCSVWriter with the specified file path.
+     *
+     * @param filePath the path to the CSV file
+     */
     public AnimalCSVWriter(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Writes the provided list of IAnimal objects to the CSV file.
+     *
+     * @param animals the list of animals to write to the file
+     */
     public void writeAnimals(List<IAnimal> animals) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
             // Write header
