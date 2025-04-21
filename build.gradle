@@ -1,6 +1,7 @@
 plugins {
 // Build Java: https://docs.gradle.org/current/userguide/building_java_projects.html
     id 'java'
+    id 'application'
 
 // https://docs.gradle.org/current/userguide/pmd_plugin.html#header
     id 'pmd'
@@ -11,6 +12,9 @@ plugins {
 
 group 'CS 5004 - Summer 2024'
 version '1.0'
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 repositories {
     mavenCentral()
@@ -24,7 +28,7 @@ dependencies {
     implementation 'commons-logging:commons-logging:1.2'
 
     // OpenCSV
-    implementation 'com.opencsv:opencsv:5.7.1'
+    implementation 'com.opencsv:opencsv:5.8'
 
     // JSON
     implementation 'org.json:json:20231013'
@@ -38,7 +42,6 @@ dependencies {
     // optional, left these in here in case you wanted to use them.
     implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.25.3'
     implementation 'org.apache.commons:commons-lang3:3.14.0'
-    implementation 'com.opencsv:opencsv:5.8'
     // Jackson Core
     implementation 'com.fasterxml.jackson.core:jackson-core:2.16.0'
     // Jackson Annotations
@@ -133,9 +136,6 @@ test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
 }
-
-sourceCompatibility = '17'
-targetCompatibility = '17'
 
 application {
     mainClass = 'Main'
