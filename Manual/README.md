@@ -1,14 +1,9 @@
-# Manual 
 
-You will update this manual and add any files here that you need for an 'application' manual for your program. Make sure to include screenshots of various features. 
-
-
-**An application "manual" that highlights how to use the application, ideally with screen shots. The manual should be stored in the ../manual directory.**
-
-# Stray Animal Spotted - User Manual
+## Manual Of STRAY PETS WALL - A Platform for Reporting and Browsing Stray Pets
 
 ### 1. Introduction
-Stray Animal Spotted is a desktop application designed to help track and manage information about stray animals. The application allows users to report sightings, view animal information, and manage animal data through various features.
+"Wall" is a very popular online information-sharing platform used within specific communities, like an University. As its name indicates, anyone in the community could post and view information on the "wall".
+Similarly, our application allows users to efficiently browse reports of stray animals submitted by people across the Great Seattle area.
 
 ### 2. Getting Started
 
@@ -19,10 +14,10 @@ Run `main` class to start the application. The main view is like this with all t
 
 #### 3.1 List View
 The List View tab displays animals in a list format with the following information: Animal Type, Breed, Date Seen, Time Seen, Area, Address
-![Main Application Window](animal_list.jpg)
+![Main Application Window](animal_list.png)
 - Click `View Details` to open a detailed view of the animal
 ![Main Application Window](animal_list_1.jpeg)
-Animal details include
+Animal details include type, breed, size, gender, pattern, color, age, date seen, time seen, city, address, location description and animal description.
 ![Main Application Window](detail.jpg)
 
   
@@ -32,10 +27,11 @@ Animal details include
   For convenience, click "Add all" button to add all the animals to your selected list.
   ![Main Application Window](add_all.png)
   Animals that have been added will show in the below `Selected Animals` panel.
-  ![Main Application Window](add_to_list.jpg)
+  ![Main Application Window](selected_animals.png)
 - Click specific piece of animal information in the `Selected Animals` list, which has the same effect with `View Details` button to open `Animal Detail` window.
+  ![Main Application Window](detail1.png)
 - Click the `Delete` button, this piece of animal information can be removed from the list.
-  ![Main Application Window](delete.jpg)
+  ![Main Application Window](delete.png)
 
 #### 3.3 Filtering Animals
 Use the filter panel to narrow down the animal list:
@@ -46,10 +42,10 @@ Use the filter panel to narrow down the animal list:
     - Size (Small, Medium, Large)
     - Gender (Male, Female)
     - Pattern (Solid, Striped, Spotted)
-    - Color
+    - Color (Yellow, Black, White, etc.)
     - Age (Young, Adult, Senior)
-    - City
-    - Date Range
+    - City (Seattle, LynnWood, Bellevue, etc.)
+    - Date Range (within 1 week, within 2 weeks, within 1 month, within 3 months)
 2. Click `Apply Filter` to update the list. For example, choose animal type "DOG" and breed "LABRADOR", then click `Apply Filter`, it will show the filtered animals.
 Similarly, use `View Details`, `Add To List` `Add all` button to see animal details and add animals to the below `Selected Animals` list.
 ![Main Application Window](filter_display.png)
@@ -58,7 +54,7 @@ Similarly, use `View Details`, `Add To List` `Add all` button to see animal deta
 
 #### 3.4 Sorting Animals
 To sort the animal list:
-1. Select sort order from dropdown:
+1. Select sort order from dropdown (**If no order is chosen, the default order is ascending**):
     - Ascending
     - Descending
 2. Click `Sort` button to apply sorting  
@@ -66,19 +62,23 @@ For example, as the below image shows, if choose `Ascending`, the animals can be
 ![Main Application Window](sort_by_date.png)
 
 #### 3.5 Map View
+Click here to enter `Map View`:
+![Main Application Window](open_map.png)
 The Map View tab shows the locations of all animals in the list on a map:
 - Animals are marked with pins on the map
-- Click on a pin to open `Animal Details` window and view animal details.
+- Click on a pin to open `Animal Details` window and view animal details, you will see page like this:
+![Main Application Window](detail_map.png)
 - Use mouse wheel to zoom in/out
 - Click and drag to pan the map  
-This picture shows all the animals' location on map.
+This picture shows all the animals' locations on map.
   ![Main Application Window](map_all.jpg)
-This picture shows all the filtered dogs' location on map.
+This picture shows all the filtered dogs' locations on map.
   ![Main Application Window](map_dog.jpg)
 
 #### 3.6 Reporting New Animals
 To report a new animal:
 1. Click the "Report Animal" button at the top
+   ![Main Application Window](report.png)
 2. Fill in the animal details:
     - Select animal type
     - Choose breed
@@ -98,7 +98,7 @@ To report a new animal:
 #### 3.7 Exporting Data
 To export the selected animal data, in other words, animals in the below "Selected Animals" panel:
 1. Select animals using "Add to List" button. For convenience, you can click "Add all" button to add all the animals in the above panel to the below "Selected Animal" list.
-2. Choose export format from dropdown:
+2. Choose export format from dropdown (**If no formated is chosen, the default format is XML**):
     - TXT
     - XML
     - JSON
@@ -125,42 +125,6 @@ To export the selected animal data, in other words, animals in the below "Select
 - Use the "Add to List" feature to create custom groups
 - Delete unwanted entries using the delete button
 
-### 5. Troubleshooting
 
-#### 5.1 Common Issues
-1. **Images not loading**
-    - Ensure image file exists
-    - Check file format (supported formats: JPG, PNG)
-    - Verify file permissions
 
-2. **Map not displaying**
-    - Check internet connection
-    - Verify location services are enabled
-    - Ensure address format is correct
-
-3. **Export failures**
-    - Verify write permissions in target directory
-    - Ensure sufficient disk space
-    - Check if file is not in use by another program
-
-#### 5.2 Getting Help
-If you encounter issues:
-1. Check the error message displayed
-2. Try resetting the application
-3. Contact support with specific error details
-
-### 6. Best Practices
-
-#### 6.1 Data Entry
-- Provide accurate location information
-- Include clear descriptions
-- Upload high-quality images
-- Use specific breed names when known
-
-#### 6.2 Data Management
-- Regularly export important data
-- Keep descriptions up to date
-- Remove duplicate entries
-- Verify information accuracy
-
-This manual provides a comprehensive guide to using the Stray Animal Spotted application. For additional support or questions, please contact the development team.
+This manual provides a comprehensive guide to using the Stray Pets Wall application. For additional support or questions, please contact the development team.

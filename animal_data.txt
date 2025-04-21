@@ -1,0 +1,30 @@
+Animal Information:
+Type: Dog
+Breed: Dachshund
+Size: Medium
+Gender: Unclear
+Pattern: Solid
+Color: Dark
+Age: Baby
+Date Seen: 1/7/2025
+Time Seen: 2:49
+Area:  Tacoma
+Address: 5401 6th Ave #B407
+Location Description: Spotted beside the walking trail
+Description: A playful, moderate Dachshund was spotted barking softly. It appeared to be a baby unclear with dark fur.
+----------------------------------------
+Animal Information:
+Type: Dog
+Breed: Golden Retriever
+Size: Medium
+Gender: Unclear
+Pattern: Solid
+Color: Brown
+Age: Young
+Date Seen: 2/19/2025
+Time Seen: 21:17
+Area:  Renton
+Address: 731 Wapato Pl SE
+Location Description: Spotted near the entrance of the park
+Description: A energetic, standard Golden Retriever was spotted barking softly. It appeared to be a young unclear with dark fur.
+----------------------------------------
