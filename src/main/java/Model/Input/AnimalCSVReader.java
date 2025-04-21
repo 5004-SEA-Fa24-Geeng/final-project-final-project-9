@@ -10,9 +10,18 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 import Model.Animals.IAnimal;
 
+/**
+ * Reads animal data from a CSV file and converts it into a list of IAnimal objects.
+ */
 public class AnimalCSVReader {
+    /** The path to the CSV file to read. */
     private final String filePath;
 
+    /**
+     * Constructs an AnimalCSVReader with the specified file path.
+     *
+     * @param filePath the path to the CSV file
+     */
     public AnimalCSVReader(String filePath) {
         this.filePath = filePath;
     }
@@ -21,6 +30,12 @@ public class AnimalCSVReader {
      * Reads animals from the CSV file.
      * If the file doesn't exist or cannot be read, returns an empty list.
      * 
+     * @return List of IAnimal objects, or empty list if the file doesn't exist or has errors
+     */
+    /**
+     * Reads animals from the CSV file.
+     * If the file doesn't exist or cannot be read, returns an empty list.
+     *
      * @return List of IAnimal objects, or empty list if the file doesn't exist or has errors
      */
     public List<IAnimal> readAnimals() {
