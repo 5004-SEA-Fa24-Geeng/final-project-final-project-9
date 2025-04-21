@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animals>
+  <animal>
+    <type>Dog</type>
+    <breed>Dachshund</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Dark</color>
+    <age>Baby</age>
+    <date>1/7/2025</date>
+    <time>2:49</time>
+    <city> Tacoma</city>
+    <address>5401 6th Ave #B407</address>
+    <locationDesc>Spotted beside the walking trail</locationDesc>
+    <description>A playful, moderate Dachshund was spotted barking softly. It appeared to be a baby unclear with dark fur.</description>
+  </animal>
+  <animal>
+    <type>Dog</type>
+    <breed>Golden Retriever</breed>
+    <size>Medium</size>
+    <gender>Unclear</gender>
+    <pattern>Solid</pattern>
+    <color>Brown</color>
+    <age>Young</age>
+    <date>2/19/2025</date>
+    <time>21:17</time>
+    <city> Renton</city>
+    <address>731 Wapato Pl SE</address>
+    <locationDesc>Spotted near the entrance of the park</locationDesc>
+    <description>A energetic, standard Golden Retriever was spotted barking softly. It appeared to be a young unclear with dark fur.</description>
+  </animal>
+</animals>
