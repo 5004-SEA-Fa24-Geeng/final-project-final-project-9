@@ -8,8 +8,9 @@ Similarly, our application allows users to efficiently browse reports of stray a
 ### 2. Getting Started
 
 #### 2.1 Launching the Application
-Run `main` class to start the application. The main view is like this with all the information on animals loaded.
-   ![Main Application Window](screen_shot/run_main.png)
+Run `Main` class to start the application. The main view is like this with all the information on animals loaded.
+<br>If it fails to run, try:
+<br>go to the tool bar -> Run -> Edit Configurations -> In `Application/Main`, in `Build and Run` section, choose `java 17` and `-cp final-project-final-project-9.main` -> click Apply and OK -> Run `Main` again
 ### 3. Realized Features
 
 #### 3.1 List View
@@ -62,7 +63,7 @@ For example, as the below image shows, if choose `Ascending`, the animals can be
 ![Main Application Window](screen_shot/sort_by_date.png)
 
 #### 3.5 Map View
-Click here to enter `Map View`:
+Click here to enter `Map View`:<br>(It takes about half minute for the API to access the location of animals at first map initialization)
 ![Main Application Window](screen_shot/open_map.png)
 The Map View tab shows the locations of all animals in the list on a map:
 - Animals are marked with pins on the map

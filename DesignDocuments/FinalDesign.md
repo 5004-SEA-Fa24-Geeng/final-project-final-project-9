@@ -48,19 +48,12 @@ classDiagram
 
     class IController {
         <<interface>>
-        +void performOperation(Operation, String)
         +void addAnimal(String, String, String, String, String, String, String, String, String, String, String, String, String, String)
-        +void filterAnimalsByType(String)
-        +void filterAnimalsBySpecies(String)
-        +void filterAnimalsBySize(String)
-        +void filterAnimalsByGender(String)
-        +void filterAnimalsByPattern(String)
-        +void filterAnimalsByColor(String)
-        +void filterAnimalsByAge(String)
-        +void filterAnimalsByArea(String)
-        +void sortAnimalsByDateAsc()
-        +void sortAnimalsByDateDesc()
-        +void generateOutputFile(String, OutputFormat)
+        +void handleFilter(String)
+        +void handleSort(String)
+        +void exportData(List~IAnimal~, String, OutputStream)
+        +void handleMapDispplay()
+        +void initalize()
     }
 
     class IView {
@@ -210,7 +203,6 @@ This UML diagram represents the main components of the Dog Station application, 
 
 2. **Controller Layer**:
    - `IController` & `Controller`: Handle operations and connect the model and view
-   - `Operation`: Enum defining available operations (filtering, sorting)
 
 3. **View Layer**:
    - `IView` & `View`: Display the graphical user interface

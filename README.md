@@ -12,19 +12,23 @@ Jiaming Li(https://github.com/jiaming2li)
 Similarly, our application allows users to efficiently browse reports of stray animals submitted by people across the Greater Seattle area.   
 The application is built using the MVC (Model-View-Controller) design pattern and features a graphical user interface developed with Java Swing to support its core functionalities.
 
+To learn and experience our application:
+- [Go to Manual.](Manual/README.md) (suggested)
+
+- Run `Main`
 
 ## Realized Features
 
-* **Be able to view all items in the collection - in a logical order**
-* **Be able to build a list of items from the collection**
-* **Be able to save out that list using a file format we covered in the course such as .xml, .json, or .csv.**    
-* Graphical User Interface (Can be a website or java swing/awt)
-* Be able to load in lists of items / previously saved lists, and modify them.
-* Be able to sort items in the collection
-* Be able to filter items in the collection
+* **Be able to [view](Manual/screen_shot/run_main.png) all items in the collection - in a logical order**
+* **Be able to build a list of items from the collection** [(data)](data/posted_animals.csv)
+* **Be able to save out that list in `animal_data` .txt, .xml, .json, or .csv.** [(save list)](Manual/screen_shot/export.png)   
+* Graphical User Interface (Java Swing) [(view)](Manual/screen_shot/map_all.jpg)
+* Be able to load in lists of items / previously saved lists, and modify them. [(item example)](Manual/screen_shot/animal_list.png)
+* Be able to [sort](Manual/screen_shot/sort_by_date.png) items in the collection
+  * Be able to [filter](Manual/screen_shot/filter_panel.png) items in the collection
 * Have your original item list come from an online API/online access
-* Include images for your items
-* If your items have geographic data, be able to display them on a map.
+* Include [images](data/image) for your items
+* If your items have geographic data, be able to display them on a [map](Manual/screen_shot/map_all.jpg).
 #
 #
 #
