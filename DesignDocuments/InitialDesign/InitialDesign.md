@@ -1,6 +1,6 @@
 ```mermaid
 classDiagram
-%% Model package
+%% model package
 class postAnimal {
 -double number
 -String animal_type
@@ -19,7 +19,7 @@ class postAnimal {
 +double getNumber()
 }
 
-    %% Controller package
+    %% controller package
     class IController {
         <<interface>>
         +List~Operation~ inputParse
@@ -33,14 +33,14 @@ class postAnimal {
         <<enumeration>>
     }
 
-    %% Model.InputModel package
+    %% model.InputModel package
     class Sort {
     }
     
     class Filter {
     }
 
-    %% Model.output package
+    %% model.output package
     class IDataNameModel {
         <<interface>>
         +String DATABASE

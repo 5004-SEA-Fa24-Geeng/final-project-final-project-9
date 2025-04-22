@@ -16,7 +16,7 @@
  * - Reporting: Provides dialogs for users to report new animal sightings, including image uploads.
  * - Export: Allows exporting selected animal data in various formats.
  *
- * The view class implements IView and Species, and uses Swing components for the GUI.
+ * The view class implements IView and species, and uses Swing components for the GUI.
  *
  * Author: [Your Name]
  * Date: [Date]
@@ -75,7 +75,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import Model.AnimalInfo.Species.*;
+import model.animalInfo.species.*;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -87,14 +87,14 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.viewer.WaypointRenderer;
 
-import Controller.IController;
-import Model.AnimalInfo.Age;
-import Model.AnimalInfo.AnimalType;
-import Model.AnimalInfo.Area;
-import Model.AnimalInfo.Gender;
-import Model.AnimalInfo.Pattern;
-import Model.AnimalInfo.Size;
-import Model.Animals.IAnimal;
+import controller.IController;
+import model.animalInfo.Age;
+import model.animalInfo.AnimalType;
+import model.animalInfo.Area;
+import model.animalInfo.Gender;
+import model.animalInfo.Pattern;
+import model.animalInfo.Size;
+import model.animals.IAnimal;
 
 
 public class View extends JFrame implements IView, Species {
@@ -119,11 +119,11 @@ public class View extends JFrame implements IView, Species {
      */
     private final JList<IAnimal> animalList;
     /**
-     * Model for the animal list.
+     * model for the animal list.
      */
     private final DefaultListModel<IAnimal> listModel;
     /**
-     * Model for the selected animal list.
+     * model for the selected animal list.
      */
     private final DefaultListModel<IAnimal> selectedListModel;
     /**
@@ -436,7 +436,7 @@ public class View extends JFrame implements IView, Species {
 
         // Add selected animal list to list panel
         JPanel selectedPanel = new JPanel(new BorderLayout());
-        selectedPanel.add(new JLabel("Selected Animals:"), BorderLayout.NORTH);
+        selectedPanel.add(new JLabel("Selected animals:"), BorderLayout.NORTH);
         
         // Set selectedAnimalList display rows and preferred size
         selectedAnimalList.setVisibleRowCount(3);  // Reduce visible rows from 6 to 3
@@ -474,7 +474,7 @@ public class View extends JFrame implements IView, Species {
         String[] sizeOptions = combineArrays(emptyOption, getEnumValues(Size.class));
         String[] genderOptions = combineArrays(emptyOption, getEnumValues(Gender.class));
         String[] patternOptions = combineArrays(emptyOption, getEnumValues(Pattern.class));
-        String[] colorOptions = combineArrays(emptyOption, getEnumValues(Model.AnimalInfo.Color.class));
+        String[] colorOptions = combineArrays(emptyOption, getEnumValues(model.animalInfo.Color.class));
         String[] ageOptions = combineArrays(emptyOption, getEnumValues(Age.class));
         String[] cityOptions = combineArrays(emptyOption, getEnumValues(Area.class));
         String[] dateRangeOptions = combineArrays(emptyOption, new String[]{
@@ -852,7 +852,7 @@ public class View extends JFrame implements IView, Species {
         JComboBox<String> sizeComboBox = new JComboBox<>(getEnumValues(Size.class));
         JComboBox<String> genderComboBox = new JComboBox<>(getEnumValues(Gender.class));
         JComboBox<String> patternComboBox = new JComboBox<>(getEnumValues(Pattern.class));
-        JComboBox<String> colorComboBox = new JComboBox<>(getEnumValues(Model.AnimalInfo.Color.class));
+        JComboBox<String> colorComboBox = new JComboBox<>(getEnumValues(model.animalInfo.Color.class));
         JComboBox<String> ageComboBox = new JComboBox<>(getEnumValues(Age.class));
         JComboBox<String> cityComboBox = new JComboBox<>(getEnumValues(Area.class));
         JTextField dateField = new JTextField();
@@ -1249,7 +1249,7 @@ public class View extends JFrame implements IView, Species {
         // Debug output for each animal type
         System.out.println("---- Animal types in this display ----");
         for (IAnimal animal : animals) {
-            System.out.println("Animal Type: " + animal.getAnimalType() + ", Species: " + animal.getSpecies());
+            System.out.println("Animal Type: " + animal.getAnimalType() + ", species: " + animal.getSpecies());
         }
         System.out.println("-----------------------------------");
 
@@ -1327,7 +1327,7 @@ public class View extends JFrame implements IView, Species {
                         // (both are now in screen coordinate system)
                         double distance = clickPoint.distance(mapPoint);
 
-                        // Output detailed debug information
+                        // output detailed debug information
                         System.out.println("Animal: " + waypoint.getAnimal().getAnimalType()
                                 + ", Screen coordinates: (" + mapPoint.x + ", " + mapPoint.y + ")"
                                 + ", Distance to click point: " + distance + " pixels");

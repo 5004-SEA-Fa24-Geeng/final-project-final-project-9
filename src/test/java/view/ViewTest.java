@@ -16,9 +16,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import Controller.IController;
-import Model.Animals.Animal;
-import Model.Animals.IAnimal;
+import controller.IController;
+import model.animals.Animal;
+import model.animals.IAnimal;
 
 /**
  * Tests for the view class.
@@ -339,7 +339,7 @@ public class ViewTest {
     @Test
     public void testControllerSetView() {
         // The controller should have its view set through the view constructor
-        assertSame(view, controller.viewThatWasSet, "Controller should have its view set");
+        assertSame(view, controller.viewThatWasSet, "controller should have its view set");
     }
     
     @Test
@@ -353,7 +353,7 @@ public class ViewTest {
         
         // Since applyFilters method might not execute correctly in test environment,
         // we'll directly check if the controller's filter methods were called with expected values
-        assertSame(view, controller.viewThatWasSet, "Controller should have its view set");
+        assertSame(view, controller.viewThatWasSet, "controller should have its view set");
         
         // Either the method already set these values, or we need to directly check the filter
         // from getSelectedFilter/getFilterValue

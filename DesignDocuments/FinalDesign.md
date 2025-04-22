@@ -110,14 +110,14 @@ classDiagram
         +List~IAnimal~ sortByDateDesc(List~IAnimal~)
     }
 
-    class Controller {
+    class controller {
         -IAnimalList animalList
         -IAnimalFilter animalFilter
         -Sorts sorts
         -IView view
         -IOutputGenerator outputGenerator
         -List~IAnimal~ filteredAnimals
-        +Controller(IAnimalList, IView)
+        +controller(IAnimalList, IView)
     }
 
     class view {
@@ -167,32 +167,32 @@ classDiagram
     AnimalList ..|> IAnimalList : implements
     AnimalFilter ..|> IAnimalFilter : implements
     AnimalFilter --> Sorts : uses
-    Controller ..|> IController : implements
+    controller ..|> IController : implements
     view ..|> IView : implements
     AnimalOutputGenerator ..|> IOutputGenerator : implements
     AnimalOutputGenerator --> OutputFormat: uses
 
-    Controller --> AnimalOutputGenerator : uses
-    Controller --> AnimalList : uses
-    Controller --> AnimalFilter : uses
-    Controller --> view : updates
+    controller --> AnimalOutputGenerator : uses
+    controller --> AnimalList : uses
+    controller --> AnimalFilter : uses
+    controller --> view : updates
 
     
-    view --> Controller : calls
+    view --> controller : calls
     view --> MapGeocoder : uses
     
     AnimalFilter --> AnimalList: contains
     AnimalList --> Animal : contains
     
     Main --> AnimalFilter : creates
-    Main --> Controller : creates
+    Main --> controller : creates
     Main --> view : creates
     Main --> AnimalList : creates
 ```
 
 This UML diagram represents the main components of the Dog Station application, organized according to its MVC architecture:
 
-1. **Model Layer**:
+1. **model Layer**:
    - `IAnimal`: Interface defining animal properties
    - `Animal`: Implementation of the IAnimal interface
    - `IAnimalList` & `AnimalList`: Manage collections of animals
@@ -201,8 +201,8 @@ This UML diagram represents the main components of the Dog Station application, 
    - `OutputFormat`: Enum defining output formats (JSON, CSV, XML, TXT)
    - `IOutputGenerator` & `AnimalOutputGenerator`: Generate output in different formats
 
-2. **Controller Layer**:
-   - `IController` & `Controller`: Handle operations and connect the model and view
+2. **controller Layer**:
+   - `IController` & `controller`: Handle operations and connect the model and view
 
 3. **view Layer**:
    - `IView` & `view`: Display the graphical user interface

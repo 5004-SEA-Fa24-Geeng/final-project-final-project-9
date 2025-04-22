@@ -2,7 +2,7 @@ package view;
 
 import java.util.List;
 
-import Model.Animals.IAnimal;
+import model.animals.IAnimal;
 
 public interface IView {
     /**

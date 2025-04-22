@@ -1,7 +1,7 @@
-import Controller.Controller;
-import Controller.IController;
-import Model.AnimalFilter;
-import Model.AnimalList;
+import controller.Controller;
+import controller.IController;
+import model.AnimalFilter;
+import model.AnimalList;
 import view.IView;
 import view.View;
 
