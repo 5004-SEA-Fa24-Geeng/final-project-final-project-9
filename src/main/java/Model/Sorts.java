@@ -9,13 +9,14 @@ import java.util.Date;
 /**
  * Utility class for sorting animals based on different criteria.
  */
-public class Sorts {
+public final class Sorts {
+    /** Set date format. */
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     /**
      * Private constructor to prevent instantiation.
      */
-    private Sorts() {}
+    private Sorts() { }
 
     /**
      * Creates a comparator for sorting animals by date.

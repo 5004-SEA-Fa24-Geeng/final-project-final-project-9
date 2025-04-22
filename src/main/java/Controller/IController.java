@@ -1,3 +1,4 @@
+
 package Controller;
 
 import Model.Animals.IAnimal;
@@ -121,6 +122,7 @@ public interface IController {
     /**
      * Export animal data to a file in the specified format.
      * Default TXT format to FileOutputStream
+     * @param list list of animals to export
      */
     void exportData(List<IAnimal> list);
 
@@ -146,6 +148,8 @@ public interface IController {
     /**
      * Export animal data to a file in the specified format.
      * @param format the format to export (xml, json, txt, csv)
+     * @param list list of animals to export
+     * @param os OutputStream
      */
     void exportData(List<IAnimal> list, String format, OutputStream os);
 }

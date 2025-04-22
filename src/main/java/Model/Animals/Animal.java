@@ -5,35 +5,35 @@ package Model.Animals;
  * This class stores and provides access to various characteristics of an animal.
  */
 public class Animal implements IAnimal {
-    /** The type of the animal (e.g., dog, cat) */
+    /** The type of the animal (e.g., dog, cat). */
     private final String type;
-    /** The species of the animal */
+    /** The species of the animal. */
     private final String species;
-    /** The size of the animal (e.g., small, medium, large) */
+    /** The size of the animal (e.g., small, medium, large). */
     private final String size;
-    /** The gender of the animal */
+    /** The gender of the animal. */
     private final String gender;
-    /** The pattern of the animal's coat/fur */
+    /** The pattern of the animal's coat/fur. */
     private final String pattern;
-    /** The color of the animal */
+    /** The color of the animal. */
     private final String color;
-    /** The age of the animal */
+    /** The age of the animal. */
     private final String age;
-    /** The date when the animal was seen */
+    /** The date when the animal was seen. */
     private final String seenDate;
-    /** The time when the animal was seen */
+    /** The time when the animal was seen. */
     private final String time;
-    /** The address where the animal was seen */
+    /** The address where the animal was seen. */
     private final String address;
-    /** The area/city where the animal was seen */
+    /** The area/city where the animal was seen. */
     private final String area;
-    /** The location description where the animal was seen */
+    /** The location description where the animal was seen. */
     private final String locDesc;
-    /** The general description of the animal */
+    /** The general description of the animal. */
     private final String description;
-    /** The identification number of the animal */
+    /** The identification number of the animal. */
     private final String number;
-    /** The image file path of the animal */
+    /** The image file path of the animal. */
     private final String image;
 
 
@@ -166,4 +166,4 @@ public class Animal implements IAnimal {
     public String getImage() {
         return image;
     }
-} 
+}

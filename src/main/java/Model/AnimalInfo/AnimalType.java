@@ -5,21 +5,21 @@ package Model.AnimalInfo;
  * This enum provides a standardized list of animal types that can be reported.
  */
 public enum AnimalType {
-    /** Domestic dog */
+    /** Domestic dog. */
     DOG,
-    /** Domestic cat */
+    /** Domestic cat. */
     CAT,
-    /** Domestic rabbit */
+    /** Domestic rabbit. */
     RABBIT,
-    /** Various bird species */
+    /** Various bird species. */
     BIRD,
-    /** Domestic hamster */
+    /** Domestic hamster. */
     HAMSTER,
-    /** Domestic duck */
+    /** Domestic duck. */
     DUCK,
-    /** Domestic hedgehog */
+    /** Domestic hedgehog. */
     HEDGEHOG,
-    /** Domestic goose */
+    /** Domestic goose. */
     GOOSE;
 
     /**

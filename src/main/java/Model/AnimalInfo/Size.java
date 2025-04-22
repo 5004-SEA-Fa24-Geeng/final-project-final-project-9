@@ -5,13 +5,13 @@ package Model.AnimalInfo;
  * This enum provides standardized size classifications for animals in the system.
  */
 public enum Size {
-    /** Micro-sized animals (e.g., small rodents, tiny birds) */
+    /** Micro-sized animals (e.g., small rodents, tiny birds). */
     MICRO,
-    /** Small-sized animals (e.g., small dogs, cats) */
+    /** Small-sized animals (e.g., small dogs, cats). */
     SMALL,
-    /** Medium-sized animals (e.g., medium dogs, large cats) */
+    /** Medium-sized animals (e.g., medium dogs, large cats). */
     MEDIUM,
-    /** Large-sized animals (e.g., large dogs, geese) */
+    /** Large-sized animals (e.g., large dogs, geese). */
     LARGE;
 
     /**

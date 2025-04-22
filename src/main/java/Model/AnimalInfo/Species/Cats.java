@@ -1,3 +1,4 @@
+
 package Model.AnimalInfo.Species;
 
 /**
@@ -5,47 +6,47 @@ package Model.AnimalInfo.Species;
  * This enum provides a standardized list of cat breeds supported in the system.
  */
 public enum Cats implements Species {
-    /** Common domestic short-haired cat */
+    /** Common domestic short-haired cat. */
     DOMESTIC_SHORTHAIR,
-    /** Large, long-haired breed from Maine */
+    /** Large, long-haired breed from Maine. */
     MAINE_COON,
-    /** Slender, short-haired breed with distinctive color points */
+    /** Slender, short-haired breed with distinctive color points. */
     SIAMESE,
-    /** Long-haired breed with a flat face */
+    /** Long-haired breed with a flat face. */
     PERSIAN,
-    /** Large, long-haired breed known for going limp when picked up */
+    /** Large, long-haired breed known for going limp when picked up. */
     RAGDOLL,
-    /** Medium-sized, short-haired breed */
+    /** Medium-sized, short-haired breed. */
     AMERICAN_SHORTHAIR,
-    /** Spotted coat breed resembling wild cats */
+    /** Spotted coat breed resembling wild cats. */
     BENGAL,
-    /** Hairless breed */
+    /** Hairless breed. */
     SPHYNX,
-    /** Breed with folded ears */
+    /** Breed with folded ears. */
     SCOTTISH_FOLD,
-    /** Short-haired breed with large ears */
+    /** Short-haired breed with large ears. */
     DEVON_REX,
-    /** Black, short-haired breed resembling a panther */
+    /** Black, short-haired breed resembling a panther. */
     BOMBAY,
-    /** Short-haired breed with ticked coat */
+    /** Short-haired breed with ticked coat. */
     ABYSSINIAN,
-    /** Stocky, short-haired breed */
+    /** Stocky, short-haired breed. */
     BRITISH_SHORTHAIR,
-    /** Medium-sized, short-haired breed */
+    /** Medium-sized, short-haired breed. */
     BURMESE,
-    /** Large, long-haired breed from Norway */
+    /** Large, long-haired breed from Norway. */
     NORWEGIAN_FOREST_CAT,
-    /** Slender, short-haired breed */
+    /** Slender, short-haired breed. */
     ORIENTAL_SHORTHAIR,
-    /** Short-haired breed with blue-gray coat */
+    /** Short-haired breed with blue-gray coat. */
     RUSSIAN_BLUE,
-    /** Long-haired breed with color points */
+    /** Long-haired breed with color points. */
     HIMALAYAN,
-    /** Short-haired breed with Persian-like features */
+    /** Short-haired breed with Persian-like features. */
     EXOTIC_SHORTHAIR,
-    /** Hybrid breed with wild serval ancestry */
+    /** Hybrid breed with wild serval ancestry. */
     SAVANNAH,
-    /** Any other cat breed not listed above */
+    /** Any other cat breed not listed above. */
     OTHER;
 
     /**

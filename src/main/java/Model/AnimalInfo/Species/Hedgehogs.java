@@ -5,27 +5,27 @@ package Model.AnimalInfo.Species;
  * This enum provides a standardized list of hedgehog species supported in the system.
  */
 public enum Hedgehogs implements Species {
-    /** Small hedgehog species commonly kept as pets */
+    /** Small hedgehog species commonly kept as pets. */
     AFRICAN_PYGMY,
-    /** Large hedgehog species native to Europe */
+    /** Large hedgehog species native to Europe. */
     EUROPEAN,
-    /** Hedgehog species with distinctive long ears */
+    /** Hedgehog species with distinctive long ears. */
     LONG_EARED,
-    /** Hedgehog species with long ears native to Egypt */
+    /** Hedgehog species with long ears native to Egypt. */
     EGYPTIAN_LONG_EARED,
-    /** Hedgehog species with long ears native to India */
+    /** Hedgehog species with long ears native to India. */
     INDIAN_LONG_EARED,
-    /** Hedgehog species adapted to desert environments */
+    /** Hedgehog species adapted to desert environments. */
     DESERT,
-    /** Small hedgehog species with four toes on hind feet */
+    /** Small hedgehog species with four toes on hind feet. */
     FOUR_TOED,
-    /** Hedgehog species native to Russia and China */
+    /** Hedgehog species native to Russia and China. */
     DAURIAN,
-    /** Hedgehog species native to Central Asia */
+    /** Hedgehog species native to Central Asia. */
     BRANDTS,
-    /** Hedgehog species native to China */
+    /** Hedgehog species native to China. */
     HUGHS,
-    /** Any other hedgehog species not listed above */
+    /** Any other hedgehog species not listed above. */
     OTHER;
 
     /**

@@ -29,12 +29,6 @@ public class AnimalCSVReader {
     /**
      * Reads animals from the CSV file.
      * If the file doesn't exist or cannot be read, returns an empty list.
-     * 
-     * @return List of IAnimal objects, or empty list if the file doesn't exist or has errors
-     */
-    /**
-     * Reads animals from the CSV file.
-     * If the file doesn't exist or cannot be read, returns an empty list.
      *
      * @return List of IAnimal objects, or empty list if the file doesn't exist or has errors
      */
