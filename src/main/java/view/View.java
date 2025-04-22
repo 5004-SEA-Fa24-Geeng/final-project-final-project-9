@@ -1,23 +1,27 @@
 /**
- * View.java
+ * view.java
  *
- * This file defines the View class, which serves as the graphical user interface (GUI) for the Stray Animal Spotter application.
- * The View class is responsible for rendering the main window, including the list and map views of animals, filter and sort controls,
- * animal detail dialogs, and reporting functionality. It interacts with the controller to update the display in response to user actions.
+ * This file defines the view class, which serves as the graphical user interface (GUI) for
+ * the Stray Animal Spotter application.
+ * The view class is responsible for rendering the main window, including the list and map views of animals,
+ * filter and sort controls,
+ * animal detail dialogs, and reporting functionality. It interacts with the controller to
+ * update the display in response to user actions.
  *
  * Main Components:
- * - List View: Displays a list of animals with filtering, sorting, and selection features.
- * - Map View: Shows animal locations on an interactive map with clickable markers.
- * - Filter Panel: Allows users to filter animals by type, breed, size, gender, pattern, color, age, city, and date range.
+ * - List view: Displays a list of animals with filtering, sorting, and selection features.
+ * - Map view: Shows animal locations on an interactive map with clickable markers.
+ * - Filter Panel: Allows users to filter animals by type,
+ * breed, size, gender, pattern, color, age, city, and date range.
  * - Reporting: Provides dialogs for users to report new animal sightings, including image uploads.
  * - Export: Allows exporting selected animal data in various formats.
  *
- * The View class implements IView and Species, and uses Swing components for the GUI.
+ * The view class implements IView and Species, and uses Swing components for the GUI.
  *
  * Author: [Your Name]
  * Date: [Date]
  */
-package View;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -93,44 +97,127 @@ import Model.AnimalInfo.Size;
 import Model.Animals.IAnimal;
 
 public class View extends JFrame implements IView, Species {
+    /**
+     * The controller to interact with business logic.
+     */
     private final IController controller;
+    /**
+     * Tabbed pane containing list and map views.
+     */
     private final JTabbedPane tabbedPane;
+    /**
+     * Panel displaying the list view of animals.
+     */
     private final JPanel listPanel;
+    /**
+     * Panel displaying the map view of animals.
+     */
     private final JPanel mapPanel;
+    /**
+     * List component displaying animals.
+     */
     private final JList<IAnimal> animalList;
+    /**
+     * Model for the animal list.
+     */
     private final DefaultListModel<IAnimal> listModel;
+    /**
+     * Model for the selected animal list.
+     */
     private final DefaultListModel<IAnimal> selectedListModel;
+    /**
+     * List component displaying selected animals.
+     */
     private final JList<IAnimal> selectedAnimalList;
+    /**
+     * Panel containing filter controls.
+     */
     private final JPanel filterPanel;
+    /**
+     * Combo box for selecting animal type.
+     */
     private final JComboBox<String> typeComboBox;
+    /**
+     * Combo box for selecting animal breed.
+     */
     private final JComboBox<String> breedComboBox;
+    /**
+     * Combo box for selecting animal size.
+     */
     private final JComboBox<String> sizeComboBox;
+    /**
+     * Combo box for selecting animal gender.
+     */
     private final JComboBox<String> genderComboBox;
+    /**
+     * Combo box for selecting animal pattern.
+     */
     private final JComboBox<String> patternComboBox;
+    /**
+     * Combo box for selecting animal color.
+     */
     private final JComboBox<String> colorComboBox;
+    /**
+     * Combo box for selecting animal age.
+     */
     private final JComboBox<String> ageComboBox;
+    /**
+     * Combo box for selecting animal city.
+     */
     private final JComboBox<String> cityComboBox;
+    /**
+     * Combo box for selecting date range.
+     */
     private final JComboBox<String> dateRangeComboBox;
+    /**
+     * Button to apply filters.
+     */
     private final JButton filterButton;
+    /**
+     * Button to reset filters.
+     */
     private final JButton resetButton;
+    /**
+     * Button to report a new animal sighting.
+     */
     private final JButton reportButton;
+    /**
+     * Map viewer component for displaying animal locations.
+     */
     private final JXMapViewer mapViewer;
+    /**
+     * Combo box for selecting sort order.
+     */
     private final JComboBox<String> sortComboBox;
+    /**
+     * Button to sort the animal list.
+     */
     private final JButton sortButton;
+    /**
+     * Set of currently selected animals.
+     */
     private final Set<IAnimal> selectedAnimals;
-    private Map<Point2D, IAnimal> pointToAnimalMap = new HashMap<>();
-    private Map<GeoPosition, IAnimal> positionToAnimalMap = new HashMap<>();
+    /**
+     * Map from 2D point to animal for quick lookup on map.
+     */
+    private final Map<Point2D, IAnimal> pointToAnimalMap = new HashMap<>();
+    /**
+     * Map from geographic position to animal for map view.
+     */
+    private final Map<GeoPosition, IAnimal> positionToAnimalMap = new HashMap<>();
+    /**
+     * Cache mapping addresses to geographic positions.
+     */
     private final Map<String, GeoPosition> geocodingCache = new HashMap<>();
 
     /**
-     * Constructs the View and initializes all GUI components.
+     * Constructs the view and initializes all GUI components.
      * Sets up the main window, panels, and listeners.
      * @param controller the controller to interact with business logic
      */
     public View(IController controller) {
         this.controller = controller;
         this.controller.setView(this);
-
         // Initialize components
         tabbedPane = new JTabbedPane();
         listPanel = new JPanel(new BorderLayout());
@@ -170,8 +257,8 @@ public class View extends JFrame implements IView, Species {
         initializeFilterPanel();
 
         // Add components to window
-        tabbedPane.addTab("List View", listPanel);
-        tabbedPane.addTab("Map View", mapPanel);
+        tabbedPane.addTab("List view", listPanel);
+        tabbedPane.addTab("Map view", mapPanel);
         add(tabbedPane, BorderLayout.CENTER);
         add(reportButton, BorderLayout.NORTH);
 
@@ -621,7 +708,8 @@ public class View extends JFrame implements IView, Species {
                 int originalHeight = originalIcon.getIconHeight();
                 int maxSize = 300;
 
-                int scaledWidth, scaledHeight;
+                int scaledWidth;
+                int scaledHeight;
                 if (originalWidth > originalHeight) {
                     scaledWidth = maxSize;
                     scaledHeight = (int) ((double) originalHeight / originalWidth * maxSize);
@@ -846,7 +934,8 @@ public class View extends JFrame implements IView, Species {
 
                 // Copy the selected file to data/image directory
                 try {
-                    String extension = selectedImageFile[0].getName().substring(selectedImageFile[0].getName().lastIndexOf("."));
+                    String extension = selectedImageFile[0].getName().substring(selectedImageFile[0]
+                            .getName().lastIndexOf("."));
                     String newFileName = controller.getNextAnimalNumberAsString() + extension;
                     fileName.set(newFileName);
                     File destFile = new File(imageDir, newFileName);
@@ -995,7 +1084,7 @@ public class View extends JFrame implements IView, Species {
         System.out.println("Filtered animals count: " + filteredAnimals.size());
     }
 
-    private static class AnimalListCellRenderer extends DefaultListCellRenderer {
+    private static final class AnimalListCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
@@ -1024,8 +1113,8 @@ public class View extends JFrame implements IView, Species {
                 JButton addToListButton = new JButton("Add to List");
                 addToListButton.setMargin(new Insets(0, 2, 0, 2));  // Reduce button padding
 
-                // Create View Details button
-                JButton viewDetailsButton = new JButton("View Details");
+                // Create view Details button
+                JButton viewDetailsButton = new JButton("view Details");
                 viewDetailsButton.setMargin(new Insets(0, 2, 0, 2));  // Reduce button padding
 
                 // Add button to button panel
@@ -1127,7 +1216,8 @@ public class View extends JFrame implements IView, Species {
         legendPanel.add(duckLabel);
 
         // Add map info text
-        JLabel mapInfoLabel = new JLabel("Map shows all animals matching your filters. Click on markers to see animal details.");
+        JLabel mapInfoLabel = new JLabel("Map shows all animals matching your filters. "
+                + "Click on markers to see animal details.");
         mapInfoLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         mapControlPanel.add(buttonPanel);
@@ -1168,7 +1258,8 @@ public class View extends JFrame implements IView, Species {
                 // Get geographic position
                 GeoPosition position = getGeoPosition(fullAddress);
                 if (position != null) {
-                    System.out.println("Got coordinates from address: " + position.getLatitude() + ", " + position.getLongitude());
+                    System.out.println("Got coordinates from address: " + position.getLatitude() + ", "
+                            + position.getLongitude());
                     waypoints.add(new WaypointWithInfo(position, animal));
                     // Store in position map
                     positionToAnimalMap.put(position, animal);
@@ -1227,17 +1318,18 @@ public class View extends JFrame implements IView, Species {
                         Rectangle viewportBounds = mapViewer.getViewportBounds();
                         Point2D point2D = mapViewer.getTileFactory().geoToPixel(pos, mapViewer.getZoom());
                         Point mapPoint = new Point(
-                                (int)(point2D.getX() - viewportBounds.getX()),
-                                (int)(point2D.getY() - viewportBounds.getY())
+                                (int) (point2D.getX() - viewportBounds.getX()),
+                                (int) (point2D.getY() - viewportBounds.getY())
                         );
 
-                        // Calculate distance between click point and marker point (both are now in screen coordinate system)
+                        // Calculate distance between click point and marker point
+                        // (both are now in screen coordinate system)
                         double distance = clickPoint.distance(mapPoint);
 
                         // Output detailed debug information
-                        System.out.println("Animal: " + waypoint.getAnimal().getAnimalType() +
-                                ", Screen coordinates: (" + mapPoint.x + ", " + mapPoint.y + ")" +
-                                ", Distance to click point: " + distance + " pixels");
+                        System.out.println("Animal: " + waypoint.getAnimal().getAnimalType()
+                                + ", Screen coordinates: (" + mapPoint.x + ", " + mapPoint.y + ")"
+                                + ", Distance to click point: " + distance + " pixels");
 
                         // If distance is less than 20 pixels, consider it a hit
                         if (distance < 20) {  // Slightly increase threshold to make clicking easier
@@ -1279,8 +1371,8 @@ public class View extends JFrame implements IView, Species {
             System.out.println("Attempting to geocode address: " + fullAddress);
             MapGeocoder.GeoLocation geoLocation = MapGeocoder.getCoordinates(fullAddress);
             if (geoLocation != null) {
-                System.out.println("Successfully geocoded address to: " +
-                        geoLocation.getLatitude() + ", " + geoLocation.getLongitude());
+                System.out.println("Successfully geocoded address to: "
+                        + geoLocation.getLatitude() + ", " + geoLocation.getLongitude());
                 GeoPosition position = new GeoPosition(geoLocation.getLatitude(), geoLocation.getLongitude());
                 // Cache the result
                 geocodingCache.put(fullAddress, position);
@@ -1298,16 +1390,28 @@ public class View extends JFrame implements IView, Species {
 
 
     /**
-     * Waypoint with animal information
+     * Waypoint with animal information.
      */
     public static class WaypointWithInfo extends DefaultWaypoint {
+        /**
+         * The animal associated with this waypoint.
+         */
         private final IAnimal animal;
 
+        /**
+         * Constructor.
+         * @param position the position of the waypoint
+         * @param animal the animal associated with the waypoint
+         */
         public WaypointWithInfo(GeoPosition position, IAnimal animal) {
             super(position);
             this.animal = animal;
         }
 
+        /**
+         * Get the animals.
+         * @return the animals
+         */
         public IAnimal getAnimal() {
             return animal;
         }
@@ -1320,13 +1424,15 @@ public class View extends JFrame implements IView, Species {
 
 
     /**
-     * Animal waypoint renderer that colors markers based on animal type
+     * Animal waypoint renderer that colors markers based on animal type.
      */
     private static class AnimalWaypointRenderer implements WaypointRenderer<WaypointWithInfo> {
-        // Store colors for different animal types
+        /**
+         * Mapping of animal types to colors for rendering.
+         */
         private final Map<String, Color> typeColors = new HashMap<>();
 
-        public AnimalWaypointRenderer() {
+        AnimalWaypointRenderer() {
             // Initialize color mapping
             typeColors.put("DOG", new Color(65, 105, 225)); // Blue
             typeColors.put("CAT", new Color(220, 20, 60));  // Red
@@ -1345,7 +1451,8 @@ public class View extends JFrame implements IView, Species {
                 GeoPosition pos = waypoint.getPosition();
                 Point2D point = map.getTileFactory().geoToPixel(pos, map.getZoom());
 
-                // Note: No need to convert to viewport coordinates, as Graphics2D is already in the correct coordinate system
+                // Note: No need to convert to viewport coordinates, as Graphics2D is
+                // already in the correct coordinate system
                 int x = (int) point.getX();
                 int y = (int) point.getY();
 
@@ -1357,8 +1464,8 @@ public class View extends JFrame implements IView, Species {
                 String normalizedType = animalType.toUpperCase();
 
                 // Simplified debug output to reduce console clutter
-                System.out.println("Painting animal: " + animalType + ", type: " + normalizedType +
-                        ", position: (" + x + ", " + y + ")");
+                System.out.println("Painting animal: " + animalType + ", type: " + normalizedType
+                        + ", position: (" + x + ", " + y + ")");
 
                 // Determine color based on animal type
                 Color dotColor = Color.RED; // Default to red

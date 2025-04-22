@@ -6,7 +6,7 @@
 Dog Station is a desktop application built in Java that helps users manage a collection of lost dogs. Users can search or report lost dogs, view nearby cases, maintain a wishlist. This project meets the requirement of managing a “collection” by treating each dog as a data entry, with relevant metadata stored in structured files.
 
 ## 2. What are the initial features for the application?
-   - View All Dogs: Display a complete list of dogs in a logical order.
+   - view All Dogs: Display a complete list of dogs in a logical order.
    - Report a Dog: Add a new lost or adoptable dog to the system.
    - Wishlist: Build and manage a list of dogs users are interested in .
    - Save Wishlist to File: Export the wishlist in .json/.csv/.xml format.
@@ -27,7 +27,7 @@ Dog Station is a desktop application built in Java that helps users manage a col
    - Backend: Java (OOP, MVC structure)
    - Frontend: Java Swing for UI
    - Storage: JSON or CSV files for data persistence (dog list, wishlist)
-   - Design Pattern: MVC (Model-View-Controller)
+   - Design Pattern: MVC (Model-view-Controller)
 
 ### Persistence Format
 - JSON for full dog list (with fields: name, breed, location, date, status)
@@ -126,7 +126,7 @@ PRETTY
 +static Formats containsValues(String)
     }
 
-%% View package
+%% view package
 class IView {
 <<interface>>
 }
@@ -180,7 +180,7 @@ IController --> AnimalList: uses
 Our team consists of three members, and we have divided responsibilities based on the MVC architecture, ensuring each member contributes to key components of the application while maintaining collaboration across the project.
 
 ## 9. Member Responsibilities
-- Responsible for the View layer using Java Swing. Implements the UI components for displaying, filtering, and managing the dog list. Works on user-facing interactions such as form inputs, list displays, and button triggers.
+- Responsible for the view layer using Java Swing. Implements the UI components for displaying, filtering, and managing the dog list. Works on user-facing interactions such as form inputs, list displays, and button triggers.
 - Responsible for the Model and data layer. Implements file I/O logic (reading and writing JSON/CSV files), manages the internal data structure of dogs and wishlists, and develops supporting logic for filtering, sorting, and saving data. Also in charge of writing JUnit tests.
 - Responsible for the Controller logic and integration of additional features. Implements control flow for adding/searching dogs and managing UI logic. Develops the “Nearby Dogs” feature based on simulated location data. Also handles documentation, including UML diagrams, the proposal, and the final user manual.
 

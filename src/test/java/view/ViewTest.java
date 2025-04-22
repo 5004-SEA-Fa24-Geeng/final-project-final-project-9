@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import java.awt.GraphicsEnvironment;
 import java.lang.reflect.Field;
@@ -21,10 +21,10 @@ import Model.Animals.Animal;
 import Model.Animals.IAnimal;
 
 /**
- * Tests for the View class.
- * Note: Many methods in View are UI related and difficult to test directly.
+ * Tests for the view class.
+ * Note: Many methods in view are UI related and difficult to test directly.
  * This test uses a HeadlessView that mocks UI components and focuses on
- * testing the business logic within the View class.
+ * testing the business logic within the view class.
  */
 public class ViewTest {
     
@@ -338,7 +338,7 @@ public class ViewTest {
     
     @Test
     public void testControllerSetView() {
-        // The controller should have its view set through the View constructor
+        // The controller should have its view set through the view constructor
         assertSame(view, controller.viewThatWasSet, "Controller should have its view set");
     }
     

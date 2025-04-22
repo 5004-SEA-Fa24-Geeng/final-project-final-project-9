@@ -10,7 +10,7 @@ Jiaming Li(https://github.com/jiaming2li)
 
 "Wall" is a very popular online information-sharing platform used within specific communities, like an University. As its name indicates, anyone in the community could post and view information on the "wall".
 Similarly, our application allows users to efficiently browse reports of stray animals submitted by people across the Greater Seattle area.   
-The application is built using the MVC (Model-View-Controller) design pattern and features a graphical user interface developed with Java Swing to support its core functionalities.
+The application is built using the MVC (Model-view-Controller) design pattern and features a graphical user interface developed with Java Swing to support its core functionalities.
 
 To learn and experience our application:
 - [Go to Manual.](Manual/README.md) (suggested)

@@ -120,7 +120,7 @@ classDiagram
         +Controller(IAnimalList, IView)
     }
 
-    class View {
+    class view {
         -IController controller
         -JFrame mainFrame
         -JPanel cardPanel
@@ -131,7 +131,7 @@ classDiagram
         -JPanel wishlistPanel
         -List~IAnimal~ displayedAnimals
         -Map~String, JCheckBox~ filterCheckboxes
-        +View()
+        +view()
         -void setupHomePanel()
         -void setupReportPanel()
         -void setupMapPanel()
@@ -168,25 +168,25 @@ classDiagram
     AnimalFilter ..|> IAnimalFilter : implements
     AnimalFilter --> Sorts : uses
     Controller ..|> IController : implements
-    View ..|> IView : implements
+    view ..|> IView : implements
     AnimalOutputGenerator ..|> IOutputGenerator : implements
     AnimalOutputGenerator --> OutputFormat: uses
 
     Controller --> AnimalOutputGenerator : uses
     Controller --> AnimalList : uses
     Controller --> AnimalFilter : uses
-    Controller --> View : updates
+    Controller --> view : updates
 
     
-    View --> Controller : calls
-    View --> MapGeocoder : uses
+    view --> Controller : calls
+    view --> MapGeocoder : uses
     
     AnimalFilter --> AnimalList: contains
     AnimalList --> Animal : contains
     
     Main --> AnimalFilter : creates
     Main --> Controller : creates
-    Main --> View : creates
+    Main --> view : creates
     Main --> AnimalList : creates
 ```
 
@@ -204,8 +204,8 @@ This UML diagram represents the main components of the Dog Station application, 
 2. **Controller Layer**:
    - `IController` & `Controller`: Handle operations and connect the model and view
 
-3. **View Layer**:
-   - `IView` & `View`: Display the graphical user interface
+3. **view Layer**:
+   - `IView` & `view`: Display the graphical user interface
    - `MapGeocoder`: Handle location data and geocoding
 
 4. **Application Entry Point**:

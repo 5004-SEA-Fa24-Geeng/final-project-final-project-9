@@ -1,4 +1,4 @@
-package View;
+package view;
 
 
 import java.io.BufferedReader;
@@ -12,11 +12,13 @@ import java.nio.charset.StandardCharsets;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import Model.AnimalList;
-import Model.Animals.IAnimal;
-import Model.IAnimalList;
+public final class MapGeocoder {
 
-public class MapGeocoder {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private MapGeocoder() {
+    }
 
     /** The API to look up addresses. */
     private static final String NOMINATIM_API = "https://nominatim.openstreetmap.org/search";
@@ -44,12 +46,12 @@ public class MapGeocoder {
         String encodedAddress = URLEncoder.encode(searchAddress, StandardCharsets.UTF_8);
 
         // Create the URL for the Nominatim API request
-        String requestUrl = NOMINATIM_API +
-                "?q=" + encodedAddress +
-                "&format=json" +
-                "&addressdetails=1" +
-                "&limit=1" +
-                "&countrycodes=us"; // Restrict to US results
+        String requestUrl = NOMINATIM_API
+                + "?q=" + encodedAddress
+                + "&format=json"
+                + "&addressdetails=1"
+                + "&limit=1"
+                + "&countrycodes=us"; // Restrict to US results
 
         System.out.println("Request URL: " + requestUrl);
 

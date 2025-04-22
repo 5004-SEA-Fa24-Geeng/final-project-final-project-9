@@ -2,8 +2,8 @@ import Controller.Controller;
 import Controller.IController;
 import Model.AnimalFilter;
 import Model.AnimalList;
-import View.IView;
-import View.View;
+import view.IView;
+import view.View;
 
 /**
  * Main class that serves as the entry point for the Animal Tracking application.

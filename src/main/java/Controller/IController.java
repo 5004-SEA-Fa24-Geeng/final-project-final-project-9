@@ -1,7 +1,7 @@
 package Controller;
 
 import Model.Animals.IAnimal;
-import View.IView;
+import view.IView;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -12,8 +12,8 @@ public interface IController {
     String EXPORT_TO = "animal_data.";
 
     /**
-     * Set View.
-     * @param view an instance of View
+     * Set view.
+     * @param view an instance of view
      */
     void setView(IView view);
 

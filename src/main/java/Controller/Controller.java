@@ -10,7 +10,7 @@ import Model.Animals.IAnimal;
 import Model.Output.AnimalOutputGenerator;
 import Model.Output.IOutputGenerator;
 import Model.Output.OutputFormat;
-import View.IView;
+import view.IView;
 
 /**
  * Controller class that handles the interaction between the view and model.

@@ -77,7 +77,7 @@ class postAnimal {
         +static Formats containsValues(String)
     }
 
-    %% View package
+    %% view package
     class IView {
         <<interface>> 
     }

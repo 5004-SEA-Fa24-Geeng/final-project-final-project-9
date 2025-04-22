@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import Model.Animals.Animal;
 import Model.Animals.IAnimal;
-import View.IView;
+import view.IView;
 
 /**
  * Tests for the Controller class.
