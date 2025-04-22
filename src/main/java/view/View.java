@@ -96,6 +96,7 @@ import Model.AnimalInfo.Pattern;
 import Model.AnimalInfo.Size;
 import Model.Animals.IAnimal;
 
+
 public class View extends JFrame implements IView, Species {
     /**
      * The controller to interact with business logic.

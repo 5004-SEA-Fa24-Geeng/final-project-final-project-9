@@ -53,6 +53,7 @@ public interface IAnimalList {
      * @param description The general description
      * @param fileSrc the file source
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     void addNewAnimal(String type, String species, String size, String gender, String pattern, String color,
                       String age, String seenDate, String seenTime, String address, String area, String locDesc,
                       String description, String fileSrc);

@@ -56,9 +56,10 @@ public class Animal implements IAnimal {
      * @param number the number of this animal
      * @param fileSrc the file source of this image
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     public Animal(String type, String species, String size, String gender, String pattern, String color,
-                 String age, String address, String area, String time, String seenDate, String description,
-                 String locDesc, String number, String fileSrc) {
+                  String age, String address, String area, String time, String seenDate, String description,
+                  String locDesc, String number, String fileSrc) {
         this.type = type;
         this.species = species;
         this.size = size;

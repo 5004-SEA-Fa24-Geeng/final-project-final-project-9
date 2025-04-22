@@ -43,6 +43,7 @@ public class AnimalList implements IAnimalList {
                 .orElse(0);
     }
 
+    @SuppressWarnings("checkstyle:ParameterNumber")
     @Override
     public void addNewAnimal(String type, String species, String size, String gender, String pattern, String color,
                            String age, String seenDate, String seenTime, String address, String area, String locDesc,

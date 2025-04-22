@@ -90,6 +90,7 @@ public interface IController {
      * @param fileSrc the file source
      * @return A new animal instance
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     IAnimal createAnimal(
             String type, String breed, String size, String gender,
             String pattern, String color, String age, String date,

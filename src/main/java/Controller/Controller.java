@@ -131,6 +131,7 @@ public class Controller implements IController {
     }
 
 
+    @SuppressWarnings("checkstyle:ParameterNumber")
     @Override
     public IAnimal createAnimal(
             String type, String breed, String size, String gender,

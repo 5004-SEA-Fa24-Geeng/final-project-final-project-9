@@ -9,7 +9,14 @@ import view.View;
  * Main class that serves as the entry point for the Animal Tracking application.
  * This class initializes the application components and starts the user interface.
  */
-public class Main {
+public final class Main {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private Main() {
+
+    }
+
     /**
      * The main method that starts the application.
      *

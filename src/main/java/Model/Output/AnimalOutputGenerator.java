@@ -33,6 +33,8 @@ public class AnimalOutputGenerator implements IOutputGenerator {
                 case TXT:
                     exportToTXT(animals, writer);
                     break;
+                default:
+                    break;
             }
         } finally {
             writer.flush();
@@ -122,7 +124,7 @@ public class AnimalOutputGenerator implements IOutputGenerator {
 
         // Write header
         String[] header = {"Type", "Breed", "Size", "Gender", "Pattern", "Color", "Age", "Date", "Time", "Address",
-                "City", "LocationDesc", "Description",};
+                "City", "LocationDesc", "Description"};
         csvWriter.writeNext(header);
 
         // Write data (only if we have animals)
