@@ -5,49 +5,49 @@ package Model.AnimalInfo.Species;
  * This enum provides a standardized list of goose breeds supported in the system.
  */
 public enum Geese implements Species {
-    /** Small, lightweight goose breed with distinctive knob on bill */
+    /** Small, lightweight goose breed with distinctive knob on bill. */
     CHINESE,
-    /** Large white goose breed commonly raised for meat */
+    /** Large white goose breed commonly raised for meat. */
     EMBDEN,
-    /** Large gray goose breed known for docile nature */
+    /** Large gray goose breed known for docile nature. */
     TOULOUSE,
-    /** Large goose breed with distinctive knob on bill */
+    /** Large goose breed with distinctive knob on bill. */
     AFRICAN,
-    /** Medium-sized goose breed with sex-linked color differences */
+    /** Medium-sized goose breed with sex-linked color differences. */
     PILGRIM,
-    /** Medium-sized goose breed with curly feathers */
+    /** Medium-sized goose breed with curly feathers. */
     SEBASTOPOL,
-    /** Large goose breed with buff-colored plumage */
+    /** Large goose breed with buff-colored plumage. */
     AMERICAN_BUFF,
-    /** Small goose breed with tuft on head */
+    /** Small goose breed with tuft on head. */
     ROMAN,
-    /** Small goose breed with distinctive knob on bill */
+    /** Small goose breed with distinctive knob on bill. */
     EGYPTIAN,
-    /** Medium-sized goose breed with distinctive color pattern */
+    /** Medium-sized goose breed with distinctive color pattern. */
     POMERANIAN,
-    /** Small goose breed from Scotland */
+    /** Small goose breed from Scotland. */
     SHETLAND,
-    /** Wild goose species commonly seen in North America */
+    /** Wild goose species commonly seen in North America. */
     CANADA,
-    /** Medium-sized goose breed with buff-colored plumage */
+    /** Medium-sized goose breed with buff-colored plumage. */
     BUFF,
-    /** Medium-sized goose breed from the southern United States */
+    /** Medium-sized goose breed from the southern United States. */
     COTTON_PATCH,
-    /** Small goose breed with tuft on head */
+    /** Small goose breed with tuft on head. */
     TUFTED_ROMAN,
-    /** Medium-sized goose breed from Germany */
+    /** Medium-sized goose breed from Germany. */
     STEINBACHER,
-    /** Medium-sized goose breed from England */
+    /** Medium-sized goose breed from England. */
     WEST_OF_ENGLAND,
-    /** Medium-sized goose breed with buff-colored plumage */
+    /** Medium-sized goose breed with buff-colored plumage. */
     BRECON_BUFF,
-    /** Wild goose species, ancestor of many domestic breeds */
+    /** Wild goose species, ancestor of many domestic breeds. */
     GREYLAG,
-    /** Large white goose breed, variant of Emden */
+    /** Large white goose breed, variant of Emden. */
     EMDEN_WHITE,
-    /** Large white goose breed similar to Emden */
+    /** Large white goose breed similar to Emden. */
     SNOW,
-    /** Any other goose breed not listed above */
+    /** Any other goose breed not listed above. */
     OTHER;
 
     /**

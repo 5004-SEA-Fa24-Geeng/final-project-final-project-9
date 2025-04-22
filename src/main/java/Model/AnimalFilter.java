@@ -36,7 +36,9 @@ public class AnimalFilter implements IAnimalFilter {
     @Override
     public void filter(String filterOn, String filterStr) {
         AnimalData data = AnimalData.fromString(filterOn);
-        if (data == null) return;
+        if (data == null) {
+            return;
+        }
 
         List<IAnimal> newFiltered = filtered;
         switch (data) {
@@ -159,6 +161,7 @@ public class AnimalFilter implements IAnimalFilter {
      * Filter the animals based on the filterOn and filterStr.
      * within 1 week, within 2 weeks, within 1 month, within 3 months
      * @param filterStr the filter string
+     * @return the list of filtered animal
      */
     private List<IAnimal> filterOnSeenDate(String filterStr) {
         long currentTime = System.currentTimeMillis();

@@ -5,7 +5,7 @@ package Model.AnimalInfo;
  * This enum provides a standardized list of supported cities for animal sightings.
  */
 public enum Area {
-    /** Major cities in Washington State where animal sightings are tracked */
+    /** Major cities in Washington State where animal sightings are tracked. */
     SEATTLE, TACOMA, BELLEVUE, KENT, KIRKLAND, EVERETT, RENTON, REDMOND, LYNNWOOD, BOTHELL;
 
     /**

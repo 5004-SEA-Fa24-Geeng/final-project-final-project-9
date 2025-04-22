@@ -1,3 +1,4 @@
+
 package Model.AnimalInfo.Species;
 
 /**
@@ -5,47 +6,47 @@ package Model.AnimalInfo.Species;
  * This enum provides a standardized list of bird species supported in the system.
  */
 public enum Birds implements Species {
-    /** Small, colorful parrot species, also known as budgie */
+    /** Small, colorful parrot species, also known as budgie. */
     BUDGERIGAR,
-    /** Small crested parrot species with distinctive cheek patches */
+    /** Small crested parrot species with distinctive cheek patches. */
     COCKATIEL,
-    /** Small songbird known for its melodious singing */
+    /** Small songbird known for its melodious singing. */
     CANARY,
-    /** Small parrot species known for strong pair bonds */
+    /** Small parrot species known for strong pair bonds. */
     LOVEBIRD,
-    /** Smallest parrot species */
+    /** Smallest parrot species. */
     PARROTLET,
-    /** Small to medium-sized parrot species with long tail */
+    /** Small to medium-sized parrot species with long tail. */
     CONURE,
-    /** Highly intelligent African parrot species */
+    /** Highly intelligent African parrot species. */
     AFRICAN_GREY_PARROT,
-    /** Large crested parrot species */
+    /** Large crested parrot species. */
     COCKATOO,
-    /** Small songbird species */
+    /** Small songbird species. */
     FINCH,
-    /** Medium to large parrot species from the Americas */
+    /** Medium to large parrot species from the Americas. */
     AMAZON_PARROT,
-    /** Large, colorful parrot species with long tail */
+    /** Large, colorful parrot species with long tail. */
     MACAW,
-    /** Small to medium-sized parrot species with distinctive gray face */
+    /** Small to medium-sized parrot species with distinctive gray face. */
     QUAKER_PARROT,
-    /** Small African parrot species with distinctive head pattern */
+    /** Small African parrot species with distinctive head pattern. */
     SENEGAL_PARROT,
-    /** Small, colorful parrot species from South America */
+    /** Small, colorful parrot species from South America. */
     CAIQUE,
-    /** Small to medium-sized parrot species with long tail */
+    /** Small to medium-sized parrot species with long tail. */
     PARAKEET,
-    /** Medium-sized bird species known for gentle nature */
+    /** Medium-sized bird species known for gentle nature. */
     DOVE,
-    /** Small dove species with distinctive diamond pattern */
+    /** Small dove species with distinctive diamond pattern. */
     DIAMOND_DOVE,
-    /** Medium-sized parrot species with quiet nature */
+    /** Medium-sized parrot species with quiet nature. */
     PIONUS,
-    /** Small Australian parrot species with gentle nature */
+    /** Small Australian parrot species with gentle nature. */
     BOURKES_PARAKEET,
-    /** Medium to large parrot species with distinctive sexual dimorphism */
+    /** Medium to large parrot species with distinctive sexual dimorphism. */
     ECLECTUS,
-    /** Any other bird species not listed above */
+    /** Any other bird species not listed above. */
     OTHER;
 
     /**

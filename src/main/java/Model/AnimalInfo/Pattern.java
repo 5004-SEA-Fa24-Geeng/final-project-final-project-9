@@ -5,17 +5,17 @@ package Model.AnimalInfo;
  * This enum provides standardized pattern classifications for animals in the system.
  */
 public enum Pattern {
-    /** Single color without patterns */
+    /** Single color without patterns. */
     SOLID,
-    /** Spotted or dappled pattern */
+    /** Spotted or dappled pattern. */
     SPOTTED,
-    /** Striped or tabby pattern */
+    /** Striped or tabby pattern. */
     STRIPED,
-    /** Brindle pattern (irregular streaks) */
+    /** Brindle pattern (irregular streaks). */
     BRINDLE,
-    /** Merle pattern (mottled patches) */
+    /** Merle pattern (mottled patches). */
     MERLE,
-    /** Tuxedo pattern (black and white) */
+    /** Tuxedo pattern (black and white). */
     TUXEDO;
 
     /**

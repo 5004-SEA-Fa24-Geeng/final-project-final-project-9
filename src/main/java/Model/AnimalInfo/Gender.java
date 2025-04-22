@@ -5,11 +5,11 @@ package Model.AnimalInfo;
  * This enum provides standardized gender classifications for animals in the system.
  */
 public enum Gender {
-    /** Female animals */
+    /** Female animals. */
     FEMALE,
-    /** Male animals */
+    /** Male animals. */
     MALE,
-    /** Gender is unknown or not specified */
+    /** Gender is unknown or not specified. */
     UNKNOWN;
 
     /**

@@ -5,19 +5,19 @@ package Model.AnimalInfo;
  * This enum provides standardized color classifications for animals in the system.
  */
 public enum Color {
-    /** Solid black color */
+    /** Solid black color. */
     BLACK,
-    /** Solid white color */
+    /** Solid white color. */
     WHITE,
-    /** Various shades of brown */
+    /** Various shades of brown. */
     BROWN,
-    /** Golden or yellow tones */
+    /** Golden or yellow tones. */
     GOLDEN,
-    /** Gray or silver tones */
+    /** Gray or silver tones. */
     GRAY,
-    /** Orange or ginger tones */
+    /** Orange or ginger tones. */
     ORANGE,
-    /** Multiple colors or patterns */
+    /** Multiple colors or patterns. */
     MIXED;
 
     /**

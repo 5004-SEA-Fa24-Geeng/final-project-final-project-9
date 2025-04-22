@@ -9,7 +9,7 @@ import Model.Animals.IAnimal;
 public interface IAnimalFilter {
 
     /**
-     * Get the filtered list of animals
+     * Get the filtered list of animals.
      * @return the filtered list.
      */
     List<IAnimal> getFilteredAnimals();

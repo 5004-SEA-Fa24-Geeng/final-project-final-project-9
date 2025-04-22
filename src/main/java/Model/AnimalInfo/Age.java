@@ -5,13 +5,13 @@ package Model.AnimalInfo;
  * This enum provides standardized age classifications for animals in the system.
  */
 public enum Age {
-    /** Newborn or very young animals */
+    /** Newborn or very young animals. */
     BABY,
-    /** Juvenile animals that are not fully grown */
+    /** Juvenile animals that are not fully grown. */
     YOUNG,
-    /** Fully grown adult animals */
+    /** Fully grown adult animals. */
     ADULT,
-    /** Senior animals */
+    /** Senior animals. */
     OLD;
 
     /**
